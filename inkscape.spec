@@ -1,12 +1,12 @@
 Name:           inkscape
-Version:        0.40
+Version:        0.41
 Release:        1
 Summary:        A vector-based drawing program using SVG.
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/inkscape-0.40.tar.bz2
+Source0:        http://download.sourceforge.net/inkscape/inkscape-0.41.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -20,9 +20,11 @@ BuildRequires:  libgnomeprintui22-devel >= 2.2.0
 BuildRequires:  libpng-devel
 BuildRequires:  libsigc++20-devel
 BuildRequires:  libxml2-devel >= 2.4.24
+BuildRequires:  libxslt-devel
 BuildRequires:  pango-devel
 BuildRequires:  perl-XML-Parser
 BuildRequires:  pkgconfig
+BuildRequires:  python-devel
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
 
@@ -50,19 +52,12 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %build
 %configure                     \
 --disable-dependency-tracking  \
-%ifarch i386
-        --disable-mmx          \
-%endif
-%ifarch i686
-        --enable-mmx           \
-%endif
-%ifarch athlon
-        --enable-mmx           \
-%endif
---with-gnome-print             \
 --with-xinerama                \
 --enable-static=no             \
+--with-python                  \
 --with-inkjar
+#temporarily disabled until I can look into it further
+#--with-gnome-print             \
 
 make %{?_smp_mflags}
 
@@ -103,6 +98,10 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Wed Feb 09 2005 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.41-1
+- 0.41.
+- enable python.
+
 * Sat Dec 04 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.40-1
 - 0.40.
 
