@@ -43,7 +43,7 @@ tool for web designers and as an interchange format for desktop publishing.
 
 It has a relatively modern display engine, giving you finely antialiased
 display, alpha transparencies, vector fonts and so on. Inkscape is written in
-C and C++, using the Gtk+ toolkit and optionally some Gnome libraries. 
+C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 
 %prep
@@ -110,7 +110,7 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 * Thu Nov 11 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.39-0.fdr.2
 - post/postun for new mime system.
-- Dropped redundant BR XFree86-devel. 
+- Dropped redundant BR XFree86-devel.
 
 * Sun Aug 29 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0:0.39-0.fdr.1
 - 0.39.
@@ -128,9 +128,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 - version upgrade with many improvements and bug fixes
 
 * Fri Mar 19 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.7
-- repsin - sourceforge does not allow reloading files with same name 
+- repsin - sourceforge does not allow reloading files with same name
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.6
-- fix typo in provides 
+- fix typo in provides
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.5
 - add %{release} to provides perl(SpSVG) = %{epoch}:%{version}:%{release} only
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.4
@@ -146,10 +146,10 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 - enable inkjar
 * Tue Feb 10  2004 P Linnell <scribusdocs at atlantictechsolutions.com>   0:0.37.0.fdr.1
 - pgp'd tarball from inkscape.org
-- clean out the cvs tweaks in spec file 
+- clean out the cvs tweaks in spec file
 - enable gnome-print
 - add the new tutorial files
-- make sure .mo file gets packaged 
+- make sure .mo file gets packaged
 - add provides: perlSVG
 - submit to Fedora QA
 * Sat Feb 7  2004 P Linnell <scribusdocs at atlantictechsolutions.com>
