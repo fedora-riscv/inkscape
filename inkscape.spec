@@ -1,32 +1,32 @@
 Name:           inkscape
 Version:        0.39
-Release:        0.fdr.1.2
-Epoch:		0
+Release:        0.fdr.2
 Summary:        A vector-based drawing program using SVG.
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://dl.sf.net/sourceforge/inkscape/inkscape-0.39.tar.bz2
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  XFree86-devel 
-BuildRequires:  libgnomeprintui22-devel >= 0:2.2.0
-BuildRequires:  libpng-devel
-BuildRequires:  desktop-file-utils
-BuildRequires:  gettext
-BuildRequires:  libart_lgpl-devel >= 0:2.3.10
-BuildRequires:  freetype-devel
-BuildRequires:  libxml2-devel >= 2-2.4.24
-BuildRequires:  gtk2-devel
-BuildRequires:  pango-devel
 BuildRequires:  atk-devel
-BuildRequires:  pkgconfig
-BuildRequires:  libsigc++-devel >= 0:1.2.5
+BuildRequires:  desktop-file-utils
+BuildRequires:  freetype-devel
+BuildRequires:  gettext
+BuildRequires:  gtk2-devel
+BuildRequires:  libart_lgpl-devel >= 2.3.10
+BuildRequires:  libgnomeprintui22-devel >= 2.2.0
+BuildRequires:  libpng-devel
+BuildRequires:  libsigc++-devel >= 1.2.5
+BuildRequires:  libxml2-devel >= 2.4.24
+BuildRequires:  pango-devel
 BuildRequires:  perl-XML-Parser
+BuildRequires:  pkgconfig
+Requires(post):   desktop-file-utils
+Requires(postun): desktop-file-utils
 
-Provides:	perl(SpSVG)
-Provides:	perl(SVG)
+Provides:       perl(SpSVG)
+Provides:       perl(SVG)
 
 
 %description
@@ -47,7 +47,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %setup -q
 
 %build
- 
+sed -i "s/%%U/%%F/g;" inkscape.desktop.in 
 %configure                     \
 --disable-dependency-tracking  \
 %ifarch i386
@@ -60,8 +60,8 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
         --enable-mmx           \
 %endif
 --with-gnome-print             \
---with-xinerama \
---enable-static=no \
+--with-xinerama                \
+--enable-static=no             \
 --with-inkjar
 
 make %{?_smp_mflags}
@@ -83,17 +83,30 @@ desktop-file-install --vendor fedora --delete-original     \
 rm -rf ${RPM_BUILD_ROOT}
 
 
+%post
+update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
+
+
+%postun
+update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
+
+
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING ChangeLog NEWS README HACKING
+%doc %{_mandir}/man1/*
 %{_bindir}/*
 %{_datadir}/%{name}
 %{_datadir}/applications/*.desktop
 %{_datadir}/pixmaps/*
-%{_mandir}/man1/*
 
 
 %changelog
+* Thu Nov 11 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.39-0.fdr.2
+- post/postun for new mime system.
+- Fix for desktop entry.
+- Dropped redundant BR XFree86-devel. 
+
 * Sun Aug 29 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0:0.39-0.fdr.1
 - 0.39.
 
@@ -108,7 +121,6 @@ rm -rf ${RPM_BUILD_ROOT}
 
 * Thu Apr 8 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.38.0.fdr.1
 - version upgrade with many improvements and bug fixes
-
 
 * Fri Mar 19 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.7
 - repsin - sourceforge does not allow reloading files with same name 
