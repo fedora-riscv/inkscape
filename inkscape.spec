@@ -1,23 +1,24 @@
 Name:           inkscape
-Version:        0.39
-Release:        0.fdr.2
+Version:        0.40
+Release:        1
 Summary:        A vector-based drawing program using SVG.
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://dl.sf.net/sourceforge/inkscape/inkscape-0.39.tar.bz2
+Source0:        http://download.sourceforge.net/inkscape/inkscape-0.40.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  freetype-devel
+BuildRequires:  gc-devel
 BuildRequires:  gettext
-BuildRequires:  gtk2-devel
+BuildRequires:  gtkmm24-devel
 BuildRequires:  libart_lgpl-devel >= 2.3.10
 BuildRequires:  libgnomeprintui22-devel >= 2.2.0
 BuildRequires:  libpng-devel
-BuildRequires:  libsigc++-devel >= 1.2.5
+BuildRequires:  libsigc++20-devel
 BuildRequires:  libxml2-devel >= 2.4.24
 BuildRequires:  pango-devel
 BuildRequires:  perl-XML-Parser
@@ -47,7 +48,6 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %setup -q
 
 %build
-sed -i "s/%%U/%%F/g;" inkscape.desktop.in 
 %configure                     \
 --disable-dependency-tracking  \
 %ifarch i386
@@ -71,7 +71,7 @@ make %{?_smp_mflags}
 rm -rf ${RPM_BUILD_ROOT}
 make install DESTDIR=${RPM_BUILD_ROOT}
 %find_lang %{name}
-
+find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 
 desktop-file-install --vendor fedora --delete-original     \
   --dir ${RPM_BUILD_ROOT}%{_datadir}/applications          \
@@ -99,12 +99,18 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 %{_datadir}/%{name}
 %{_datadir}/applications/*.desktop
 %{_datadir}/pixmaps/*
+%{_libdir}/inkscape/
 
 
 %changelog
+* Sat Dec 04 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.40-1
+- 0.40.
+
+* Mon Nov 16 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.40-0.pre3
+- 0.40pre3.
+
 * Thu Nov 11 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.39-0.fdr.2
 - post/postun for new mime system.
-- Fix for desktop entry.
 - Dropped redundant BR XFree86-devel. 
 
 * Sun Aug 29 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0:0.39-0.fdr.1
