@@ -1,6 +1,7 @@
 Name:           inkscape
 Version:        0.41
-Release:        1
+Release:        2
+
 Summary:        A vector-based drawing program using SVG.
 
 Group:          Applications/Productivity
@@ -98,6 +99,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Fri Apr  7 2005 Michael Schwendt <mschwendt[AT]users.sf.net>
+- rebuilt
+
 * Wed Feb 09 2005 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.41-1
 - 0.41.
 - enable python.
