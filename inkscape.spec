@@ -1,15 +1,14 @@
 Name:           inkscape
-Version:        0.38.1
-Release:        0.fdr.1.1
+Version:        0.39
+Release:        0.fdr.1.2
 Epoch:		0
 Summary:        A vector-based drawing program using SVG.
+
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://dl.sf.net/sourceforge/inkscape/inkscape-0.38.1.tar.bz2
-
+Source0:        http://dl.sf.net/sourceforge/inkscape/inkscape-0.39.tar.bz2
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
 
 BuildRequires:  XFree86-devel 
 BuildRequires:  libgnomeprintui22-devel >= 0:2.2.0
@@ -44,7 +43,6 @@ display, alpha transparencies, vector fonts and so on. Inkscape is written in
 C and C++, using the Gtk+ toolkit and optionally some Gnome libraries. 
 
 
-
 %prep
 %setup -q
 
@@ -69,7 +67,6 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 make %{?_smp_mflags}
 
 
-
 %install
 rm -rf ${RPM_BUILD_ROOT}
 make install DESTDIR=${RPM_BUILD_ROOT}
@@ -79,8 +76,6 @@ make install DESTDIR=${RPM_BUILD_ROOT}
 desktop-file-install --vendor fedora --delete-original     \
   --dir ${RPM_BUILD_ROOT}%{_datadir}/applications          \
   --add-category X-Fedora                                  \
-  --add-category Application                               \
-  --add-category Graphics                                  \
   ${RPM_BUILD_ROOT}/usr/share/applications/%{name}.desktop
 
 
@@ -88,22 +83,20 @@ desktop-file-install --vendor fedora --delete-original     \
 rm -rf ${RPM_BUILD_ROOT}
 
 
-
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING ChangeLog NEWS README HACKING
 %{_bindir}/*
-%{_libdir}/%{name}
 %{_datadir}/%{name}
 %{_datadir}/applications/*.desktop
-%{_datadir}/locale/*/LC_MESSAGES/inkscape.mo
 %{_datadir}/pixmaps/*
 %{_mandir}/man1/*
 
 
-
-
 %changelog
+* Sun Aug 29 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0:0.39-0.fdr.1
+- 0.39.
+
 * Fri Apr 10 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.38.1-0.fdr.1
 - respin real fix for Provides/Requires for perl(SpSVG)
 
