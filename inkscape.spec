@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.41
-Release:        2
+Release: 3
 
 Summary:        A vector-based drawing program using SVG.
 
@@ -99,6 +99,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Sun May 22 2005 Jeremy Katz <katzj@redhat.com> - 0.41-3
+- rebuild on all arches
+
 * Fri Apr  7 2005 Michael Schwendt <mschwendt[AT]users.sf.net>
 - rebuilt
 
