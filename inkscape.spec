@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.41
-Release: 3
+Release: 4
 
 Summary:        A vector-based drawing program using SVG.
 
@@ -8,6 +8,8 @@ Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/inkscape-0.41.tar.bz2
+Patch0: inkscape-gcc4.patch
+Patch1: inkscape-0.41-64bit.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -49,8 +51,11 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 %prep
 %setup -q
+%patch0 -p1 -b .gcc4
+%patch1 -p1 -b .64bit
 
 %build
+aclocal ; autoconf
 %configure                     \
 --disable-dependency-tracking  \
 --with-xinerama                \
@@ -99,6 +104,10 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Wed May 25 2005 Jeremy Katz <katzj@redhat.com> - 0.41-4
+- add patch for gcc4 problems (ignacio, #156228)
+- fix build on 64bit boxes.  sizeof(int) != sizeof(void*)
+
 * Sun May 22 2005 Jeremy Katz <katzj@redhat.com> - 0.41-3
 - rebuild on all arches
 
