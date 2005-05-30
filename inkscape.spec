@@ -1,7 +1,6 @@
 Name:           inkscape
 Version:        0.41
-Release: 4
-
+Release:        5
 Summary:        A vector-based drawing program using SVG.
 
 Group:          Applications/Productivity
@@ -104,6 +103,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Tue May 31 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.41-5
+- bump and rebuild as 0.41-4 failed in build system setup
+
 * Wed May 25 2005 Jeremy Katz <katzj@redhat.com> - 0.41-4
 - add patch for gcc4 problems (ignacio, #156228)
 - fix build on 64bit boxes.  sizeof(int) != sizeof(void*)
