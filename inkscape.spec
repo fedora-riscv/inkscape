@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.41
-Release:        6
+Release:        7
 Summary:        A vector-based drawing program using SVG.
 
 Group:          Applications/Productivity
@@ -53,6 +53,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch0 -p1 -b .gcc4
 %patch1 -p1 -b .64bit
 
+
 %build
 %configure                     \
 --disable-dependency-tracking  \
@@ -102,6 +103,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Tue May 31 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.41-7
+- append another 64-bit related patch (dgettext configure check failed)
+
 * Tue May 31 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.41-6
 - remove explicit aclocal/autoconf calls in %%build as they create a
   bad Makefile for FC4/i386, which causes build to fail (#156228),
