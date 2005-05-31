@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.41
-Release:        5
+Release:        6
 Summary:        A vector-based drawing program using SVG.
 
 Group:          Applications/Productivity
@@ -54,7 +54,6 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch1 -p1 -b .64bit
 
 %build
-aclocal ; autoconf
 %configure                     \
 --disable-dependency-tracking  \
 --with-xinerama                \
@@ -103,6 +102,11 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Tue May 31 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.41-6
+- remove explicit aclocal/autoconf calls in %%build as they create a
+  bad Makefile for FC4/i386, which causes build to fail (#156228),
+  and no comment explains where they were added/needed
+
 * Tue May 31 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.41-5
 - bump and rebuild as 0.41-4 failed in build system setup
 
