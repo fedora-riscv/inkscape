@@ -1,14 +1,13 @@
 Name:           inkscape
-Version:        0.41
-Release:        7
-Summary:        A vector-based drawing program using SVG.
+Version:        0.42
+Release:        1%{?dist}
+Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/inkscape-0.41.tar.bz2
-Patch0: inkscape-gcc4.patch
-Patch1: inkscape-0.41-64bit.patch
+Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.bz2
+Patch0:         inkscape-0.41-dgettext.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -19,6 +18,7 @@ BuildRequires:  gettext
 BuildRequires:  gtkmm24-devel
 BuildRequires:  libart_lgpl-devel >= 2.3.10
 BuildRequires:  libgnomeprintui22-devel >= 2.2.0
+BuildRequires:  gnome-vfs2-devel
 BuildRequires:  libpng-devel
 BuildRequires:  libsigc++20-devel
 BuildRequires:  libxml2-devel >= 2.4.24
@@ -50,8 +50,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 %prep
 %setup -q
-%patch0 -p1 -b .gcc4
-%patch1 -p1 -b .64bit
+%patch0 -p1 -b .dgettext
 
 
 %build
@@ -96,13 +95,20 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 %doc AUTHORS COPYING ChangeLog NEWS README HACKING
 %doc %{_mandir}/man1/*
 %{_bindir}/*
-%{_datadir}/%{name}
+%{_datadir}/%{name}/
 %{_datadir}/applications/*.desktop
 %{_datadir}/pixmaps/*
-%{_libdir}/inkscape/
+%{_mandir}/fr/man1/*
 
 
 %changelog
+* Tue Jul 26 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.42-1
+- update to 0.42 (also fixes #160326)
+- BR gnome-vfs2-devel
+- no files left in %%_libdir/inkscape
+- include French manual page
+- GCC4 patch obsolete, 64-bit patch obsolete, dgettext split off
+
 * Tue May 31 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.41-7
 - append another 64-bit related patch (dgettext configure check failed)
 
