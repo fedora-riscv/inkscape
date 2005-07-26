@@ -107,7 +107,7 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 - BR gnome-vfs2-devel
 - no files left in %%_libdir/inkscape
 - include French manual page
-- GCC4 patch obsolete, 64-bit patch obsolete, dgettext split off
+- GCC4 patch obsolete, 64-bit patch obsolete, dgettext patch split off
 
 * Tue May 31 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.41-7
 - append another 64-bit related patch (dgettext configure check failed)
