@@ -1,12 +1,13 @@
 Name:           inkscape
-Version:        0.41
-Release:        1
-Summary:        A vector-based drawing program using SVG.
+Version:        0.42
+Release:        2%{?dist}
+Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/inkscape-0.41.tar.bz2
+Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.bz2
+Patch0:         inkscape-0.42-gettext-x86_64.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -17,6 +18,7 @@ BuildRequires:  gettext
 BuildRequires:  gtkmm24-devel
 BuildRequires:  libart_lgpl-devel >= 2.3.10
 BuildRequires:  libgnomeprintui22-devel >= 2.2.0
+BuildRequires:  gnome-vfs2-devel
 BuildRequires:  libpng-devel
 BuildRequires:  libsigc++20-devel
 BuildRequires:  libxml2-devel >= 2.4.24
@@ -43,11 +45,13 @@ tool for web designers and as an interchange format for desktop publishing.
 
 It has a relatively modern display engine, giving you finely antialiased
 display, alpha transparencies, vector fonts and so on. Inkscape is written in
-C and C++, using the Gtk+ toolkit and optionally some Gnome libraries. 
+C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 
 %prep
 %setup -q
+%patch0 -p1 -b .dgettext
+
 
 %build
 %configure                     \
@@ -91,13 +95,44 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 %doc AUTHORS COPYING ChangeLog NEWS README HACKING
 %doc %{_mandir}/man1/*
 %{_bindir}/*
-%{_datadir}/%{name}
+%{_datadir}/%{name}/
 %{_datadir}/applications/*.desktop
 %{_datadir}/pixmaps/*
-%{_libdir}/inkscape/
+%{_mandir}/fr/man1/*
 
 
 %changelog
+* Fri Jul 29 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.42-2
+- Extend ngettext/dgettext patch for x86_64 build.
+
+* Tue Jul 26 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.42-1
+- update to 0.42 (also fixes #160326)
+- BR gnome-vfs2-devel
+- no files left in %%_libdir/inkscape
+- include French manual page
+- GCC4 patch obsolete, 64-bit patch obsolete, dgettext patch split off
+
+* Tue May 31 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.41-7
+- append another 64-bit related patch (dgettext configure check failed)
+
+* Tue May 31 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.41-6
+- remove explicit aclocal/autoconf calls in %%build as they create a
+  bad Makefile for FC4/i386, which causes build to fail (#156228),
+  and no comment explains where they were added/needed
+
+* Tue May 31 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.41-5
+- bump and rebuild as 0.41-4 failed in build system setup
+
+* Wed May 25 2005 Jeremy Katz <katzj@redhat.com> - 0.41-4
+- add patch for gcc4 problems (ignacio, #156228)
+- fix build on 64bit boxes.  sizeof(int) != sizeof(void*)
+
+* Sun May 22 2005 Jeremy Katz <katzj@redhat.com> - 0.41-3
+- rebuild on all arches
+
+* Fri Apr  7 2005 Michael Schwendt <mschwendt[AT]users.sf.net>
+- rebuilt
+
 * Wed Feb 09 2005 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.41-1
 - 0.41.
 - enable python.
@@ -110,7 +145,7 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 * Thu Nov 11 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.39-0.fdr.2
 - post/postun for new mime system.
-- Dropped redundant BR XFree86-devel. 
+- Dropped redundant BR XFree86-devel.
 
 * Sun Aug 29 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0:0.39-0.fdr.1
 - 0.39.
@@ -128,9 +163,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 - version upgrade with many improvements and bug fixes
 
 * Fri Mar 19 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.7
-- repsin - sourceforge does not allow reloading files with same name 
+- repsin - sourceforge does not allow reloading files with same name
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.6
-- fix typo in provides 
+- fix typo in provides
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.5
 - add %{release} to provides perl(SpSVG) = %{epoch}:%{version}:%{release} only
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.4
@@ -146,10 +181,10 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 - enable inkjar
 * Tue Feb 10  2004 P Linnell <scribusdocs at atlantictechsolutions.com>   0:0.37.0.fdr.1
 - pgp'd tarball from inkscape.org
-- clean out the cvs tweaks in spec file 
+- clean out the cvs tweaks in spec file
 - enable gnome-print
 - add the new tutorial files
-- make sure .mo file gets packaged 
+- make sure .mo file gets packaged
 - add provides: perlSVG
 - submit to Fedora QA
 * Sat Feb 7  2004 P Linnell <scribusdocs at atlantictechsolutions.com>
