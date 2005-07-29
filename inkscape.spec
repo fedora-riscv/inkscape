@@ -1,13 +1,13 @@
 Name:           inkscape
 Version:        0.42
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.bz2
-Patch0:         inkscape-0.41-dgettext.patch
+Patch0:         inkscape-0.42-gettext-x86_64.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -102,6 +102,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Fri Jul 29 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.42-2
+- Extend ngettext/dgettext patch for x86_64 build.
+
 * Tue Jul 26 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.42-1
 - update to 0.42 (also fixes #160326)
 - BR gnome-vfs2-devel
