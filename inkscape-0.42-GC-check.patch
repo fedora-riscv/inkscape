@@ -1,0 +1,30 @@
+diff -Nur inkscape-0.42-orig/configure inkscape-0.42/configure
+--- inkscape-0.42-orig/configure	2005-07-25 07:25:35.000000000 +0200
++++ inkscape-0.42/configure	2005-08-18 23:31:12.000000000 +0200
+@@ -22931,7 +22931,7 @@
+ 		    # desired function name.  They're all in libgc.
+ 		    # The "break" will exit from the top level
+                     # AC_CHECK_HEADERS.
+-		    gc_libs=""
++		    gc_libs="-lpthread $lt_cv_dlopen_libs"
+ 		    echo "$as_me:$LINENO: checking for GC_init in -lgc" >&5
+ echo $ECHO_N "checking for GC_init in -lgc... $ECHO_C" >&6
+ if test "${ac_cv_lib_gc_GC_init+set}" = set; then
+@@ -23003,7 +23003,7 @@
+   gc_ok=no
+ fi
+ 
+-		    gc_libs="-lpthread"
++		    gc_libs="-lpthread $lt_cv_dlopen_libs"
+ 		    echo "$as_me:$LINENO: checking for GC_malloc in -lgc" >&5
+ echo $ECHO_N "checking for GC_malloc in -lgc... $ECHO_C" >&6
+ if test "${ac_cv_lib_gc_GC_malloc+set}" = set; then
+@@ -23075,7 +23075,7 @@
+   gc_ok=no
+ fi
+ 
+-		    gc_libs="$lt_cv_dlopen_libs"
++		    gc_libs="-lpthread $lt_cv_dlopen_libs"
+ 		    echo "$as_me:$LINENO: checking for GC_realloc in -lgc" >&5
+ echo $ECHO_N "checking for GC_realloc in -lgc... $ECHO_C" >&6
+ if test "${ac_cv_lib_gc_GC_realloc+set}" = set; then
