@@ -60,7 +60,6 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 --disable-dependency-tracking  \
 --with-xinerama                \
 --enable-static=no             \
---enable-dlopen                \
 --with-python                  \
 --with-inkjar
 #temporarily disabled until I can look into it further
