@@ -52,6 +52,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %prep
 %setup -q
 %patch0 -p1 -b .dgettext
+%patch1 -p1 -b .GC-check
 
 
 %build
