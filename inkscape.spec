@@ -59,9 +59,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 --with-xinerama                \
 --enable-static=no             \
 --with-python                  \
---with-inkjar || :
-cat config.log
-exit 1
+--with-inkjar
 #temporarily disabled until I can look into it further
 #--with-gnome-print             \
 
