@@ -1,6 +1,6 @@
 Name:           inkscape
-Version:        0.42
-Release:        3%{?dist}
+Version:        0.42.2
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -104,6 +104,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Thu Sep  1 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.42.2-1
+- update to 0.42.2
+
 * Thu Aug 18 2005 Michael Schwendt <mschwendt[AT]users.sf.net> - 0.42-3
 - rebuilt
 - add patch to repair link-check of GC >= 6.5 (needs pthread and dl)
