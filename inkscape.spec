@@ -1,14 +1,15 @@
 Name:           inkscape
-Version:        0.42.2
-Release:        2%{?dist}
+Version:        0.43
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.bz2
-Patch0:         inkscape-0.42-gettext-x86_64.patch
-Patch1:         inkscape-0.42-GC-check.patch
+Patch0:         inkscape-0.42-GC-check.patch
+Patch1:         inkscape-0.43-null-conversion.patch
+Patch2:         inkscape-0.43-qualification.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -28,6 +29,7 @@ BuildRequires:  pango-devel
 BuildRequires:  perl-XML-Parser
 BuildRequires:  pkgconfig
 BuildRequires:  python-devel
+BuildRequires:  loudmouth-devel
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
 
@@ -51,19 +53,19 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 %prep
 %setup -q
-%patch0 -p1 -b .dgettext
-%patch1 -p1 -b .GC-check
+%patch0 -p1 -b .GC-check
+%patch1 -p0 -b .nullconv
+%patch2 -p0 -b .qualif
 
 
 %build
-%configure                     \
---disable-dependency-tracking  \
---with-xinerama                \
---enable-static=no             \
---with-python                  \
---with-inkjar
-#temporarily disabled until I can look into it further
-#--with-gnome-print             \
+%configure		\
+--enable-static=no	\
+--with-python		\
+--with-perl		\
+--with-inkjar		\
+--with-gnome-vfs	\
+--enable-inkboard
 
 make %{?_smp_mflags}
 
@@ -94,7 +96,7 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING ChangeLog NEWS README HACKING
+%doc AUTHORS COPYING ChangeLog NEWS README
 %doc %{_mandir}/man1/*
 %{_bindir}/*
 %{_datadir}/%{name}/
@@ -104,6 +106,11 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Sat Dec 17 2005 Denis Leroy <denis@poolshark.org> - 0.43-1
+- Update to 0.43
+- Added 2 patches to fix g++ 4.1 compilation issues
+- Enabled new jabber/loudmouth-based inkboard feature
+
 * Mon Sep 26 2005 Denis Leroy <denis@poolshark.org> - 0.42.2-2
 - rebuilt with newer glibmm
 
