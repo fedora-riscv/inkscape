@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.43
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -106,6 +106,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Mon Jan 16 2006 Denis Leroy <denis@poolshark.org> - 0.43-2
+- Updated GC patch, bug 171791
+
 * Sat Dec 17 2005 Denis Leroy <denis@poolshark.org> - 0.43-1
 - Update to 0.43
 - Added 2 patches to fix g++ 4.1 compilation issues
