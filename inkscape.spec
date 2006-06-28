@@ -1,35 +1,40 @@
 Name:           inkscape
-Version:        0.43
-Release:        3%{?dist}
+Version:        0.44
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.bz2
-Patch0:         inkscape-0.42-GC-check.patch
-Patch1:         inkscape-0.43-null-conversion.patch
-Patch2:         inkscape-0.43-qualification.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  freetype-devel
-BuildRequires:  gc-devel
+BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
 BuildRequires:  gtkmm24-devel
+BuildRequires:  gtkspell-devel
 BuildRequires:  libart_lgpl-devel >= 2.3.10
 BuildRequires:  libgnomeprintui22-devel >= 2.2.0
-BuildRequires:  gnome-vfs2-devel
+BuildRequires:  gnome-vfs2-devel >= 2.0
 BuildRequires:  libpng-devel
 BuildRequires:  libsigc++20-devel
 BuildRequires:  libxml2-devel >= 2.4.24
 BuildRequires:  libxslt-devel
 BuildRequires:  pango-devel
-BuildRequires:  perl-XML-Parser
 BuildRequires:  pkgconfig
-BuildRequires:  python-devel
-BuildRequires:  loudmouth-devel
+BuildRequires:	lcms-devel >= 1.13
+BuildRequires:  boost-devel
+%{?_with_perl: BuildRequires: perl-XML-Parser, perl-libxml-enno}
+%{?_with_python: BuildRequires:  python-devel}
+%{?_with_inkboard: BuildRequires:	loudmouth-devel >= 1.0}
+%{?_with_gnomeprint: BuildRequires:	libgnomeprint22-devel >= 2.2.0}
+
+Requires:	pstoedit
+Requires:	skencil
+
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
 
@@ -53,19 +58,28 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 %prep
 %setup -q
-%patch0 -p1 -b .GC-check
-%patch1 -p0 -b .nullconv
-%patch2 -p0 -b .qualif
 
 
 %build
-%configure		\
---enable-static=no	\
---with-python		\
---with-perl		\
---with-inkjar		\
---with-gnome-vfs	\
---enable-inkboard
+%configure                     \
+--disable-dependency-tracking  \
+--with-xinerama                \
+--enable-static=no             \
+%if "%{?_with_python}"
+--with-python                  \
+%endif
+%if "%{?_with_perl}"
+--with-perl                    \
+%endif
+--with-gnome-vfs               \
+--with-inkjar                  \
+%if "%{?_with_inkboard}"
+--enable-inkboard              \
+%endif
+%if "%{?_with_gnomeprint}"
+--with-gnome-print             \
+%endif
+--enable-lcms
 
 make %{?_smp_mflags}
 
@@ -106,6 +120,13 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Wed Jun 28 2006 Denis Leroy <denis@poolshark.org> - 0.44-2
+- Update to 0.44
+- Removed obsolete patches
+- Disabled experimental perl and python extensions
+- Added pstoedit, skencil, gtkspell and LittleCms support
+- Inkboard feature disabled pending further security tests
+
 * Tue Feb 28 2006 Denis Leroy <denis@poolshark.org> - 0.43-3
 - Rebuild
 
