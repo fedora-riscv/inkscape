@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.44
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -120,6 +120,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Wed Aug  9 2006 Denis Leroy <denis@poolshark.org> - 0.44-3
+- Bumping up release to fix upgrade path
+
 * Wed Jun 28 2006 Denis Leroy <denis@poolshark.org> - 0.44-2
 - Update to 0.44
 - Removed obsolete patches
