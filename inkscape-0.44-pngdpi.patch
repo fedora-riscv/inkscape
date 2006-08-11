@@ -1,0 +1,130 @@
+Index: src/selection-chemistry.cpp
+===================================================================
+--- src/selection-chemistry.cpp	(wersja 12152)
++++ src/selection-chemistry.cpp	(kopia robocza)
+@@ -2332,7 +2332,7 @@
+     // Do the export
+     sp_export_png_file(document, filepath,
+                    bbox.x0, bbox.y0, bbox.x1, bbox.y1,
+-                   width, height,
++                   width, height, res, res,
+                    (guint32) 0xffffff00,
+                    NULL, NULL,
+                    true,  /*bool force_overwrite,*/
+Index: src/file.cpp
+===================================================================
+--- src/file.cpp	(wersja 12152)
++++ src/file.cpp	(kopia robocza)
+@@ -1091,7 +1091,7 @@
+ int
+ sp_export_png_file(SPDocument *doc, gchar const *filename,
+                    double x0, double y0, double x1, double y1,
+-                   unsigned width, unsigned height,
++                   unsigned width, unsigned height, double xdpi, double ydpi,
+                    unsigned long bgcolor,
+                    unsigned (*status)(float, void *),
+                    void *data, bool force_overwrite,
+@@ -1168,12 +1168,12 @@
+     if ((width < 256) || ((width * height) < 32768)) {
+         ebp.px = nr_pixelstore_64K_new(FALSE, 0);
+         ebp.sheight = 65536 / (4 * width);
+-        write_status = sp_png_write_rgba_striped(filename, width, height, sp_export_get_rows, &ebp);
++        write_status = sp_png_write_rgba_striped(filename, width, height, xdpi, ydpi, sp_export_get_rows, &ebp);
+         nr_pixelstore_64K_free(ebp.px);
+     } else {
+         ebp.px = g_new(guchar, 4 * 64 * width);
+         ebp.sheight = 64;
+-        write_status = sp_png_write_rgba_striped(filename, width, height, sp_export_get_rows, &ebp);
++        write_status = sp_png_write_rgba_striped(filename, width, height, xdpi, ydpi, sp_export_get_rows, &ebp);
+         g_free(ebp.px);
+     }
+ 
+Index: src/helper/png-write.cpp
+===================================================================
+--- src/helper/png-write.cpp	(wersja 12152)
++++ src/helper/png-write.cpp	(kopia robocza)
+@@ -53,18 +53,18 @@
+ }
+ 
+ int
+-sp_png_write_rgba (const gchar *filename, const guchar *px, int width, int height, int rowstride)
++sp_png_write_rgba (const gchar *filename, const guchar *px, int width, int height, double xdpi, double ydpi, int rowstride)
+ {
+ 	SPPNGBD bd;
+ 
+ 	bd.px = px;
+ 	bd.rowstride = rowstride;
+ 
+-	return sp_png_write_rgba_striped (filename, width, height, sp_png_get_block_stripe, &bd);
++	return sp_png_write_rgba_striped (filename, width, height, xdpi, ydpi, sp_png_get_block_stripe, &bd);
+ }
+ 
+ int
+-sp_png_write_rgba_striped (const gchar *filename, int width, int height,
++sp_png_write_rgba_striped (const gchar *filename, int width, int height, double xdpi, double ydpi,
+ 			   int (* get_rows) (const guchar **rows, int row, int num_rows, void *data),
+ 			   void *data)
+ {
+@@ -151,6 +151,7 @@
+ 	/* other optional chunks like cHRM, bKGD, tRNS, tIME, oFFs, pHYs, */
+ 	/* note that if sRGB is present the cHRM chunk must be ignored
+ 	 * on read and must be written in accordance with the sRGB profile */
++        png_set_pHYs(png_ptr, info_ptr, unsigned(xdpi / 0.0254 + 0.5), unsigned(ydpi / 0.0254 + 0.5), PNG_RESOLUTION_METER); 
+ 
+ 	/* Write the file header information.  REQUIRED */
+ 	png_write_info(png_ptr, info_ptr);
+Index: src/helper/png-write.h
+===================================================================
+--- src/helper/png-write.h	(wersja 12152)
++++ src/helper/png-write.h	(kopia robocza)
+@@ -14,9 +14,9 @@
+ 
+ #include <glib/gtypes.h>
+ 
+-int sp_png_write_rgba(gchar const *filename, guchar const *px, int width, int height, int rowstride);
++int sp_png_write_rgba(gchar const *filename, guchar const *px, int width, int height, double xdpi, double ydpi, int rowstride);
+ 
+-int sp_png_write_rgba_striped(gchar const *filename, int width, int height,
++int sp_png_write_rgba_striped(gchar const *filename, int width, int height, double xdpi, double ydpi,
+ 			      int (* get_rows) (guchar const **rows, int row, int num_rows, void *data),
+ 			      void *data);
+ 
+Index: src/dialogs/export.cpp
+===================================================================
+--- src/dialogs/export.cpp	(wersja 12152)
++++ src/dialogs/export.cpp	(kopia robocza)
+@@ -1070,7 +1070,7 @@
+     
+     /* Do export */
+     if (!sp_export_png_file (sp_desktop_document (SP_ACTIVE_DESKTOP), filename, 
+-                             x0, y0, x1, y1, width, height, 
++                             x0, y0, x1, y1, width, height, xdpi, ydpi, 
+                              nv->pagecolor, 
+                              sp_export_progress_callback, base)) {
+         gchar * error;
+Index: src/main.cpp
+===================================================================
+--- src/main.cpp	(wersja 12152)
++++ src/main.cpp	(kopia robocza)
+@@ -955,7 +955,7 @@
+     g_print("Bitmap saved as: %s\n", filename);
+ 
+     if ((width >= 1) && (height >= 1) && (width < 65536) && (height < 65536)) {
+-        sp_export_png_file(doc, filename, area.x0, area.y0, area.x1, area.y1, width, height, bgcolor, NULL, NULL, true, sp_export_id_only ? items : NULL);
++        sp_export_png_file(doc, filename, area.x0, area.y0, area.x1, area.y1, width, height, dpi, dpi, bgcolor, NULL, NULL, true, sp_export_id_only ? items : NULL);
+     } else {
+         g_warning("Calculated bitmap dimensions %d %d are out of range (1 - 65535). Nothing exported.", width, height);
+     }
+Index: src/file.h
+===================================================================
+--- src/file.h	(wersja 12152)
++++ src/file.h	(kopia robocza)
+@@ -129,7 +129,7 @@
+  */
+ int sp_export_png_file (SPDocument *doc, const gchar *filename,
+ 			 double x0, double y0, double x1, double y1,
+-			 unsigned int width, unsigned int height,
++			 unsigned int width, unsigned int height, double xdpi, double ydpi,
+ 			 unsigned long bgcolor,
+ 			 unsigned int (*status) (float, void *), void *data, bool force_overwrite = false, GSList *items_only = NULL);
+ 
