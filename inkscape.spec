@@ -1,12 +1,13 @@
 Name:           inkscape
 Version:        0.44
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.bz2
+Patch0:         inkscape-0.44-pngdpi.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -58,6 +59,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 %prep
 %setup -q
+%patch0 -p0 -b .pngdpi
 
 
 %build
@@ -120,6 +122,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Thu Aug 10 2006 Denis Leroy <denis@poolshark.org> - 0.44-4
+- Added patch to fix png dpi export problem (#168406)
+
 * Wed Aug  9 2006 Denis Leroy <denis@poolshark.org> - 0.44-3
 - Bumping up release to fix upgrade path
 
