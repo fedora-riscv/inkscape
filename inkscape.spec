@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.44
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -34,7 +34,6 @@ BuildRequires:  boost-devel
 %{?_with_gnomeprint: BuildRequires:	libgnomeprint22-devel >= 2.2.0}
 
 Requires:	pstoedit
-Requires:	skencil
 
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -122,6 +121,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Tue Aug 22 2006 Denis Leroy <denis@poolshark.org> - 0.44-5
+- Removed skencil Require (bug 203229)
+
 * Thu Aug 10 2006 Denis Leroy <denis@poolshark.org> - 0.44-4
 - Added patch to fix png dpi export problem (#168406)
 
