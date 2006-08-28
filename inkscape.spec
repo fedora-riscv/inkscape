@@ -121,7 +121,7 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
-* Mon Aug 28 2006 Denis Leroy <denis@poolshark.org> - 0.44
+* Mon Aug 28 2006 Denis Leroy <denis@poolshark.org> - 0.44-6
 - FE6 Rebuild
 
 * Tue Aug 22 2006 Denis Leroy <denis@poolshark.org> - 0.44-5
