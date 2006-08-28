@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.44
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -121,6 +121,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Mon Aug 28 2006 Denis Leroy <denis@poolshark.org> - 0.44
+- FE6 Rebuild
+
 * Tue Aug 22 2006 Denis Leroy <denis@poolshark.org> - 0.44-5
 - Removed skencil Require (bug 203229)
 
