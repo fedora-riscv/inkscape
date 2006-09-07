@@ -1,13 +1,12 @@
 Name:           inkscape
-Version:        0.44
-Release:        6%{?dist}
+Version:        0.44.1
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.bz2
-Patch0:         inkscape-0.44-pngdpi.patch
+Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -20,14 +19,14 @@ BuildRequires:  gtkspell-devel
 BuildRequires:  libart_lgpl-devel >= 2.3.10
 BuildRequires:  libgnomeprintui22-devel >= 2.2.0
 BuildRequires:  gnome-vfs2-devel >= 2.0
-BuildRequires:  libpng-devel
+BuildRequires:  libpng-devel >= 1.2
 BuildRequires:  libsigc++20-devel
 BuildRequires:  libxml2-devel >= 2.4.24
 BuildRequires:  libxslt-devel
 BuildRequires:  pango-devel
 BuildRequires:  pkgconfig
 BuildRequires:	lcms-devel >= 1.13
-BuildRequires:  boost-devel
+BuildRequires:  boost-devel >= 1.33.1
 %{?_with_perl: BuildRequires: perl-XML-Parser, perl-libxml-enno}
 %{?_with_python: BuildRequires:  python-devel}
 %{?_with_inkboard: BuildRequires:	loudmouth-devel >= 1.0}
@@ -58,7 +57,6 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 %prep
 %setup -q
-%patch0 -p0 -b .pngdpi
 
 
 %build
@@ -121,6 +119,11 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Thu Sep  7 2006 Denis Leroy <denis@poolshark.org> - 0.44.1-1
+- Update to 0.44.1
+- Removed png export patch, integrated upstream
+- Some updated BRs
+
 * Mon Aug 28 2006 Denis Leroy <denis@poolshark.org> - 0.44-6
 - FE6 Rebuild
 
