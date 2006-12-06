@@ -1,12 +1,14 @@
 Name:           inkscape
 Version:        0.44.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.gz
+Patch0:         inkscape-0.44.1-latex.patch
+Patch1:         inkscape-0.44.1-psinput.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -57,6 +59,8 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 %prep
 %setup -q
+%patch0 -p1 -b .latex
+%patch1 -p1 -b .psinput
 
 
 %build
@@ -119,6 +123,10 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Wed Dec  6 2006 Denis Leroy <denis@poolshark.org> - 0.44.1-2
+- Added patches to fix LaTex import (#217699)
+- Added patch to base postscript import on pstoedit plot-svg
+
 * Thu Sep  7 2006 Denis Leroy <denis@poolshark.org> - 0.44.1-1
 - Update to 0.44.1
 - Removed png export patch, integrated upstream
