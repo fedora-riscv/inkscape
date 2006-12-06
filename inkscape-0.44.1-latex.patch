@@ -1,0 +1,299 @@
+--- inkscape-0.44.1/share/extensions/inkex.py.orig	2006-09-06 07:43:07.000000000 +0200
++++ inkscape-0.44.1/share/extensions/inkex.py	2006-12-01 19:05:40.000000000 +0100
+@@ -19,7 +19,7 @@
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ """
+-import sys, copy, optparse
++import sys, copy, optparse, random, re
+ 
+ #a dictionary of all of the xmlns prefixes in a standard inkscape doc
+ NSS = {
+@@ -32,8 +32,29 @@
+ u'xlink'    :u'http://www.w3.org/1999/xlink'
+ }
+ 
++#a dictionary of unit to user unit conversion factors
++uuconv = {'in':90.0, 'pt':1.25, 'px':1, 'mm':3.5433070866, 'cm':35.433070866, 'pc':15.0}
++def unittouu(string):
++    '''Returns returns userunits given a string representation of units in another system'''
++    unit = re.compile('(%s)$' % '|'.join(uuconv.keys()))
++    param = re.compile(r'(([-+]?[0-9]+(\.[0-9]*)?|[-+]?\.[0-9]+)([eE][-+]?[0-9]+)?)')
++
++    p = param.match(string)
++    u = unit.search(string)    
++    if p:
++        retval = float(p.string[p.start():p.end()])
++    else:
++        retval = 0.0
++    if u:
++        try:
++            return retval * uuconv[u.string[u.start():u.end()]]
++        except KeyError:
++            pass
++    return retval
++
+ try:
+     import xml.dom.ext
++    import xml.dom.minidom
+     import xml.dom.ext.reader.Sax2
+     import xml.xpath
+ except:
+@@ -59,11 +80,15 @@
+ 
+ class Effect:
+     """A class for creating Inkscape SVG Effects"""
+-    def __init__(self):
++    def __init__(self, *args, **kwargs):
++        self.id_characters = '0123456789abcdefghijklmnopqrstuvwkyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+         self.document=None
++        self.ctx=None
+         self.selected={}
++        self.doc_ids={}
+         self.options=None
+         self.args=None
++        self.use_minidom=kwargs.pop("use_minidom", False)
+         self.OptionParser = optparse.OptionParser(usage="usage: %prog [options] SVGfile",option_class=InkOption)
+         self.OptionParser.add_option("--id",
+                         action="append", type="string", dest="ids", default=[], 
+@@ -83,7 +108,11 @@
+                 stream = open(self.args[-1],'r')
+         except:
+             stream = sys.stdin
+-        self.document = reader.fromStream(stream)
++        if self.use_minidom:
++            self.document = xml.dom.minidom.parse(stream)
++        else:
++            self.document = reader.fromStream(stream)
++        self.ctx = xml.xpath.Context.Context(self.document,processorNss=NSS)
+         stream.close()
+     def getposinlayer(self):
+         ctx = xml.xpath.Context.Context(self.document,processorNss=NSS)
+@@ -111,6 +140,10 @@
+             path = '//*[@id="%s"]' % id
+             for node in xml.xpath.Evaluate(path,self.document):
+                 self.selected[id] = node
++    def getdocids(self):
++        docIdNodes = xml.xpath.Evaluate('//@id',self.document,context=self.ctx)
++        for m in docIdNodes:
++            self.doc_ids[m.value] = 1
+     def output(self):
+         """Serialize document into XML on stdout"""
+         xml.dom.ext.Print(self.document)
+@@ -120,5 +153,22 @@
+         self.parse()
+         self.getposinlayer()
+         self.getselected()
++        self.getdocids()
+         self.effect()
+         self.output()
++        
++    def uniqueId(self, old_id, make_new_id = True):
++        new_id = old_id
++        if make_new_id:
++            while new_id in self.doc_ids:
++                new_id = "%s%s" % (new_id,random.choice(self.id_characters))
++            self.doc_ids[new_id] = 1
++        return new_id
++    def xpathSingle(self, path):
++        try:
++            retval = xml.xpath.Evaluate(path,self.document,context=self.ctx)[0]
++        except:
++            debug("No matching node for expression: %s" % path)
++            retval = None
++        return retval
++    
+--- inkscape-0.44.1/share/extensions/eqtexsvg.py.orig	2006-09-06 07:43:07.000000000 +0200
++++ inkscape-0.44.1/share/extensions/eqtexsvg.py	2006-12-01 19:05:20.000000000 +0100
+@@ -1,15 +1,13 @@
+ #!/usr/bin/env python
+ # -*- coding: cp1252 -*-
+ """
+-EQTEXSVG.py
+-functions for converting LATEX equation string into SVG path
+-This extension need, to work properly :
+-    - a TEX/LATEX distribution (MiKTEX ...)
++eqtexsvg.py
++functions for converting LaTeX equation string into SVG path
++This extension need, to work properly:
++    - a TeX/LaTeX distribution (MiKTeX ...)
+     - pstoedit software: <http://www.pstoedit.net/pstoedit>
+ 
+-Copyright (C) 2006 Julien Vitard, julienvitard@gmail.com
+-
+-- I will try to code XML parsing, not the hard way ;-)
++Copyright (C) 2006 Julien Vitard <julienvitard@gmail.com>
+ 
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+@@ -23,99 +21,100 @@
+ 
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ 
+ """
+ 
+-import inkex, os, tempfile
++import inkex, os, tempfile, sys, xml.dom.minidom
+ 
+ def create_equation_tex(filename, equation):
+     tex = open(filename, 'w')
+-    tex.write("""%% processed with EqTeXSVG.py
+-\documentclass{article}
+-    
++    tex.write("""%% processed with eqtexsvg.py
++\\documentclass{article}
++\\usepackage{amsmath}
++\\usepackage{amssymb}
++\\usepackage{amsfonts}
++
+ \\thispagestyle{empty}
+ \\begin{document}
+ """)
+-    tex.write("$$\n")
+     tex.write(equation)
+-    tex.write("\n$$\n")
+-    tex.write("\end{document}\n")
++    tex.write("\n\\end{document}\n")
+     tex.close()
+ 
+ def svg_open(self,filename):
+-    # parsing of SVG file with the equation 
+-    # real parsing XML to use!!!! it will be easier !!!
+-    svg = open(filename, 'r')
+-    svg_lines = svg.readlines()
+-    
+-    # trip top/bottom lines from svg file
+-    svg_lines.pop(0)
+-    svg_lines.pop(1)
+-    svg_lines.pop(len(svg_lines)-1)
+-
+-    group = self.document.createElement('svg:g')
+-    self.current_layer.appendChild(group)
+-
+-    # deleting "<g... >" "</g>" "<path d=" and "/>" from svg_lines
+-    nodegroup=''
+-    s_nodegroup_path=''
+-        
+-    for i in range(1,len(svg_lines)):
+-        if svg_lines[i].find("<g") != -1:
+-            nodegroup=svg_lines[i].split("<g")
+-            nodegroup=nodegroup[1].split(" >")
+-            nodegroup=nodegroup[0]+'\n'
+-        elif svg_lines[i].find("<path d=") != -1:
+-            s_nodegroup_path=svg_lines[i].split("<path d=")
+-            s_nodegroup_path=s_nodegroup_path[1]                
+-        elif svg_lines[i].find("/>") != -1:
+-            s_nodegroup_path=s_nodegroup_path+'"\n'
+-        elif svg_lines[i].find("</g>") != -1:
+-            nodegroup_svg = self.document.createElement('svg:g')
+-            nodegroup_svg.setAttribute('style',nodegroup)
+-            nodegroup_path = self.document.createElement('svg:path')
+-            nodegroup_path.setAttribute('d',s_nodegroup_path)
+-            group.appendChild(nodegroup_svg)                
+-            nodegroup_svg.appendChild(nodegroup_path)
++    doc_width = inkex.unittouu(self.document.documentElement.getAttribute('width'))
++    doc_height = inkex.unittouu(self.document.documentElement.getAttribute('height'))
++    doc_sizeH = min(doc_width,doc_height)
++    doc_sizeW = max(doc_width,doc_height)
++
++    def clone_and_rewrite(self, node_in):
++        if node_in.localName != 'svg':
++            node_out = self.document.createElement('svg:' + node_in.localName)
++            for i in range(0, node_in.attributes.length):
++                name = node_in.attributes.item(i).name
++                value = node_in.attributes.item(i).value
++                node_out.setAttribute(name, value)
+         else:
+-            s_nodegroup_path=s_nodegroup_path+svg_lines[i]
++            node_out = self.document.createElement('svg:g')
++        for c in node_in.childNodes:
++            if c.localName in ('g', 'path', 'polyline', 'polygon'):
++                child = clone_and_rewrite(self, c)
++                if c.localName == 'g':
++                    child.setAttribute('transform','matrix('+str(doc_sizeH/700.)+',0,0,'+str(-doc_sizeH/700.)+','+str(-doc_sizeH*0.25)+','+str(doc_sizeW*0.75)+')')
++                node_out.appendChild(child)
++
++        return node_out
++
++    doc = xml.dom.minidom.parse(filename)
++    svg = doc.getElementsByTagName('svg')[0]
++    group = clone_and_rewrite(self, svg)
++    self.current_layer.appendChild(group)
+ 
+ class EQTEXSVG(inkex.Effect):
+     def __init__(self):
+         inkex.Effect.__init__(self)
+         self.OptionParser.add_option("-f", "--formule",
+-                        action="store", type="string", 
+-                        dest="formule", default=10.0,
+-                        help="Formule LaTeX")
++                        action="store", type="string",
++                        dest="formula", default=10.0,
++                        help="LaTeX formula")
+     def effect(self):
+-        
+-        base_file = os.path.join(tempfile.gettempdir(), "inkscape-latex.tmp")
+-        latex_file = base_file + ".tex"
+-        create_equation_tex(latex_file, self.options.formule)
+-
+-        out_file = os.path.join(tempfile.gettempdir(), "inkscape-latex.tmp.output")
+-        os.system('latex -output-directory=' + tempfile.gettempdir() + ' ' + latex_file + '> ' + out_file)
+-
+-        ps_file = base_file + ".ps"
+-        dvi_file = base_file + ".dvi"
+-        svg_file = base_file + ".svg"
++
++        base_dir = tempfile.mkdtemp("", "inkscape-");
++        latex_file = os.path.join(base_dir, "eq.tex")
++        aux_file = os.path.join(base_dir, "eq.aux")
++        log_file = os.path.join(base_dir, "eq.log")
++        ps_file = os.path.join(base_dir, "eq.ps")
++        dvi_file = os.path.join(base_dir, "eq.dvi")
++        svg_file = os.path.join(base_dir, "eq.svg")
++        out_file = os.path.join(base_dir, "eq.out")
++
++        def clean():
++            os.remove(latex_file)
++            os.remove(aux_file)
++            os.remove(log_file)
++            os.remove(ps_file)
++            os.remove(dvi_file)
++            os.remove(svg_file)
++            os.remove(out_file)
++            os.rmdir(base_dir)
++
++        create_equation_tex(latex_file, self.options.formula)
++        os.system('cd ' + base_dir + '; latex -halt-on-error ' + latex_file + ' > ' + out_file)
++	try:
++	    os.stat(dvi_file)
++	except OSError:
++	    print >>sys.stderr, "invalid LaTeX input:"
++            print >>sys.stderr, self.options.formula
++            print >>sys.stderr, "temporary files were left in:", base_dir
++            sys.exit(1)
++
+         os.system('dvips -q -f -E -D 600 -y 5000 -o ' + ps_file + ' ' + dvi_file)
+-        os.system('pstoedit -f svg -dt -ssp ' + ps_file + ' ' + svg_file + '>> ' + out_file)
++        os.system('cd ' + base_dir + '; pstoedit -f plot-svg -dt -ssp ' + ps_file + ' ' + svg_file + '&> ' + out_file)
+ 
+-        # ouvrir le svg et remplacer #7F7F7F par #000000
+         svg_open(self, svg_file)
+ 
+-        # clean up
+-        aux_file = base_file + ".aux"
+-        log_file = base_file + ".log"
+-        os.remove(latex_file)
+-        os.remove(aux_file)
+-        os.remove(log_file)
+-        os.remove(dvi_file)
+-        os.remove(ps_file)
+-        os.remove(svg_file)
+-        os.remove(out_file)
+-        
++        clean()
++
+ e = EQTEXSVG()
+ e.affect()
