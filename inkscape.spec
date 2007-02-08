@@ -1,14 +1,16 @@
+%define _with_inkboard 1
+
 Name:           inkscape
-Version:        0.44.1
-Release:        2%{?dist}
+Version:        0.45
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.gz
-Patch0:         inkscape-0.44.1-latex.patch
-Patch1:         inkscape-0.44.1-psinput.patch
+Patch0:         inkscape-0.44.1-psinput.patch
+Patch1:         inkscape-0.45-python.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -18,29 +20,25 @@ BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
 BuildRequires:  gtkmm24-devel
 BuildRequires:  gtkspell-devel
-BuildRequires:  libart_lgpl-devel >= 2.3.10
-BuildRequires:  libgnomeprintui22-devel >= 2.2.0
 BuildRequires:  gnome-vfs2-devel >= 2.0
 BuildRequires:  libpng-devel >= 1.2
-BuildRequires:  libsigc++20-devel
-BuildRequires:  libxml2-devel >= 2.4.24
-BuildRequires:  libxslt-devel
+BuildRequires:  libsigc++20-devel >= 2.0.12
+BuildRequires:  libxml2-devel >= 2.6.11
+BuildRequires:  libxslt-devel >= 1.0.15
 BuildRequires:  pango-devel
 BuildRequires:  pkgconfig
-BuildRequires:	lcms-devel >= 1.13
-BuildRequires:  boost-devel >= 1.33.1
-%{?_with_perl: BuildRequires: perl-XML-Parser, perl-libxml-enno}
-%{?_with_python: BuildRequires:  python-devel}
-%{?_with_inkboard: BuildRequires:	loudmouth-devel >= 1.0}
-%{?_with_gnomeprint: BuildRequires:	libgnomeprint22-devel >= 2.2.0}
+BuildRequires:  lcms-devel >= 1.13
+BuildRequires:  cairo-devel
+BuildRequires:  openssl-devel
+BuildRequires:  dos2unix
+BuildRequires:  perl-XML-Parser
+BuildRequires:  python-devel
+%{?_with_inkboard:BuildRequires: loudmouth-devel >= 1.0}
 
-Requires:	pstoedit
+Requires:       pstoedit
 
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
-
-Provides:       perl(SpSVG)
-Provides:       perl(SVG)
 
 
 %description
@@ -59,8 +57,11 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 %prep
 %setup -q
-%patch0 -p1 -b .latex
-%patch1 -p1 -b .psinput
+%patch0 -p1 -b .psinput
+%patch1 -p1 -b .python
+find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
+find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
+dos2unix share/extensions/*.py
 
 
 %build
@@ -68,20 +69,11 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 --disable-dependency-tracking  \
 --with-xinerama                \
 --enable-static=no             \
-%if "%{?_with_python}"
 --with-python                  \
-%endif
-%if "%{?_with_perl}"
 --with-perl                    \
-%endif
 --with-gnome-vfs               \
 --with-inkjar                  \
-%if "%{?_with_inkboard}"
 --enable-inkboard              \
-%endif
-%if "%{?_with_gnomeprint}"
---with-gnome-print             \
-%endif
 --enable-lcms
 
 make %{?_smp_mflags}
@@ -92,6 +84,9 @@ rm -rf ${RPM_BUILD_ROOT}
 make install DESTDIR=${RPM_BUILD_ROOT}
 %find_lang %{name}
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
+
+rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/outline2svg.*
+rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/txt2svg.*
 
 desktop-file-install --vendor fedora --delete-original     \
   --dir ${RPM_BUILD_ROOT}%{_datadir}/applications          \
@@ -123,6 +118,13 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Wed Feb  7 2007 Denis Leroy <denis@poolshark.org> - 0.45-1
+- Update to 0.45
+- Enabled inkboard, perl and python extensions
+- Added patch for correct python autodetection
+- LaTex patch integrated upstreamed, removed
+- Some rpmlint cleanups
+
 * Fri Dec  1 2006 Denis Leroy <denis@poolshark.org> - 0.44.1-2
 - Added patches to fix LaTex import (#217699)
 - Added patch to base postscript import on pstoedit plot-svg
