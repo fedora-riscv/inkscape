@@ -1,7 +1,7 @@
 %define _with_inkboard 1
 
 Name:           inkscape
-Version:        0.45
+Version:        0.45.1
 Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
@@ -36,6 +36,7 @@ BuildRequires:  python-devel
 %{?_with_inkboard:BuildRequires: loudmouth-devel >= 1.0}
 
 Requires:       pstoedit
+Requires:       perl(Image::Magick)
 
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -118,6 +119,10 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Wed Mar 21 2007 Denis Leroy <denis@poolshark.org> - 0.45.1-1
+- Update to bugfix release 0.45.1
+- Added R to ImageMagick-perl (#231563)
+
 * Wed Feb  7 2007 Denis Leroy <denis@poolshark.org> - 0.45-1
 - Update to 0.45
 - Enabled inkboard, perl and python extensions
