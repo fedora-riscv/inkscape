@@ -6,7 +6,7 @@ Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
-License:        GPL
+License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.gz
 Patch0:         inkscape-0.44.1-psinput.patch
