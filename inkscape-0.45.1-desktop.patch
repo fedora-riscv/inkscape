@@ -1,0 +1,28 @@
+Make desktop-file-validate and rpmlint happy, handle compressed svgs (#245413)
+and let it conform enough not to break the build in Rawhide.
+(Lubomir Kundrak <lkundrak@redhat.com>)
+
+--- inkscape-0.45.1.orig/inkscape.desktop.in	2007-01-16 03:49:00.000000000 +0100
++++ inkscape-0.45.1/inkscape.desktop.in	2007-12-02 03:17:08.000000000 +0100
+@@ -2,18 +2,16 @@
+ _Name=Inkscape SVG Vector Illustrator
+ _Comment=Create and edit Scalable Vector Graphics images
+ 
+-Encoding=UTF-8
+ Version=1.0
+ 
+ Type=Application
+-Categories=Application;Graphics;VectorGraphics;GTK;
++Categories=Graphics;VectorGraphics;GTK;
+ 
+-MimeType=image/svg+xml
++MimeType=image/svg+xml;image/svg+xml-compressed;
+ 
+-FilePattern=inkscape
+ Exec=inkscape %F
+ TryExec=inkscape
+ Terminal=false
+ StartupNotify=true
+ 
+-Icon=inkscape.png
++Icon=inkscape

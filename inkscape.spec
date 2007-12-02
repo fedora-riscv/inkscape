@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        0.45.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -12,6 +12,7 @@ Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar
 Patch0:         inkscape-0.44.1-psinput.patch
 Patch1:         inkscape-0.45-python.patch
 Patch2:         inkscape-0.45.1-gtkprint.patch
+Patch3:         inkscape-0.45.1-desktop.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -69,6 +70,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch0 -p1 -b .psinput
 %patch1 -p1 -b .python
 %patch2 -p0 -b .gtkprint
+%patch3 -p1 -b .desktop
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix share/extensions/*.py
@@ -103,8 +105,6 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/txt2svg.*
 
 desktop-file-install --vendor fedora --delete-original     \
   --dir ${RPM_BUILD_ROOT}%{_datadir}/applications          \
-  --add-category X-Fedora                                  \
-  --add-mime-type image/svg+xml-compressed                 \
   ${RPM_BUILD_ROOT}/usr/share/applications/%{name}.desktop
 
 
@@ -132,6 +132,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Sun Dec 02 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-3
+- Satisfy desktop-file-validate, so that Rawhide build won't break
+
 * Sat Dec 01 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-2
 - Use GTK print dialog
 - Added compressed SVG association (#245413)
