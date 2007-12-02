@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        0.45.1
-Release:        1%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -11,6 +11,8 @@ URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.gz
 Patch0:         inkscape-0.44.1-psinput.patch
 Patch1:         inkscape-0.45-python.patch
+Patch2:         inkscape-0.45.1-gtkprint.patch
+Patch3:         inkscape-0.45.1-desktop.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -33,10 +35,19 @@ BuildRequires:  openssl-devel
 BuildRequires:  dos2unix
 BuildRequires:  perl-XML-Parser
 BuildRequires:  python-devel
+%if %{fedora} > 7
+BuildRequires:  popt-devel
+%else
+BuildRequires:  popt
+%endif
+# The following are needed due to gtkprint patch changing configure.ac
+BuildRequires:  autoconf automake17 intltool
 %{?_with_inkboard:BuildRequires: loudmouth-devel >= 1.0}
 
 Requires:       pstoedit
 Requires:       perl(Image::Magick)
+Requires:       numpy
+Requires:       PyXML
 
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -60,12 +71,17 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %setup -q
 %patch0 -p1 -b .psinput
 %patch1 -p1 -b .python
+%patch2 -p0 -b .gtkprint
+%patch3 -p1 -b .desktop
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix share/extensions/*.py
 
 
 %build
+intltoolize --force
+autoconf
+autoheader
 %configure                     \
 --disable-dependency-tracking  \
 --with-xinerama                \
@@ -91,7 +107,6 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/txt2svg.*
 
 desktop-file-install --vendor fedora --delete-original     \
   --dir ${RPM_BUILD_ROOT}%{_datadir}/applications          \
-  --add-category X-Fedora                                  \
   ${RPM_BUILD_ROOT}/usr/share/applications/%{name}.desktop
 
 
@@ -119,6 +134,18 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Sun Dec 02 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-4
+- Added missing dependencies for modules (#301881)
+
+* Sun Dec 02 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-3
+- Satisfy desktop-file-validate, so that Rawhide build won't break
+
+* Sat Dec 01 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-2
+- Use GTK print dialog
+- Added compressed SVG association (#245413)
+- popt headers went into popt-devel, post Fedora 7
+- Fix macro usage in changelog
+
 * Wed Mar 21 2007 Denis Leroy <denis@poolshark.org> - 0.45.1-1
 - Update to bugfix release 0.45.1
 - Added R to ImageMagick-perl (#231563)
@@ -244,9 +271,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.6
 - fix typo in provides
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.5
-- add %{release} to provides perl(SpSVG) = %{epoch}:%{version}:%{release} only
+- add %%{release} to provides perl(SpSVG) = %%{epoch}:%%{version}:%%{release} only
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.4
-- add %{release} to provides
+- add %%{release} to provides
 * Sun Mar 14 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.3
 - add arch dependent flags
 * Thu Mar 11 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.2
