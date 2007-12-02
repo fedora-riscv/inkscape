@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        0.45.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -46,6 +46,8 @@ BuildRequires:  autoconf automake17 intltool
 
 Requires:       pstoedit
 Requires:       perl(Image::Magick)
+Requires:       numpy
+Requires:       PyXML
 
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -132,6 +134,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Sun Dec 02 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-4
+- Added missing dependencies for modules (#301881)
+
 * Sun Dec 02 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-3
 - Satisfy desktop-file-validate, so that Rawhide build won't break
 
