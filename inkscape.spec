@@ -1,16 +1,17 @@
-%define _with_inkboard 1
 
 Name:           inkscape
 Version:        0.45.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
-License:        GPL
+License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.gz
 Patch0:         inkscape-0.44.1-psinput.patch
 Patch1:         inkscape-0.45-python.patch
+Patch2:         inkscape-0.45.1-gtkprint.patch
+Patch3:         inkscape-0.45.1-desktop.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -29,14 +30,17 @@ BuildRequires:  pango-devel
 BuildRequires:  pkgconfig
 BuildRequires:  lcms-devel >= 1.13
 BuildRequires:  cairo-devel
-BuildRequires:  openssl-devel
 BuildRequires:  dos2unix
 BuildRequires:  perl-XML-Parser
 BuildRequires:  python-devel
-%{?_with_inkboard:BuildRequires: loudmouth-devel >= 1.0}
+BuildRequires:  popt
+# The following are needed due to gtkprint patch changing configure.ac
+BuildRequires:  autoconf automake17 intltool
 
 Requires:       pstoedit
 Requires:       perl(Image::Magick)
+Requires:       numpy
+Requires:       PyXML
 
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -60,12 +64,17 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %setup -q
 %patch0 -p1 -b .psinput
 %patch1 -p1 -b .python
+%patch2 -p0 -b .gtkprint
+%patch3 -p1 -b .desktop
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix share/extensions/*.py
 
 
 %build
+intltoolize --force
+autoconf
+autoheader
 %configure                     \
 --disable-dependency-tracking  \
 --with-xinerama                \
@@ -91,7 +100,6 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/txt2svg.*
 
 desktop-file-install --vendor fedora --delete-original     \
   --dir ${RPM_BUILD_ROOT}%{_datadir}/applications          \
-  --add-category X-Fedora                                  \
   ${RPM_BUILD_ROOT}/usr/share/applications/%{name}.desktop
 
 
@@ -119,6 +127,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Wed Dec 12 2007  <denis@localhost.localdomain> - 0.45.1-2
+- Merging with F-8 spec
+
 * Tue Mar 20 2007 Denis Leroy <denis@poolshark.org> - 0.45.1-1
 - Update to bugfix release 0.45.1
 - Added R to ImageMagick-perl (#231563)
