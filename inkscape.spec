@@ -1,31 +1,33 @@
 Name:           inkscape
-Version:        0.43
+Version:        0.44.1
 Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPL
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.bz2
+Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.gz
+Patch0:         inkscape-0.44.1-incl.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  freetype-devel
-BuildRequires:  gc-devel
+BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
 BuildRequires:  gtkmm24-devel
+BuildRequires:  gtkspell-devel
 BuildRequires:  libart_lgpl-devel >= 2.3.10
 BuildRequires:  libgnomeprintui22-devel >= 2.2.0
-BuildRequires:  gnome-vfs2-devel
-BuildRequires:  libpng-devel
+BuildRequires:  gnome-vfs2-devel >= 2.0
+BuildRequires:  libpng-devel >= 1.2
 BuildRequires:  libsigc++20-devel
 BuildRequires:  libxml2-devel >= 2.4.24
 BuildRequires:  libxslt-devel
 BuildRequires:  pango-devel
-BuildRequires:  perl-XML-Parser
 BuildRequires:  pkgconfig
-BuildRequires:  python-devel
+BuildRequires:	lcms-devel >= 1.13
+
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
 
@@ -49,6 +51,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 %prep
 %setup -q
+%patch0 -p1 -b .incl
 
 
 %build
@@ -56,10 +59,9 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 --disable-dependency-tracking  \
 --with-xinerama                \
 --enable-static=no             \
---with-python                  \
---with-inkjar
-#temporarily disabled until I can look into it further
-#--with-gnome-print             \
+--with-gnome-vfs               \
+--with-inkjar                  \
+--enable-lcms
 
 make %{?_smp_mflags}
 
@@ -100,6 +102,10 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Thu Dec 13 2007 Denis Leroy <denis@poolshark.org> - 0.44.1
+- Upgrade to 0.44.1
+- Merging in spec file from FC-4, with some simplifications
+
 * Sat Dec 17 2005 Denis Leroy <denis@poolshark.org> - 0.43-1
 - Update to 0.43
 - Remove obsolete x86_64 patch
