@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        0.45.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -134,6 +134,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Tue Jan  8 2008 Denis Leroy <denis@poolshark.org> - 0.45.1-5
+- Updated gtkprint patch to restore eps export
+
 * Sun Dec 02 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-4
 - Added missing dependencies for modules (#301881)
 

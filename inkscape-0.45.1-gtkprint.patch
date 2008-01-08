@@ -13,6 +13,23 @@ Index: src/extension/internal/ps.cpp
  #include <glibmm/i18n.h>
  #include "display/nr-arena-item.h"
  #include "display/canvas-bpath.h"
+@@ -59,6 +59,7 @@
+ #include <unit-constants.h>
+ 
+ #include "ps.h"
++#include "inkscape.h"
+ #include "extension/system.h"
+ #include "extension/print.h"
+ 
+@@ -74,6 +75,8 @@
+ 
+ using namespace std;
+ 
++extern gboolean inkscape_app_use_gui( Inkscape::Application const *app );
++
+ namespace Inkscape {
+ namespace Extension {
+ namespace Internal {
 @@ -102,6 +104,59 @@
      return;
  }
@@ -147,7 +164,16 @@ Index: src/extension/internal/ps.cpp
              osf = Inkscape::IO::fopen_utf8name(fn, "w+");
              if (!osf) {
                  fprintf(stderr, "inkscape: fopen(%s): %s\n",
-@@ -582,12 +659,23 @@
+@@ -581,6 +584,8 @@
+ unsigned int
+ PrintPS::finish(Inkscape::Extension::Print *mod)
+ {
++    gboolean use_gui = inkscape_app_use_gui(INKSCAPE);
++
+     if (!_stream) return 0;
+ 
+     if (_bitmap) {
+@@ -582,12 +659,25 @@
         {
             while((c = fgetc(_stream))!=EOF) fputc(c, _begin_stream);
         }
@@ -157,12 +183,14 @@ Index: src/extension/internal/ps.cpp
      }
  
 +#ifdef HAVE_GTK_UNIX_PRINT
-+    /* redirect output to new print dialog */
-+    fseek(_stream, 0, SEEK_SET);
-+    Glib::ustring output = _tmpfilename;
-+    unix_print_dialog(output.c_str(),"job name");
-+    unlink(output.c_str());
-+    /* end redirected new print dialog */
++    if (use_gui) {
++        /* redirect output to new print dialog */
++        fseek(_stream, 0, SEEK_SET);
++        Glib::ustring output = _tmpfilename;
++        unix_print_dialog(output.c_str(),"job name");
++        unlink(output.c_str());
++        /* end redirected new print dialog */
++    }
 +#endif
 +
      /* fixme: should really use pclose for popen'd streams */
