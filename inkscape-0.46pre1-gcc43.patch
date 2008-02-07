@@ -1,0 +1,65 @@
+The STL headers in gcc-4.3 have been cleaned up, so that the headers don't drag in
+unnecessary dependencies which aren't requested by the standard.
+This fixes build for gcc-4.3
+
+Lubomir Kundrak <lkundrak@redhat.com>
+https://bugs.launchpad.net/inkscape/+bug/190017
+
+diff -urp inkscape-0.45.1+0.46pre1.orig/src/display/nr-filter-slot.cpp inkscape-0.45.1+0.46pre1/src/display/nr-filter-slot.cpp
+--- inkscape-0.45.1+0.46pre1.orig/src/display/nr-filter-slot.cpp	2008-01-15 00:24:31.000000000 +0100
++++ inkscape-0.45.1+0.46pre1/src/display/nr-filter-slot.cpp	2008-02-07 20:53:36.000000000 +0100
+@@ -14,6 +14,7 @@
+  */
+ 
+ #include <assert.h>
++#include <cstring>
+ 
+ #include "display/nr-arena-item.h"
+ #include "display/nr-filter-types.h"
+diff -urp inkscape-0.45.1+0.46pre1.orig/src/live_effects/lpeobject-reference.cpp inkscape-0.45.1+0.46pre1/src/live_effects/lpeobject-reference.cpp
+--- inkscape-0.45.1+0.46pre1.orig/src/live_effects/lpeobject-reference.cpp	2008-01-15 00:24:20.000000000 +0100
++++ inkscape-0.45.1+0.46pre1/src/live_effects/lpeobject-reference.cpp	2008-02-07 20:53:36.000000000 +0100
+@@ -6,6 +6,8 @@
+  * Released under GNU GPL, read the file 'COPYING' for more information.
+  */
+ 
++#include <cstring>
++
+ #include "enums.h"
+ #include "live_effects/lpeobject-reference.h"
+ #include "live_effects/lpeobject.h"
+diff -urp inkscape-0.45.1+0.46pre1.orig/src/syseq.h inkscape-0.45.1+0.46pre1/src/syseq.h
+--- inkscape-0.45.1+0.46pre1.orig/src/syseq.h	2008-01-15 00:24:28.000000000 +0100
++++ inkscape-0.45.1+0.46pre1/src/syseq.h	2008-02-07 20:53:36.000000000 +0100
+@@ -15,6 +15,7 @@
+ #include <iostream>
+ #include <iomanip>
+ #include <vector>
++#include <algorithm>
+ #include "math.h"
+ 
+ namespace SysEq {
+diff -urp inkscape-0.45.1+0.46pre1.orig/src/ui/dialog/filter-effects-dialog.h inkscape-0.45.1+0.46pre1/src/ui/dialog/filter-effects-dialog.h
+--- inkscape-0.45.1+0.46pre1.orig/src/ui/dialog/filter-effects-dialog.h	2008-02-01 05:37:40.000000000 +0100
++++ inkscape-0.45.1+0.46pre1/src/ui/dialog/filter-effects-dialog.h	2008-02-07 20:53:36.000000000 +0100
+@@ -12,6 +12,8 @@
+ #ifndef INKSCAPE_UI_DIALOG_FILTER_EFFECTS_H
+ #define INKSCAPE_UI_DIALOG_FILTER_EFFECTS_H
+ 
++#include <memory>
++
+ #include <gtkmm/adjustment.h>
+ #include <gtkmm/alignment.h>
+ #include <gtkmm/box.h>
+diff -urp inkscape-0.45.1+0.46pre1.orig/src/widgets/ruler.h inkscape-0.45.1+0.46pre1/src/widgets/ruler.h
+--- inkscape-0.45.1+0.46pre1.orig/src/widgets/ruler.h	2008-02-01 05:37:36.000000000 +0100
++++ inkscape-0.45.1+0.46pre1/src/widgets/ruler.h	2008-02-07 20:53:36.000000000 +0100
+@@ -15,7 +15,7 @@
+ 
+ #include <gtk/gtkruler.h>
+ #include "sp-metric.h"
+-#include <iostream.h>
++#include <iostream>
+ #include <glib.h>
+ 
+ 
