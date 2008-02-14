@@ -1,18 +1,16 @@
-%define _with_inkboard 1
-
 Name:           inkscape
-Version:        0.45.1
-Release:        5%{?dist}
+Version:        0.45.1+0.46pre1
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.gz
-Patch0:         inkscape-0.44.1-psinput.patch
-Patch1:         inkscape-0.45-python.patch
-Patch2:         inkscape-0.45.1-gtkprint.patch
-Patch3:         inkscape-0.45.1-desktop.patch
+Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.bz2
+Patch0:         inkscape-16571-cxxinclude.patch
+Patch1:         inkscape-0.45.1-desktop.patch
+Patch2:         inkscape-0.46pre1-gcc43.patch
+Patch3:         inkscape-0.46pre1-vectors.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -20,11 +18,10 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  freetype-devel
 BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
-BuildRequires:  gtkmm24-devel
+BuildRequires:  gtkmm24-devel >= 2.8.0
 BuildRequires:  gtkspell-devel
 BuildRequires:  gnome-vfs2-devel >= 2.0
 BuildRequires:  libpng-devel >= 1.2
-BuildRequires:  libsigc++20-devel >= 2.0.12
 BuildRequires:  libxml2-devel >= 2.6.11
 BuildRequires:  libxslt-devel >= 1.0.15
 BuildRequires:  pango-devel
@@ -35,23 +32,19 @@ BuildRequires:  openssl-devel
 BuildRequires:  dos2unix
 BuildRequires:  perl-XML-Parser
 BuildRequires:  python-devel
-%if %{fedora} > 7
+BuildRequires:  poppler-devel >= 0.5.9
 BuildRequires:  popt-devel
-%else
-BuildRequires:  popt
-%endif
-# The following are needed due to gtkprint patch changing configure.ac
-BuildRequires:  autoconf automake17 intltool
-%{?_with_inkboard:BuildRequires: loudmouth-devel >= 1.0}
+BuildRequires:  loudmouth-devel >= 1.0
+BuildRequires:  boost-devel
 
 Requires:       pstoedit
 Requires:       perl(Image::Magick)
 Requires:       numpy
 Requires:       PyXML
+Requires:       python-lxml
 
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
-
 
 %description
 Inkscape is a vector-based drawing program, like CorelDraw® or Adobe
@@ -69,19 +62,16 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 %prep
 %setup -q
-%patch0 -p1 -b .psinput
-%patch1 -p1 -b .python
-%patch2 -p0 -b .gtkprint
-%patch3 -p1 -b .desktop
+%patch0 -p1 -b .cxxinclude
+%patch1 -p1 -b .desktop
+%patch2 -p1 -b .gcc43
+%patch3 -p1 -b .vectors
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix share/extensions/*.py
 
 
 %build
-intltoolize --force
-autoconf
-autoheader
 %configure                     \
 --disable-dependency-tracking  \
 --with-xinerama                \
@@ -91,14 +81,15 @@ autoheader
 --with-gnome-vfs               \
 --with-inkjar                  \
 --enable-inkboard              \
---enable-lcms
+--enable-lcms                  \
+--enable-poppler-cairo
 
 make %{?_smp_mflags}
 
 
 %install
-rm -rf ${RPM_BUILD_ROOT}
-make install DESTDIR=${RPM_BUILD_ROOT}
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 %find_lang %{name}
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 
@@ -106,12 +97,12 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/outline2svg.*
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/txt2svg.*
 
 desktop-file-install --vendor fedora --delete-original     \
-  --dir ${RPM_BUILD_ROOT}%{_datadir}/applications          \
-  ${RPM_BUILD_ROOT}/usr/share/applications/%{name}.desktop
+  --dir $RPM_BUILD_ROOT%{_datadir}/applications            \
+  $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop
 
 
 %clean
-rm -rf ${RPM_BUILD_ROOT}
+rm -rf $RPM_BUILD_ROOT
 
 
 %post
@@ -134,8 +125,24 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
-* Tue Jan  8 2008 Denis Leroy <denis@poolshark.org> - 0.45.1-5
-- Updated gtkprint patch to restore eps export
+* Wed Feb 13 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1+0.46pre1-3
+- Fix crash when adding text objects (#432220)
+
+* Thu Feb 07 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1+0.46pre1-2
+- Build with gcc-4.3
+
+* Wed Feb 06 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1+0.46pre1-1
+- 0.46 prerelease
+- Minor cosmetic changes to satisfy the QA script
+- Dependency on Boost
+- Inkboard is not optional
+- Merge from Denis Leroy's svn16571 snapshot:
+- Require specific gtkmm24-devel versions
+- enable-poppler-cairo
+- No longer BuildRequire libsigc++20-devel
+
+* Wed Dec  5 2007 Denis Leroy <denis@poolshark.org> - 0.45.1-5
+- Rebuild with new openssl
 
 * Sun Dec 02 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-4
 - Added missing dependencies for modules (#301881)
