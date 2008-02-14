@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.45.1+0.46pre1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -11,6 +11,9 @@ Patch0:         inkscape-16571-cxxinclude.patch
 Patch1:         inkscape-0.45.1-desktop.patch
 Patch2:         inkscape-0.46pre1-gcc43.patch
 Patch3:         inkscape-0.46pre1-vectors.patch
+Patch4:         inkscape-0.46pre1-ocal1.patch
+Patch5:         inkscape-0.46pre1-ocal2.patch
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -66,6 +69,8 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch1 -p1 -b .desktop
 %patch2 -p1 -b .gcc43
 %patch3 -p1 -b .vectors
+%patch4 -p1 -b .ocal1
+%patch5 -p1 -b .ocal2
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix share/extensions/*.py
@@ -125,6 +130,10 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Thu Feb 14 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1+0.46pre1-4
+- Tolerate recoverable errors in OCAL feeds
+- Fix OCAL insecure temporary file usage (#432807)
+
 * Wed Feb 13 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1+0.46pre1-3
 - Fix crash when adding text objects (#432220)
 
