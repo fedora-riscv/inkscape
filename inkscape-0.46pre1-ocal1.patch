@@ -1,0 +1,139 @@
+This solves the insecure temporary file usage for clip art thumbnails,
+however in a totally crappy way -- leaves stale files in /tmp.
+Not much worse than original though, as it was also leaving the files in place.
+
+Lubomir Kundrak <lkundrak@redhat.com>
+
+diff -urp inkscape-0.45.1+0.46pre1.orig/src/ui/dialog/ocaldialogs.cpp inkscape-0.45.1+0.46pre1/src/ui/dialog/ocaldialogs.cpp
+--- inkscape-0.45.1+0.46pre1.orig/src/ui/dialog/ocaldialogs.cpp	2008-01-15 00:24:56.000000000 +0100
++++ inkscape-0.45.1+0.46pre1/src/ui/dialog/ocaldialogs.cpp	2008-02-14 15:53:00.000000000 +0100
+@@ -14,6 +14,8 @@
+ # include <config.h>
+ #endif
+ 
++#include <stdlib.h>
++
+ #include "ocaldialogs.h"
+ #include "filedialogimpl-gtkmm.h"
+ #include "interface.h"
+@@ -260,23 +262,35 @@ FileExportToOCALPasswordDialog::change_t
+ void FileListViewText::on_cursor_changed()
+ {
+     // create file path
+-    myFilename = Glib::get_tmp_dir();
+-    myFilename.append(G_DIR_SEPARATOR_S);
+     std::vector<Gtk::TreeModel::Path> pathlist;
+     pathlist = this->get_selection()->get_selected_rows();
+     std::vector<int> posArray(1);
+     posArray = pathlist[0].get_indices();
+-    myFilename.append(get_text(posArray[0], 2));
+ 
+ #ifdef WITH_GNOME_VFS
+     gnome_vfs_init();
+     GnomeVFSHandle    *from_handle = NULL;
+-    GnomeVFSHandle    *to_handle = NULL;
++    int               to_fd = 0;
+     GnomeVFSFileSize  bytes_read;
+-    GnomeVFSFileSize  bytes_written;
++    size_t            bytes_written;
+     GnomeVFSResult    result;
+     guint8 buffer[8192];
+ 
++    // create the temp file
++    myFilename = Glib::get_tmp_dir();
++    myFilename.append(G_DIR_SEPARATOR_S);
++    myFilename.append("XXXXXX");
++
++    char tmpfn[strlen (myFilename.c_str ())+1];
++    strcpy (tmpfn, myFilename.c_str ());
++    to_fd = mkstemp (tmpfn);
++    myFilename = tmpfn;
++
++    if (to_fd == -1) {
++        sp_ui_error_dialog(_("Could not create temp file name with unique name."));
++        return;
++    }
++
+     //get file url
+     Glib::ustring fileUrl = get_text(posArray[0], 1); //http url
+ 
+@@ -290,51 +304,42 @@ void FileListViewText::on_cursor_changed
+     if (!Glib::get_charset()) //If we are not utf8
+         fileUrl = Glib::filename_to_utf8(fileUrl);
+ 
+-    // verifies if the file wasn't previously downloaded
+-    if(gnome_vfs_open(&to_handle, myFilename.c_str(), GNOME_VFS_OPEN_READ) == GNOME_VFS_ERROR_NOT_FOUND)
+-    {
+-        // open the temp file to receive
+-        result = gnome_vfs_open (&to_handle, myFilename.c_str(), GNOME_VFS_OPEN_WRITE);
+-        if (result == GNOME_VFS_ERROR_NOT_FOUND){
+-            result = gnome_vfs_create (&to_handle, myFilename.c_str(), GNOME_VFS_OPEN_WRITE, FALSE, GNOME_VFS_PERM_USER_ALL);
++    result = gnome_vfs_open (&from_handle, fileUrl.c_str(), GNOME_VFS_OPEN_READ);
++    if (result != GNOME_VFS_OK) {
++        sp_ui_error_dialog(_("Could not find the file in Open Clip Art Library."));
++        g_warning("%s", gnome_vfs_result_to_string(result));
++        return;
++    }
++
++    // copy the file
++    while (1) {
++
++        result = gnome_vfs_read (from_handle, buffer, 8192, &bytes_read);
++
++        if ((result == GNOME_VFS_ERROR_EOF) &&(!bytes_read)){
++            result = gnome_vfs_close (from_handle);
++            break;
+         }
++
+         if (result != GNOME_VFS_OK) {
+-            g_warning("Error creating temp file: %s", gnome_vfs_result_to_string(result));
++            sp_ui_error_dialog(_("Error while downloading the file."));
++            g_warning("%s", gnome_vfs_result_to_string(result));
+             return;
+         }
+-        result = gnome_vfs_open (&from_handle, fileUrl.c_str(), GNOME_VFS_OPEN_READ);
+-        if (result != GNOME_VFS_OK) {
+-            g_warning("Could not find the file in Open Clip Art Library.");
++
++        bytes_written = write (to_fd, buffer, (size_t)bytes_read);
++
++        if ((size_t)bytes_read != bytes_written){
++            sp_ui_error_dialog(_("Error while downloading the file."));
++            g_warning("Bytes read not equal to bytes written");
+             return;
+         }
+-        // copy the file
+-        while (1) {
+-            result = gnome_vfs_read (from_handle, buffer, 8192, &bytes_read);
+-            if ((result == GNOME_VFS_ERROR_EOF) &&(!bytes_read)){
+-                result = gnome_vfs_close (from_handle);
+-                result = gnome_vfs_close (to_handle);
+-                break;
+-            }
+-            if (result != GNOME_VFS_OK) {
+-                g_warning("%s", gnome_vfs_result_to_string(result));
+-                return;
+-            }
+-            result = gnome_vfs_write (to_handle, buffer, bytes_read, &bytes_written);
+-            if (result != GNOME_VFS_OK) {
+-                g_warning("%s", gnome_vfs_result_to_string(result));
+-                return;
+-            }
+-            if (bytes_read != bytes_written){
+-                g_warning("Bytes read not equal to bytes written");
+-                return;
+-            }
+-        }
+-    }
+-    else
+-    {
+-        gnome_vfs_close(to_handle);
++
+     }
++
++    close (to_fd);
+     myPreview->showImage(myFilename);
++    //unlink (myFilename.c_str ());
+     myLabel->set_text(get_text(posArray[0], 4));
+ #endif
+ }
