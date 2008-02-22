@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        0.1.pre2%{?dist}
+Release:        0.2.pre2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -9,6 +9,7 @@ URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/inkscape-0.45+0.46pre2.tar.bz2
 Patch0:         inkscape-16571-cxxinclude.patch
 Patch1:         inkscape-0.45.1-desktop.patch
+Patch2:         inkscape-0.46pre2-icons.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -63,6 +64,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %setup -q -n %{name}-0.45+0.46pre2
 %patch0 -p1 -b .cxxinclude
 %patch1 -p1 -b .desktop
+%patch2 -p1 -b .icons
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix -k -q share/extensions/*.py
@@ -122,6 +124,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Fri Feb 22 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-0.2.pre2
+- Panel icon sizes
+
 * Sun Feb 17 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-0.1.pre2
 - 0.46pre2
 - Dropping upstreamed patches
