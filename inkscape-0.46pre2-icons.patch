@@ -1,0 +1,548 @@
+Small icons (r17417 and r17378).
+Default to small icons and Sans font.
+
+diff -urp inkscape-0.45+0.46pre2.orig/src/dialogs/eek-preview.cpp inkscape-0.45+0.46pre2/src/dialogs/eek-preview.cpp
+--- inkscape-0.45+0.46pre2.orig/src/dialogs/eek-preview.cpp	2008-02-17 05:24:01.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/dialogs/eek-preview.cpp	2008-02-22 08:53:42.000000000 +0100
+@@ -44,6 +44,9 @@
+ 
+ #define FOCUS_PROP_ID 1
+ 
++/* Keep in sycn with last value in eek-preview.h */
++#define PREVIEW_SIZE_LAST PREVIEW_SIZE_HUGE
++#define PREVIEW_SIZE_NEXTFREE (PREVIEW_SIZE_HUGE + 1)
+ 
+ 
+ static void eek_preview_class_init( EekPreviewClass *klass );
+@@ -90,9 +93,41 @@ GType eek_preview_get_type(void)
+     return preview_type;
+ }
+ 
+-GtkWidget* eek_preview_area_new(void)
++static gboolean setupDone = FALSE;
++static GtkRequisition sizeThings[PREVIEW_SIZE_NEXTFREE];
++
++void eek_preview_set_size_mappings( guint count, GtkIconSize const* sizes )
+ {
+-    return NULL;
++    gint width = 0;
++    gint height = 0;
++    gint smallest = 512;
++    gint largest = 0;
++    guint i = 0;
++    guint delta = 0;
++
++    for ( i = 0; i < count; ++i ) {
++        gboolean worked = gtk_icon_size_lookup( sizes[i], &width, &height );
++        if ( worked ) {
++            if ( width < smallest ) {
++                smallest = width;
++            }
++            if ( width > largest ) {
++                largest = width;
++            }
++        }
++    }
++
++    smallest = (smallest * 3) / 4;
++
++    delta = largest - smallest;
++
++    for ( i = 0; i < G_N_ELEMENTS(sizeThings); ++i ) {
++        guint val = smallest + ( (i * delta) / (G_N_ELEMENTS(sizeThings) - 1) );
++        sizeThings[i].width = val;
++        sizeThings[i].height = val;
++    }
++
++    setupDone = TRUE;
+ }
+ 
+ static void eek_preview_size_request( GtkWidget* widget, GtkRequisition* req )
+@@ -100,14 +135,25 @@ static void eek_preview_size_request( Gt
+     gint width = 0;
+     gint height = 0;
+     EekPreview* preview = EEK_PREVIEW(widget);
+-    gboolean worked = gtk_icon_size_lookup( preview->_size, &width, &height );
+-    if ( !worked ) {
+-        width = 16;
+-        height = 16;
++
++    if ( !setupDone ) {
++        GtkIconSize sizes[] = {
++            GTK_ICON_SIZE_MENU,
++            GTK_ICON_SIZE_SMALL_TOOLBAR,
++            GTK_ICON_SIZE_LARGE_TOOLBAR,
++            GTK_ICON_SIZE_BUTTON,
++            GTK_ICON_SIZE_DIALOG
++        };
++        eek_preview_set_size_mappings( G_N_ELEMENTS(sizes), sizes );
+     }
++
++    width = sizeThings[preview->_size].width;
++    height = sizeThings[preview->_size].height;
++
+     if ( preview->_view == VIEW_TYPE_LIST ) {
+         width *= 3;
+     }
++
+     req->width = width;
+     req->height = height;
+ }
+@@ -536,10 +582,14 @@ void eek_preview_set_focus_on_click( Eek
+     }
+ }
+ 
+-void eek_preview_set_details( EekPreview* preview, PreviewStyle prevstyle, ViewType view, GtkIconSize size )
++void eek_preview_set_details( EekPreview* preview, PreviewStyle prevstyle, ViewType view, PreviewSize size )
+ {
+     preview->_prevstyle = prevstyle;
+     preview->_view = view;
++
++    if ( size > PREVIEW_SIZE_LAST ) {
++        size = PREVIEW_SIZE_LAST;
++    }
+     preview->_size = size;
+ 
+     gtk_widget_queue_draw(GTK_WIDGET(preview));
+@@ -573,7 +623,7 @@ static void eek_preview_init( EekPreview
+ 
+     preview->_prevstyle = PREVIEW_STYLE_ICON;
+     preview->_view = VIEW_TYPE_LIST;
+-    preview->_size = GTK_ICON_SIZE_BUTTON;
++    preview->_size = PREVIEW_SIZE_SMALL;
+ 
+ /*
+     GdkColor color = {0};
+diff -urp inkscape-0.45+0.46pre2.orig/src/dialogs/eek-preview.h inkscape-0.45+0.46pre2/src/dialogs/eek-preview.h
+--- inkscape-0.45+0.46pre2.orig/src/dialogs/eek-preview.h	2008-02-17 05:24:00.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/dialogs/eek-preview.h	2008-02-22 08:53:42.000000000 +0100
+@@ -20,7 +20,7 @@
+  *
+  * The Initial Developer of the Original Code is
+  * Jon A. Cruz.
+- * Portions created by the Initial Developer are Copyright (C) 2005
++ * Portions created by the Initial Developer are Copyright (C) 2005-2008
+  * the Initial Developer. All Rights Reserved.
+  *
+  * Contributor(s):
+@@ -68,6 +68,15 @@ typedef enum {
+ } ViewType;
+ 
+ typedef enum {
++    PREVIEW_SIZE_TINY = 0,
++    PREVIEW_SIZE_SMALL,
++    PREVIEW_SIZE_MEDIUM,
++    PREVIEW_SIZE_BIG,
++    PREVIEW_SIZE_BIGGER,
++    PREVIEW_SIZE_HUGE
++} PreviewSize;
++
++typedef enum {
+   PREVIEW_LINK_NONE = 0,
+   PREVIEW_LINK_IN = 1,
+   PREVIEW_LINK_OUT = 2,
+@@ -93,7 +102,7 @@ struct _EekPreview
+ 
+     PreviewStyle _prevstyle;
+     ViewType _view;
+-    GtkIconSize _size;
++    PreviewSize _size;
+     guint _linked;
+ };
+ 
+@@ -108,7 +117,7 @@ struct _EekPreviewClass
+ GType      eek_preview_get_type(void) G_GNUC_CONST;
+ GtkWidget* eek_preview_new(void);
+ 
+-void eek_preview_set_details( EekPreview* splat, PreviewStyle prevstyle, ViewType view, GtkIconSize size );
++void eek_preview_set_details( EekPreview* splat, PreviewStyle prevstyle, ViewType view, PreviewSize size );
+ void eek_preview_set_color( EekPreview* splat, int r, int g, int b );
+ 
+ void eek_preview_set_linked( EekPreview* splat, LinkType link );
+@@ -117,6 +126,8 @@ LinkType eek_preview_get_linked( EekPrev
+ gboolean eek_preview_get_focus_on_click( EekPreview* preview );
+ void eek_preview_set_focus_on_click( EekPreview* preview, gboolean focus_on_click );
+ 
++void eek_preview_set_size_mappings( guint count, GtkIconSize const* sizes );
++
+ G_END_DECLS
+ 
+ 
+diff -urp inkscape-0.45+0.46pre2.orig/src/dialogs/swatches.cpp inkscape-0.45+0.46pre2/src/dialogs/swatches.cpp
+--- inkscape-0.45+0.46pre2.orig/src/dialogs/swatches.cpp	2008-02-17 05:24:00.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/dialogs/swatches.cpp	2008-02-22 08:53:42.000000000 +0100
+@@ -503,7 +503,7 @@ void ColorItem::_colorDefChanged(void* d
+ }
+ 
+ 
+-Gtk::Widget* ColorItem::getPreview(PreviewStyle style, ViewType view, Inkscape::IconSize size)
++Gtk::Widget* ColorItem::getPreview(PreviewStyle style, ViewType view, ::PreviewSize size)
+ {
+     Gtk::Widget* widget = 0;
+     if ( style == PREVIEW_STYLE_BLURB ) {
+@@ -511,10 +511,10 @@ Gtk::Widget* ColorItem::getPreview(Previ
+         lbl->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
+         widget = lbl;
+     } else {
+-        Glib::ustring blank("          ");
+-        if ( size == Inkscape::ICON_SIZE_MENU || size == Inkscape::ICON_SIZE_DECORATION ) {
+-            blank = " ";
+-        }
++//         Glib::ustring blank("          ");
++//         if ( size == Inkscape::ICON_SIZE_MENU || size == Inkscape::ICON_SIZE_DECORATION ) {
++//             blank = " ";
++//         }
+ 
+         GtkWidget* eekWidget = eek_preview_new();
+         EekPreview * preview = EEK_PREVIEW(eekWidget);
+@@ -522,7 +522,7 @@ Gtk::Widget* ColorItem::getPreview(Previ
+ 
+         eek_preview_set_color( preview, (def.getR() << 8) | def.getR(), (def.getG() << 8) | def.getG(), (def.getB() << 8) | def.getB());
+ 
+-        eek_preview_set_details( preview, (::PreviewStyle)style, (::ViewType)view, (::GtkIconSize)size );
++        eek_preview_set_details( preview, (::PreviewStyle)style, (::ViewType)view, (::PreviewSize)size );
+         eek_preview_set_linked( preview, (LinkType)((_linkSrc ? PREVIEW_LINK_IN:0)
+                                                     | (_listeners.empty() ? 0:PREVIEW_LINK_OUT)
+                                                     | (_isLive ? PREVIEW_LINK_OTHER:0)) );
+diff -urp inkscape-0.45+0.46pre2.orig/src/dialogs/swatches.h inkscape-0.45+0.46pre2/src/dialogs/swatches.h
+--- inkscape-0.45+0.46pre2.orig/src/dialogs/swatches.h	2008-02-17 05:24:01.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/dialogs/swatches.h	2008-02-22 08:53:42.000000000 +0100
+@@ -43,7 +43,7 @@ public:
+     virtual ColorItem &operator=(ColorItem const &other);
+     virtual Gtk::Widget* getPreview(PreviewStyle style,
+                                     ViewType view,
+-                                    Inkscape::IconSize size);
++                                    ::PreviewSize size);
+     void buttonClicked(bool secondary = false);
+ 
+     ColorDef def;
+diff -urp inkscape-0.45+0.46pre2.orig/src/inkscape-stock.cpp inkscape-0.45+0.46pre2/src/inkscape-stock.cpp
+--- inkscape-0.45+0.46pre2.orig/src/inkscape-stock.cpp	2008-02-17 05:23:47.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/inkscape-stock.cpp	2008-02-22 08:53:42.000000000 +0100
+@@ -23,6 +23,8 @@
+ 
+ #include "gtk/gtkiconfactory.h"
+ 
++#include "widgets/icon.h"
++#include "ui/widget/panel.h"
+ 
+ void
+ inkscape_gtk_stock_init() {
+@@ -31,6 +33,12 @@ inkscape_gtk_stock_init() {
+     if (stock_initialized)
+         return;
+ 
++    // Ensure icon internal sizes get set up:
++    sp_icon_get_phys_size(GTK_ICON_SIZE_MENU);
++
++    // And also prepare the swatches.
++    Inkscape::UI::Widget::Panel::prep();
++
+     GtkIconFactory *icon_factory = gtk_icon_factory_new();
+     /* todo: Should we simply remove this file now that we're no longer
+      * calling gtk_icon_factory_add here? */
+diff -urp inkscape-0.45+0.46pre2.orig/src/preferences-skeleton.h inkscape-0.45+0.46pre2/src/preferences-skeleton.h
+--- inkscape-0.45+0.46pre2.orig/src/preferences-skeleton.h	2008-02-17 05:24:14.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/preferences-skeleton.h	2008-02-22 09:34:12.000000000 +0100
+@@ -73,7 +73,7 @@ static char const preferences_skeleton[]
+ "                       tracebackground=\"0\" usepressure=\"1\" usetilt=\"0\" keep_selected=\"1\"/>\n"
+ "    <eventcontext id=\"text\"  usecurrent=\"0\" gradientdrag=\"1\"\n" 
+ "                       font_sample=\"AaBbCcIiPpQq12369$\342\202\254\302\242?.;/()\"\n"
+-"                  style=\"fill:black;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;font-style:normal;font-weight:normal;font-size:40px;\" selcue=\"1\"/>\n"
++"                  style=\"fill:black;fill-opacity:1;stroke:none;font-family:Sans;font-style:normal;font-weight:normal;font-size:40px;-inkscape-font-specification:Sans;font-stretch:normal;font-variant:normal\" selcue=\"1\"/>\n"
+ "    <eventcontext id=\"nodes\" selcue=\"1\" gradientdrag=\"1\" show_handles=\"1\" sculpting_profile=\"1\" />\n"
+ "    <eventcontext id=\"tweak\" selcue=\"0\" gradientdrag=\"0\" show_handles=\"0\" width=\"0.2\" force=\"0.2\" fidelity=\"0.5\" usepressure=\"1\" style=\"fill:red;stroke:none;\" usecurrent=\"0\"/>\n"
+ "    <eventcontext id=\"gradient\" selcue=\"1\"/>\n"
+@@ -308,7 +308,7 @@ static char const preferences_skeleton[]
+ "    <group\n"
+ "       id=\"tools\"\n"
+ "       icononly=\"1\"\n"
+-"       small=\"0\" />\n"
++"       small=\"1\" />\n"
+ "  </group>\n"
+ "\n"
+ "  <group\n"
+diff -urp inkscape-0.45+0.46pre2.orig/src/ui/previewable.h inkscape-0.45+0.46pre2/src/ui/previewable.h
+--- inkscape-0.45+0.46pre2.orig/src/ui/previewable.h	2008-02-17 05:24:49.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/ui/previewable.h	2008-02-22 08:53:42.000000000 +0100
+@@ -14,7 +14,7 @@
+ 
+ 
+ #include <gtkmm/widget.h>
+-#include "icon-size.h"
++#include "../dialogs/eek-preview.h"
+ 
+ namespace Inkscape {
+ namespace UI {
+@@ -40,7 +40,7 @@ class Previewable
+ public:
+ // TODO need to add some nice parameters
+     virtual ~Previewable() {}
+-    virtual Gtk::Widget* getPreview( PreviewStyle style, ViewType view, Inkscape::IconSize size ) = 0;
++    virtual Gtk::Widget* getPreview( PreviewStyle style, ViewType view, ::PreviewSize size ) = 0;
+ };
+ 
+ 
+diff -urp inkscape-0.45+0.46pre2.orig/src/ui/previewfillable.h inkscape-0.45+0.46pre2/src/ui/previewfillable.h
+--- inkscape-0.45+0.46pre2.orig/src/ui/previewfillable.h	2008-02-17 05:24:52.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/ui/previewfillable.h	2008-02-22 08:53:42.000000000 +0100
+@@ -14,7 +14,7 @@
+ 
+ 
+ #include "previewable.h"
+-#include "../icon-size.h"
++#include "../dialogs/eek-preview.h"
+ 
+ namespace Inkscape {
+ namespace UI {
+@@ -27,9 +27,9 @@ public:
+     virtual void addPreview( Previewable* preview ) = 0;
+     virtual void freezeUpdates() = 0;
+     virtual void thawUpdates() = 0;
+-    virtual void setStyle( Inkscape::IconSize size, ViewType type) = 0;
++    virtual void setStyle( ::PreviewSize size, ViewType type) = 0;
+     virtual void setOrientation( Gtk::AnchorType how ) = 0;
+-    virtual Inkscape::IconSize getPreviewSize() const = 0;
++    virtual ::PreviewSize getPreviewSize() const = 0;
+     virtual ViewType getPreviewType() const = 0;
+     virtual void setWrap( bool b ) = 0;
+     virtual bool getWrap() const = 0;
+diff -urp inkscape-0.45+0.46pre2.orig/src/ui/previewholder.cpp inkscape-0.45+0.46pre2/src/ui/previewholder.cpp
+--- inkscape-0.45+0.46pre2.orig/src/ui/previewholder.cpp	2008-02-17 05:24:52.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/ui/previewholder.cpp	2008-02-22 08:53:42.000000000 +0100
+@@ -35,7 +35,7 @@ PreviewHolder::PreviewHolder() :
+     _prefCols(0),
+     _updatesFrozen(false),
+     _anchor(Gtk::ANCHOR_CENTER),
+-    _baseSize(Inkscape::ICON_SIZE_MENU),
++    _baseSize(PREVIEW_SIZE_SMALL),
+     _view(VIEW_TYPE_LIST),
+     _wrap(false)
+ {
+@@ -124,7 +124,7 @@ void PreviewHolder::thawUpdates()
+     rebuildUI();
+ }
+ 
+-void PreviewHolder::setStyle( Inkscape::IconSize size, ViewType view )
++void PreviewHolder::setStyle( ::PreviewSize size, ViewType view )
+ {
+     if ( size != _baseSize || view != _view ) {
+         _baseSize = size;
+@@ -238,7 +238,7 @@ void PreviewHolder::calcGridSize( const 
+             width = w2;
+         }
+     } else {
+-        width = (_baseSize == Inkscape::ICON_SIZE_MENU || _baseSize == Inkscape::ICON_SIZE_DECORATION) ? COLUMNS_FOR_SMALL : COLUMNS_FOR_LARGE;
++        width = (_baseSize == PREVIEW_SIZE_SMALL || _baseSize == PREVIEW_SIZE_TINY) ? COLUMNS_FOR_SMALL : COLUMNS_FOR_LARGE;
+         if ( _prefCols > 0 ) {
+             width = _prefCols;
+         }
+diff -urp inkscape-0.45+0.46pre2.orig/src/ui/previewholder.h inkscape-0.45+0.46pre2/src/ui/previewholder.h
+--- inkscape-0.45+0.46pre2.orig/src/ui/previewholder.h	2008-02-17 05:24:52.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/ui/previewholder.h	2008-02-22 08:53:42.000000000 +0100
+@@ -17,7 +17,7 @@
+ #include <gtkmm/bin.h>
+ #include <gtkmm/table.h>
+ #include "previewfillable.h"
+-#include "../icon-size.h"
++#include "../dialogs/eek-preview.h"
+ 
+ namespace Inkscape {
+ namespace UI {
+@@ -32,11 +32,11 @@ public:
+     virtual void addPreview( Previewable* preview );
+     virtual void freezeUpdates();
+     virtual void thawUpdates();
+-    virtual void setStyle( Inkscape::IconSize size, ViewType view );
++    virtual void setStyle( ::PreviewSize size, ViewType view );
+     virtual void setOrientation( Gtk::AnchorType how );
+     virtual int getColumnPref() const { return _prefCols; }
+     virtual void setColumnPref( int cols );
+-    virtual Inkscape::IconSize getPreviewSize() const { return _baseSize; }
++    virtual ::PreviewSize getPreviewSize() const { return _baseSize; }
+     virtual ViewType getPreviewType() const { return _view; }
+     virtual void setWrap( bool b );
+     virtual bool getWrap() const { return _wrap; }
+@@ -56,7 +56,7 @@ private:
+     int _prefCols;
+     bool _updatesFrozen;
+     Gtk::AnchorType _anchor;
+-    Inkscape::IconSize _baseSize;
++    ::PreviewSize _baseSize;
+     ViewType _view;
+     bool _wrap;
+ };
+diff -urp inkscape-0.45+0.46pre2.orig/src/ui/widget/panel.cpp inkscape-0.45+0.46pre2/src/ui/widget/panel.cpp
+--- inkscape-0.45+0.46pre2.orig/src/ui/widget/panel.cpp	2008-02-17 05:24:46.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/ui/widget/panel.cpp	2008-02-22 08:53:42.000000000 +0100
+@@ -27,6 +27,7 @@
+ #include "prefs-utils.h"
+ #include "desktop-handles.h"
+ #include "inkscape.h"
++#include "dialogs/eek-preview.h"
+ 
+ namespace Inkscape {
+ namespace UI {
+@@ -37,6 +38,19 @@ static const int PANEL_SETTING_MODE = 1;
+ static const int PANEL_SETTING_WRAP = 2;
+ static const int PANEL_SETTING_NEXTFREE = 3;
+ 
++
++void Panel::prep() {
++    GtkIconSize sizes[] = {
++        static_cast<GtkIconSize>(Inkscape::ICON_SIZE_DECORATION),
++        GTK_ICON_SIZE_MENU,
++        GTK_ICON_SIZE_SMALL_TOOLBAR,
++        GTK_ICON_SIZE_BUTTON,
++        GTK_ICON_SIZE_DND, // Not used by options, but included to make the last size larger
++        GTK_ICON_SIZE_DIALOG
++    };
++    eek_preview_set_size_mappings( G_N_ELEMENTS(sizes), sizes );
++}
++
+ /**
+  *    Construct a Panel
+  */
+@@ -79,7 +93,7 @@ void Panel::_init()
+ 
+     guint panel_size = 0;
+     if (_prefs_path) {
+-        panel_size = prefs_get_int_attribute_limited( _prefs_path, "panel_size", 1, 0, 10 );
++        panel_size = prefs_get_int_attribute_limited( _prefs_path, "panel_size", 1, 0, static_cast<long long>(PREVIEW_SIZE_HUGE) );
+     }
+ 
+     guint panel_mode = 0;
+@@ -257,7 +271,7 @@ void Panel::restorePanelPrefs()
+ {
+     guint panel_size = 0;
+     if (_prefs_path) {
+-        panel_size = prefs_get_int_attribute_limited(_prefs_path, "panel_size", 1, 0, 10);
++        panel_size = prefs_get_int_attribute_limited(_prefs_path, "panel_size", 1, 0, static_cast<long long>(PREVIEW_SIZE_HUGE));
+     }
+     guint panel_mode = 0;
+     if (_prefs_path) {
+@@ -297,27 +311,27 @@ void Panel::_bounceCall(int i, int j)
+             switch (j) {
+             case 0:
+             {
+-                _fillable->setStyle(Inkscape::ICON_SIZE_DECORATION, curr_type);
++                _fillable->setStyle(::PREVIEW_SIZE_TINY, curr_type);
+             }
+             break;
+             case 1:
+             {
+-                _fillable->setStyle(Inkscape::ICON_SIZE_MENU, curr_type);
++                _fillable->setStyle(::PREVIEW_SIZE_SMALL, curr_type);
+             }
+             break;
+             case 2:
+             {
+-                _fillable->setStyle(Inkscape::ICON_SIZE_SMALL_TOOLBAR, curr_type);
++                _fillable->setStyle(::PREVIEW_SIZE_MEDIUM, curr_type);
+             }
+             break;
+             case 3:
+             {
+-                _fillable->setStyle(Inkscape::ICON_SIZE_BUTTON, curr_type);
++                _fillable->setStyle(::PREVIEW_SIZE_BIG, curr_type);
+             }
+             break;
+             case 4:
+             {
+-                _fillable->setStyle(Inkscape::ICON_SIZE_DIALOG, curr_type);
++                _fillable->setStyle(::PREVIEW_SIZE_HUGE, curr_type);
+             }
+             break;
+             default:
+@@ -330,7 +344,7 @@ void Panel::_bounceCall(int i, int j)
+             prefs_set_int_attribute (_prefs_path, "panel_mode", j);
+         }
+         if (_fillable) {
+-            Inkscape::IconSize curr_size = _fillable->getPreviewSize();
++            ::PreviewSize curr_size = _fillable->getPreviewSize();
+             switch (j) {
+             case 0:
+             {
+diff -urp inkscape-0.45+0.46pre2.orig/src/ui/widget/panel.h inkscape-0.45+0.46pre2/src/ui/widget/panel.h
+--- inkscape-0.45+0.46pre2.orig/src/ui/widget/panel.h	2008-02-17 05:24:48.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/ui/widget/panel.h	2008-02-22 08:53:42.000000000 +0100
+@@ -38,8 +38,10 @@ namespace Widget {
+ class Panel : public Gtk::VBox {
+ 
+ public:
++    static void prep();
++
+     virtual ~Panel();
+-    Panel(Glib::ustring const &label = "", gchar const *prefs_path = 0, 
++    Panel(Glib::ustring const &label = "", gchar const *prefs_path = 0,
+           int verb_num = 0, Glib::ustring const &apply_label = "",
+           bool menu_desired = false);
+ 
+@@ -57,7 +59,7 @@ public:
+ 
+     virtual void setDesktop(SPDesktop *desktop);
+     SPDesktop *getDesktop() { return _desktop; }
+-    
++
+     /** Signal accessors */
+     virtual sigc::signal<void, int> &signalResponse();
+     virtual sigc::signal<void> &signalPresent();
+diff -urp inkscape-0.45+0.46pre2.orig/src/widgets/icon.cpp inkscape-0.45+0.46pre2/src/widgets/icon.cpp
+--- inkscape-0.45+0.46pre2.orig/src/widgets/icon.cpp	2008-02-17 05:24:21.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/widgets/icon.cpp	2008-02-22 08:53:42.000000000 +0100
+@@ -59,8 +59,6 @@ static guchar *sp_icon_image_load_svg(gc
+ 
+ static guchar *sp_icon_image_load(SPIcon *icon, gchar const *name);
+ 
+-static int sp_icon_get_phys_size(int size);
+-
+ static void sp_icon_overlay_pixels( guchar *px, int width, int height, int stride,
+                                     unsigned r, unsigned g, unsigned b );
+ 
+@@ -397,7 +395,7 @@ static void injectCustomSize()
+ 
+ }
+ 
+-static int sp_icon_get_phys_size(int size)
++int sp_icon_get_phys_size(int size)
+ {
+     static bool init = false;
+     static int lastSys[Inkscape::ICON_SIZE_DECORATION + 1];
+@@ -542,7 +540,7 @@ static void sp_icon_paint(SPIcon *icon, 
+ }
+ 
+ static guchar *
+-sp_icon_image_load_pixmap(gchar const *name, unsigned lsize, unsigned psize)
++sp_icon_image_load_pixmap(gchar const *name, unsigned /*lsize*/, unsigned psize)
+ {
+     gchar *path;
+     guchar *px;
+@@ -762,7 +760,7 @@ static guchar *get_cached_pixels(Glib::u
+ }
+ 
+ static guchar *load_svg_pixels(gchar const *name,
+-                               unsigned lsize, unsigned psize)
++                               unsigned /*lsize*/, unsigned psize)
+ {
+     SPDocument *doc = NULL;
+     NRArenaItem *root = NULL;
+@@ -949,7 +947,7 @@ static void addPreRender( Inkscape::Icon
+     pendingRenders.push(preRenderItem(lsize, name));
+ }
+ 
+-gboolean icon_prerender_task(gpointer data) {
++gboolean icon_prerender_task(gpointer /*data*/) {
+     if (!pendingRenders.empty()) {
+         preRenderItem single=pendingRenders.front();
+         pendingRenders.pop();
+diff -urp inkscape-0.45+0.46pre2.orig/src/widgets/icon.h inkscape-0.45+0.46pre2/src/widgets/icon.h
+--- inkscape-0.45+0.46pre2.orig/src/widgets/icon.h	2008-02-17 05:24:22.000000000 +0100
++++ inkscape-0.45+0.46pre2/src/widgets/icon.h	2008-02-22 08:53:42.000000000 +0100
+@@ -48,5 +48,7 @@ GtkWidget *sp_icon_new( Inkscape::IconSi
+ Gtk::Widget *sp_icon_get_icon( const Glib::ustring &oid, Inkscape::IconSize size = Inkscape::ICON_SIZE_BUTTON );
+ 
+ void sp_icon_fetch_pixbuf( SPIcon *icon );
++int sp_icon_get_phys_size(int size);
++
+ 
+ #endif // SEEN_SP_ICON_H
