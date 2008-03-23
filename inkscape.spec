@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        0.2.pre3%{?dist}
+Release:        0.3.pre3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -124,6 +124,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Sun Mar 23 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-0.3.pre3
+- Rebuild for newer Poppler
+
 * Wed Mar 12 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-0.2.pre3
 - Probably last prerelease?
 
