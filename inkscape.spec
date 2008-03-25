@@ -1,12 +1,12 @@
 Name:           inkscape
 Version:        0.46
-Release:        0.3.pre3%{?dist}
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/inkscape-0.45+0.46pre3.tar.bz2
+Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 Patch0:         inkscape-16571-cxxinclude.patch
 Patch1:         inkscape-0.45.1-desktop.patch
 Patch2:         inkscape-0.46pre2-icons.patch
@@ -61,7 +61,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 
 %prep
-%setup -q -n %{name}-0.45+0.46pre3
+%setup -q
 %patch0 -p1 -b .cxxinclude
 %patch1 -p1 -b .desktop
 %patch2 -p1 -b .icons
@@ -124,6 +124,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Tue Mar 25 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-1
+- 0.46 released
+
 * Sun Mar 23 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-0.3.pre3
 - Rebuild for newer Poppler
 
