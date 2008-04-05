@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -10,6 +10,7 @@ Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.
 Patch0:         inkscape-16571-cxxinclude.patch
 Patch1:         inkscape-0.45.1-desktop.patch
 Patch2:         inkscape-0.46pre2-icons.patch
+Patch3:         inkscape-0.46-fixlatex.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -65,6 +66,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch0 -p1 -b .cxxinclude
 %patch1 -p1 -b .desktop
 %patch2 -p1 -b .icons
+%patch3 -p1 -b .fixlatex
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix -k -q share/extensions/*.py
@@ -124,6 +126,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Sat Apr 05 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-2
+- Fix LaTeX rendering, #441017
+
 * Tue Mar 25 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-1
 - 0.46 released
 
