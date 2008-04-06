@@ -1,0 +1,12 @@
+--- inkscape-16571/src/Makefile.in.orig	2007-11-29 13:38:13.000000000 +0100
++++ inkscape-16571/src/Makefile.in	2007-11-29 13:38:29.000000000 +0100
+@@ -317,7 +317,8 @@
+ 	$(POPPLER_GLIB_CFLAGS)	\
+ 	-DPOTRACE=\"potrace\"	\
+ 	$(INKSCAPE_CFLAGS) \
+-	-I$(top_srcdir)/cxxtest
++	-I$(top_srcdir)/cxxtest \
++	-I$(top_srcdir)/src/extension/script
+ 
+ 
+ @PLATFORM_WIN32_TRUE@win32_sources = winmain.cpp registrytool.cpp registrytool.h

@@ -1,17 +1,17 @@
-
 Name:           inkscape
-Version:        0.45.1
+Version:        0.46
 Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/inkscape-%{version}.tar.gz
-Patch0:         inkscape-0.44.1-psinput.patch
-Patch1:         inkscape-0.45-python.patch
-Patch2:         inkscape-0.45.1-gtkprint.patch
-Patch3:         inkscape-0.45.1-desktop.patch
+Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+Patch0:         inkscape-16571-cxxinclude.patch
+Patch1:         inkscape-0.45.1-desktop.patch
+Patch2:         inkscape-0.46pre2-icons.patch
+Patch3:         inkscape-0.46-fixlatex.patch
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  atk-devel
@@ -19,32 +19,33 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  freetype-devel
 BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
-BuildRequires:  gtkmm24-devel
+BuildRequires:  gtkmm24-devel >= 2.8.0
 BuildRequires:  gtkspell-devel
 BuildRequires:  gnome-vfs2-devel >= 2.0
 BuildRequires:  libpng-devel >= 1.2
-BuildRequires:  libsigc++20-devel >= 2.0.12
 BuildRequires:  libxml2-devel >= 2.6.11
 BuildRequires:  libxslt-devel >= 1.0.15
 BuildRequires:  pango-devel
 BuildRequires:  pkgconfig
 BuildRequires:  lcms-devel >= 1.13
 BuildRequires:  cairo-devel
+BuildRequires:  openssl-devel
 BuildRequires:  dos2unix
 BuildRequires:  perl-XML-Parser
 BuildRequires:  python-devel
-BuildRequires:  popt
-# The following are needed due to gtkprint patch changing configure.ac
-BuildRequires:  autoconf automake17 intltool
+BuildRequires:  poppler-devel >= 0.5.9
+BuildRequires:  popt-devel
+BuildRequires:  loudmouth-devel >= 1.0
+BuildRequires:  boost-devel
 
 Requires:       pstoedit
 Requires:       perl(Image::Magick)
 Requires:       numpy
 Requires:       PyXML
+Requires:       python-lxml
 
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
-
 
 %description
 Inkscape is a vector-based drawing program, like CorelDraw® or Adobe
@@ -62,19 +63,16 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 %prep
 %setup -q
-%patch0 -p1 -b .psinput
-%patch1 -p1 -b .python
-%patch2 -p0 -b .gtkprint
-%patch3 -p1 -b .desktop
+%patch0 -p1 -b .cxxinclude
+%patch1 -p1 -b .desktop
+%patch2 -p1 -b .icons
+%patch3 -p1 -b .fixlatex
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
-dos2unix share/extensions/*.py
+dos2unix -k -q share/extensions/*.py
 
 
 %build
-intltoolize --force
-autoconf
-autoheader
 %configure                     \
 --disable-dependency-tracking  \
 --with-xinerama                \
@@ -84,14 +82,15 @@ autoheader
 --with-gnome-vfs               \
 --with-inkjar                  \
 --enable-inkboard              \
---enable-lcms
+--enable-lcms                  \
+--enable-poppler-cairo
 
 make %{?_smp_mflags}
 
 
 %install
-rm -rf ${RPM_BUILD_ROOT}
-make install DESTDIR=${RPM_BUILD_ROOT}
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 %find_lang %{name}
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 
@@ -99,12 +98,12 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/outline2svg.*
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/txt2svg.*
 
 desktop-file-install --vendor fedora --delete-original     \
-  --dir ${RPM_BUILD_ROOT}%{_datadir}/applications          \
-  ${RPM_BUILD_ROOT}/usr/share/applications/%{name}.desktop
+  --dir $RPM_BUILD_ROOT%{_datadir}/applications            \
+  $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop
 
 
 %clean
-rm -rf ${RPM_BUILD_ROOT}
+rm -rf $RPM_BUILD_ROOT
 
 
 %post
@@ -127,10 +126,64 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
-* Wed Dec 12 2007  <denis@localhost.localdomain> - 0.45.1-2
-- Merging with F-8 spec
+* Sat Apr 05 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-2
+- Fix LaTeX rendering, #441017
 
-* Tue Mar 20 2007 Denis Leroy <denis@poolshark.org> - 0.45.1-1
+* Tue Mar 25 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-1
+- 0.46 released
+
+* Sun Mar 23 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-0.3.pre3
+- Rebuild for newer Poppler
+
+* Wed Mar 12 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-0.2.pre3
+- Probably last prerelease?
+
+* Fri Feb 22 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-0.2.pre2
+- Panel icon sizes
+
+* Sun Feb 17 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-0.1.pre2
+- 0.46pre2
+- Dropping upstreamed patches
+
+* Sat Feb 16 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1+0.46pre1-5
+- Attempt to fix the font selector (#432892)
+
+* Thu Feb 14 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1+0.46pre1-4
+- Tolerate recoverable errors in OCAL feeds
+- Fix OCAL insecure temporary file usage (#432807)
+
+* Wed Feb 13 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1+0.46pre1-3
+- Fix crash when adding text objects (#432220)
+
+* Thu Feb 07 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1+0.46pre1-2
+- Build with gcc-4.3
+
+* Wed Feb 06 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1+0.46pre1-1
+- 0.46 prerelease
+- Minor cosmetic changes to satisfy the QA script
+- Dependency on Boost
+- Inkboard is not optional
+- Merge from Denis Leroy's svn16571 snapshot:
+- Require specific gtkmm24-devel versions
+- enable-poppler-cairo
+- No longer BuildRequire libsigc++20-devel
+
+* Wed Dec  5 2007 Denis Leroy <denis@poolshark.org> - 0.45.1-5
+- Rebuild with new openssl
+
+* Sun Dec 02 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-4
+- Added missing dependencies for modules (#301881)
+
+* Sun Dec 02 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-3
+- Satisfy desktop-file-validate, so that Rawhide build won't break
+
+* Sat Dec 01 2007 Lubomir Kundrak <lkundrak@redhat.com> - 0.45.1-2
+- Use GTK print dialog
+- Added compressed SVG association (#245413)
+- popt headers went into popt-devel, post Fedora 7
+- Fix macro usage in changelog
+
+* Wed Mar 21 2007 Denis Leroy <denis@poolshark.org> - 0.45.1-1
 - Update to bugfix release 0.45.1
 - Added R to ImageMagick-perl (#231563)
 
@@ -141,7 +194,7 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 - LaTex patch integrated upstreamed, removed
 - Some rpmlint cleanups
 
-* Fri Dec  1 2006 Denis Leroy <denis@poolshark.org> - 0.44.1-2
+* Wed Dec  6 2006 Denis Leroy <denis@poolshark.org> - 0.44.1-2
 - Added patches to fix LaTex import (#217699)
 - Added patch to base postscript import on pstoedit plot-svg
 
@@ -255,9 +308,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.6
 - fix typo in provides
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.5
-- add %{release} to provides perl(SpSVG) = %{epoch}:%{version}:%{release} only
+- add %%{release} to provides perl(SpSVG) = %%{epoch}:%%{version}:%%{release} only
 * Tue Mar 16 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.4
-- add %{release} to provides
+- add %%{release} to provides
 * Sun Mar 14 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.3
 - add arch dependent flags
 * Thu Mar 11 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.37.0.fdr.2
