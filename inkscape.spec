@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        2%{?dist}
+Release:        2%{?dist}.1
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -33,10 +33,17 @@ BuildRequires:  openssl-devel
 BuildRequires:  dos2unix
 BuildRequires:  perl-XML-Parser
 BuildRequires:  python-devel
-BuildRequires:  poppler-devel >= 0.5.9
-BuildRequires:  popt-devel
-BuildRequires:  loudmouth-devel >= 1.0
+BuildRequires:  poppler-devel
+BuildRequires:  loudmouth-devel
 BuildRequires:  boost-devel
+
+# Use popt-devel if Fedora 8, RHEL 6, newer or unknown,
+# rely on popt otherwise
+%if %{!?fedora:8}%{?fedora} < 8 || %{!?rhel:6}%{?rhel} < 6
+BuildRequires:  popt
+%else
+BuildRequires:  popt-devel
+%endif
 
 Requires:       pstoedit
 Requires:       perl(Image::Magick)
@@ -126,6 +133,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Fri Apr 11 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-2.1
+- More buildrequires more flexible, so that this builds on RHEL
+
 * Sat Apr 05 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-2
 - Fix LaTeX rendering, #441017
 
