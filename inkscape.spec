@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        2%{?dist}.1
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -11,6 +11,7 @@ Patch0:         inkscape-16571-cxxinclude.patch
 Patch1:         inkscape-0.45.1-desktop.patch
 Patch2:         inkscape-0.46pre2-icons.patch
 Patch3:         inkscape-0.46-fixlatex.patch
+Patch4:         inkscape-0.46-gtkopen.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -74,6 +75,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch1 -p1 -b .desktop
 %patch2 -p1 -b .icons
 %patch3 -p1 -b .fixlatex
+%patch4 -p0 -b .gtkopen
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix -k -q share/extensions/*.py
@@ -133,6 +135,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Thu Jun 26 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.46-3
+- Remove useless old hack, that triggered an assert after gtkfilechooser switched to gio
+
 * Fri Apr 11 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-2.1
 - More buildrequires more flexible, so that this builds on RHEL
 
