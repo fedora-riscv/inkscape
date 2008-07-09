@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -12,6 +12,8 @@ Patch1:         inkscape-0.45.1-desktop.patch
 Patch2:         inkscape-0.46pre2-icons.patch
 Patch3:         inkscape-0.46-fixlatex.patch
 Patch4:         inkscape-0.46-gtkopen.patch
+Patch5:         inkscape-0.46-gtk2.13.3.patch
+Patch6:         inkscape-0.46-poppler-0.8.3.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -76,6 +78,8 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch2 -p1 -b .icons
 %patch3 -p1 -b .fixlatex
 %patch4 -p0 -b .gtkopen
+%patch5 -p1 -b .gtk2.13.3
+%patch6 -p1 -b .poppler-0.8.3
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix -k -q share/extensions/*.py
@@ -135,6 +139,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Wed Jul 09 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.46-4
+- Fix compile issues with newer gtk and poppler
+
 * Thu Jun 26 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.46-3
 - Remove useless old hack, that triggered an assert after gtkfilechooser switched to gio
 
