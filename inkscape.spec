@@ -1,17 +1,16 @@
 Name:           inkscape
-Version:        0.46
-Release:        4%{?dist}
+Version:        0.47
+Release:        0.1.20080705svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+#Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+Source0:        %{name}-0.46+devel.tar.gz
 Patch0:         inkscape-16571-cxxinclude.patch
-Patch1:         inkscape-0.45.1-desktop.patch
-Patch2:         inkscape-0.46pre2-icons.patch
-Patch3:         inkscape-0.46-fixlatex.patch
-Patch4:         inkscape-0.46-gtkopen.patch
+Patch1:         inkscape-0.46+devel-desktop.patch
+Patch2:         inkscape-0.46+devel-icons.patch
 Patch5:         inkscape-0.46-gtk2.13.3.patch
 Patch6:         inkscape-0.46-poppler-0.8.3.patch
 
@@ -39,6 +38,7 @@ BuildRequires:  python-devel
 BuildRequires:  poppler-devel
 BuildRequires:  loudmouth-devel
 BuildRequires:  boost-devel
+BuildRequires:  gsl-devel
 
 # Use popt-devel if Fedora 8, RHEL 6, newer or unknown,
 # rely on popt otherwise
@@ -72,12 +72,10 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 
 
 %prep
-%setup -q
+%setup -q -n %{name}-0.46+devel
 %patch0 -p1 -b .cxxinclude
 %patch1 -p1 -b .desktop
 %patch2 -p1 -b .icons
-%patch3 -p1 -b .fixlatex
-%patch4 -p0 -b .gtkopen
 %patch5 -p1 -b .gtk2.13.3
 %patch6 -p1 -b .poppler-0.8.3
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
@@ -139,6 +137,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Wed Jul 09 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.1.20080705svn
+- Subversion snapshot
+
 * Wed Jul 09 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.46-4
 - Fix compile issues with newer gtk and poppler
 

@@ -1,0 +1,12 @@
+inkscape.desktop: error: file contains multiple assignments of key "Name"
+
+--- inkscape-0.46+devel/inkscape.desktop.in.orig	2008-07-05 20:16:01.000000000 +0200
++++ inkscape-0.46+devel/inkscape.desktop.in	2008-07-05 20:17:06.000000000 +0200
+@@ -1,7 +1,6 @@
+ [Desktop Entry]
+ Version=1.0
+ Encoding=UTF-8
+-Name=No name
+ _Name=Inkscape Vector Graphics Editor
+ _Comment=Create and edit Scalable Vector Graphics images
+ Type=Application
