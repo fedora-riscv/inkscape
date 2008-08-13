@@ -1,19 +1,20 @@
 Name:           inkscape
 Version:        0.46
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Patch0:         inkscape-16571-cxxinclude.patch
-Patch1:         inkscape-0.45.1-desktop.patch
+Patch0:         inkscape-0.46-cxxinclude.patch
+Patch1:         inkscape-0.46-desktop.patch
 Patch2:         inkscape-0.46pre2-icons.patch
 Patch3:         inkscape-0.46-fixlatex.patch
 Patch4:         inkscape-0.46-gtkopen.patch
 Patch5:         inkscape-0.46-gtk2.13.3.patch
 Patch6:         inkscape-0.46-poppler-0.8.3.patch
+Patch7:         inkscape-0.46-uniconv.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -53,6 +54,7 @@ Requires:       perl(Image::Magick)
 Requires:       numpy
 Requires:       PyXML
 Requires:       python-lxml
+Requires:       uniconvertor
 
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -80,6 +82,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch4 -p0 -b .gtkopen
 %patch5 -p1 -b .gtk2.13.3
 %patch6 -p1 -b .poppler-0.8.3
+%patch7 -p1 -b .uniconv
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix -k -q share/extensions/*.py
@@ -139,6 +142,10 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Wed Aug 13 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.46-5
+- Rediff patches for zero fuzz
+- Use uniconvertor to handle CDR and WMF (#458845)
+
 * Wed Jul 09 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.46-4
 - Fix compile issues with newer gtk and poppler
 
