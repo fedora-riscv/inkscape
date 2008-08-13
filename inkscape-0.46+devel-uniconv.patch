@@ -1,0 +1,113 @@
+See https://bugs.launchpad.net/inkscape/+bug/226383
+https://bugzilla.redhat.com/show_bug.cgi?id=458845
+
+Lubomir Rintel <lkundrak@v3.sk>
+
+diff -up inkscape-0.46+devel/inkscape.desktop.in.uniconv inkscape-0.46+devel/inkscape.desktop.in
+--- inkscape-0.46+devel/inkscape.desktop.in.uniconv	2008-08-14 00:04:02.000000000 +0200
++++ inkscape-0.46+devel/inkscape.desktop.in	2008-08-14 00:10:28.000000000 +0200
+@@ -5,7 +5,7 @@ _Name=Inkscape Vector Graphics Editor
+ _Comment=Create and edit Scalable Vector Graphics images
+ Type=Application
+ Categories=Graphics;VectorGraphics;GTK;
+-MimeType=image/svg+xml;image/svg+xml-compressed;
++MimeType=image/svg+xml;image/svg+xml-compressed;image/cgm;image/x-wmf;application/vnd.corel-draw;application/x-xccx;application/x-xcgm;application/x-xcdt;application/x-xsk1;application/x-xcmx;image/x-xcdr;
+ FilePattern=inkscape;
+ Exec=inkscape %F
+ TryExec=inkscape
+diff -up inkscape-0.46+devel/share/extensions/ccx_input.inx.uniconv inkscape-0.46+devel/share/extensions/ccx_input.inx
+--- inkscape-0.46+devel/share/extensions/ccx_input.inx.uniconv	2008-08-14 00:15:10.000000000 +0200
++++ inkscape-0.46+devel/share/extensions/ccx_input.inx	2008-08-14 00:14:20.000000000 +0200
+@@ -2,7 +2,7 @@
+ <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+     <_name>Corel DRAW Compressed Exchange files input</_name>
+     <id>org.inkscape.input.ccx</id>
+-    <dependency type="executable" location="path">uniconv</dependency>
++    <dependency type="executable" location="path">uniconvertor</dependency>
+     <dependency type="executable" location="extensions">uniconv-ext.py</dependency>
+     <input>
+         <extension>.ccx</extension>
+diff -up inkscape-0.46+devel/share/extensions/cdr_input.inx.uniconv inkscape-0.46+devel/share/extensions/cdr_input.inx
+--- inkscape-0.46+devel/share/extensions/cdr_input.inx.uniconv	2008-08-14 00:15:10.000000000 +0200
++++ inkscape-0.46+devel/share/extensions/cdr_input.inx	2008-08-14 00:14:20.000000000 +0200
+@@ -2,7 +2,7 @@
+ <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+     <_name>Corel DRAW Input</_name>
+     <id>org.inkscape.input.cdr</id>
+-    <dependency type="executable" location="path">uniconv</dependency>
++    <dependency type="executable" location="path">uniconvertor</dependency>
+     <dependency type="executable" location="extensions">uniconv-ext.py</dependency>
+     <input>
+         <extension>.cdr</extension>
+diff -up inkscape-0.46+devel/share/extensions/cdt_input.inx.uniconv inkscape-0.46+devel/share/extensions/cdt_input.inx
+--- inkscape-0.46+devel/share/extensions/cdt_input.inx.uniconv	2008-08-14 00:15:10.000000000 +0200
++++ inkscape-0.46+devel/share/extensions/cdt_input.inx	2008-08-14 00:14:20.000000000 +0200
+@@ -2,7 +2,7 @@
+ <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+     <_name>Corel DRAW templates input</_name>
+     <id>org.inkscape.input.cdt</id>
+-    <dependency type="executable" location="path">uniconv</dependency>
++    <dependency type="executable" location="path">uniconvertor</dependency>
+     <dependency type="executable" location="extensions">uniconv-ext.py</dependency>
+     <input>
+         <extension>.cdt</extension>
+diff -up inkscape-0.46+devel/share/extensions/cgm_input.inx.uniconv inkscape-0.46+devel/share/extensions/cgm_input.inx
+--- inkscape-0.46+devel/share/extensions/cgm_input.inx.uniconv	2008-08-14 00:15:10.000000000 +0200
++++ inkscape-0.46+devel/share/extensions/cgm_input.inx	2008-08-14 00:14:20.000000000 +0200
+@@ -2,7 +2,7 @@
+ <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+     <_name>Computer Graphics Metafile files input</_name>
+     <id>org.inkscape.input.cgm</id>
+-    <dependency type="executable" location="path">uniconv</dependency>
++    <dependency type="executable" location="path">uniconvertor</dependency>
+     <dependency type="executable" location="extensions">uniconv-ext.py</dependency>
+     <input>
+         <extension>.cgm</extension>
+diff -up inkscape-0.46+devel/share/extensions/cmx_input.inx.uniconv inkscape-0.46+devel/share/extensions/cmx_input.inx
+--- inkscape-0.46+devel/share/extensions/cmx_input.inx.uniconv	2008-08-14 00:15:10.000000000 +0200
++++ inkscape-0.46+devel/share/extensions/cmx_input.inx	2008-08-14 00:14:20.000000000 +0200
+@@ -2,7 +2,7 @@
+ <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+     <_name>Corel DRAW Presentation Exchange files input</_name>
+     <id>org.inkscape.input.cmx</id>
+-    <dependency type="executable" location="path">uniconv</dependency>
++    <dependency type="executable" location="path">uniconvertor</dependency>
+     <dependency type="executable" location="extensions">uniconv-ext.py</dependency>
+     <input>
+         <extension>.cmx</extension>
+diff -up inkscape-0.46+devel/share/extensions/sk1_input.inx.uniconv inkscape-0.46+devel/share/extensions/sk1_input.inx
+--- inkscape-0.46+devel/share/extensions/sk1_input.inx.uniconv	2008-08-14 00:15:10.000000000 +0200
++++ inkscape-0.46+devel/share/extensions/sk1_input.inx	2008-08-14 00:14:20.000000000 +0200
+@@ -2,7 +2,7 @@
+ <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+     <_name>sK1 vector graphics files input</_name>
+     <id>org.inkscape.input.sk1</id>
+-    <dependency type="executable" location="path">uniconv</dependency>
++    <dependency type="executable" location="path">uniconvertor</dependency>
+     <dependency type="executable" location="extensions">uniconv-ext.py</dependency>
+     <input>
+         <extension>.sk1</extension>
+diff -up inkscape-0.46+devel/share/extensions/uniconv-ext.py.uniconv inkscape-0.46+devel/share/extensions/uniconv-ext.py
+--- inkscape-0.46+devel/share/extensions/uniconv-ext.py.uniconv	2008-08-14 00:01:21.000000000 +0200
++++ inkscape-0.46+devel/share/extensions/uniconv-ext.py	2008-08-14 00:01:31.000000000 +0200
+@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fi
+ import sys
+ from run_command import run
+ 
+-run('uniconv "%s" "%%s"' % sys.argv[1].replace("%","%%"), "UniConvertor")
++run('uniconvertor "%s" "%%s"' % sys.argv[1].replace("%","%%"), "UniConvertor")
+ 
+ 
+ # vim: expandtab shiftwidth=4 tabstop=8 softtabstop=4 encoding=utf-8 textwidth=99
+diff -up inkscape-0.46+devel/share/extensions/wmf_input.inx.uniconv inkscape-0.46+devel/share/extensions/wmf_input.inx
+--- inkscape-0.46+devel/share/extensions/wmf_input.inx.uniconv	2008-08-14 00:15:10.000000000 +0200
++++ inkscape-0.46+devel/share/extensions/wmf_input.inx	2008-08-14 00:14:20.000000000 +0200
+@@ -2,7 +2,7 @@
+ <inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+     <_name>Windows Metafile Input</_name>
+     <id>org.inkscape.input.wmf</id>
+-    <dependency type="executable" location="path">uniconv</dependency>
++    <dependency type="executable" location="path">uniconvertor</dependency>
+     <dependency type="executable" location="extensions">uniconv-ext.py</dependency>
+     <input>
+         <extension>.wmf</extension>
