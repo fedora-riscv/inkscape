@@ -1,0 +1,13 @@
+diff -up inkscape-0.46/src/Makefile.in.cxxinclude inkscape-0.46/src/Makefile.in
+--- inkscape-0.46/src/Makefile.in.cxxinclude	2008-03-11 05:47:10.000000000 +0100
++++ inkscape-0.46/src/Makefile.in	2008-08-13 23:26:52.000000000 +0200
+@@ -1487,7 +1487,8 @@ INCLUDES = \
+ 	$(POPPLER_GLIB_CFLAGS)	\
+ 	-DPOTRACE=\"potrace\"	\
+ 	$(INKSCAPE_CFLAGS) \
+-	-I$(top_srcdir)/cxxtest
++	-I$(top_srcdir)/cxxtest \
++	-I$(top_srcdir)/src/extension/script
+ 
+ @PLATFORM_WIN32_TRUE@win32_sources = winmain.cpp registrytool.cpp registrytool.h
+ @PLATFORM_WIN32_TRUE@win32ldflags = -lcomdlg32
