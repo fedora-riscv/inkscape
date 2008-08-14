@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.2.20080705svn%{?dist}
+Release:        0.2.20080814svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -12,7 +12,6 @@ Patch0:         inkscape-0.46-cxxinclude.patch
 Patch1:         inkscape-0.46+devel-desktop.patch
 Patch2:         inkscape-0.46+devel-icons.patch
 Patch5:         inkscape-0.46-gtk2.13.3.patch
-Patch6:         inkscape-0.46-poppler-0.8.3.patch
 Patch7:         inkscape-0.46+devel-uniconv.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -79,7 +78,6 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch1 -p1 -b .desktop
 %patch2 -p1 -b .icons
 %patch5 -p1 -b .gtk2.13.3
-%patch6 -p1 -b .poppler-0.8.3
 %patch7 -p1 -b .uniconv
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
@@ -140,6 +138,10 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Thu Aug 14 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.3.20080814svn
+- Update to today's SVN snapshot
+- Drop the upstreamed poppler patch
+
 * Wed Aug 13 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.2.20080705svn
 - Rediff patches for zero fuzz
 - Use uniconvertor to handle CDR and WMF (#458845)
