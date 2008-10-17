@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -15,6 +15,7 @@ Patch4:         inkscape-0.46-gtkopen.patch
 Patch5:         inkscape-0.46-gtk2.13.3.patch
 Patch6:         inkscape-0.46-poppler-0.8.3.patch
 Patch7:         inkscape-0.46-uniconv.patch
+Patch8:         inkscape-0.46-colors.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -83,6 +84,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch5 -p1 -b .gtk2.13.3
 %patch6 -p1 -b .poppler-0.8.3
 %patch7 -p1 -b .uniconv
+%patch8 -p2 -b .colors
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix -k -q share/extensions/*.py
@@ -142,6 +144,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Fri Oct 17 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.46-6
+- Fix color sliders with recent GTK (#467431)
+
 * Wed Aug 13 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.46-5
 - Rediff patches for zero fuzz
 - Use uniconvertor to handle CDR and WMF (#458845)
