@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -144,6 +144,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Fri Nov 28 2008 Caolán McNamara <caolanm@redhat.com> - 0.46-7
+- rebuild for dependencies
+
 * Fri Oct 17 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.46-6
 - Fix color sliders with recent GTK (#467431)
 
