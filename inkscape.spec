@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -144,6 +144,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Sun Nov 30 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.46-8
+- Rebuild for Python 2.6
+
 * Fri Nov 28 2008 Caolán McNamara <caolanm@redhat.com> - 0.46-7
 - rebuild for dependencies
 
