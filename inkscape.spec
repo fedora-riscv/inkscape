@@ -1,18 +1,14 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.2.20080814svn%{?dist}
+Release:        0.2.20090105svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Source0:        %{name}-0.46+devel.tar.gz
-Patch0:         inkscape-0.46-cxxinclude.patch
-Patch1:         inkscape-0.46+devel-desktop.patch
-Patch2:         inkscape-0.46+devel-icons.patch
-Patch5:         inkscape-0.46-gtk2.13.3.patch
-Patch7:         inkscape-0.46+devel-uniconv.patch
+Source0:        %{name}.tar.gz
+Patch0:         inkscape-0.46+devel-uniconv.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -31,27 +27,30 @@ BuildRequires:  pango-devel
 BuildRequires:  pkgconfig
 BuildRequires:  lcms-devel >= 1.13
 BuildRequires:  cairo-devel
-BuildRequires:  openssl-devel
 BuildRequires:  dos2unix
-BuildRequires:  perl-XML-Parser
 BuildRequires:  python-devel
 BuildRequires:  poppler-devel
 BuildRequires:  loudmouth-devel
 BuildRequires:  boost-devel
 BuildRequires:  gsl-devel
-
-# Use popt-devel if Fedora 8, RHEL 6, newer or unknown,
-# rely on popt otherwise
-%if %{!?fedora:8}%{?fedora} < 8 || %{!?rhel:6}%{?rhel} < 6
-BuildRequires:  popt
-%else
+BuildRequires:  libwpg-devel
 BuildRequires:  popt-devel
-%endif
+BuildRequires:  ImageMagick-c++-devel
+BuildRequires:  perl(XML::Parser)
+BuildRequires:  perl(ExtUtils::Embed)
 
+# Incompatible license
+BuildConflicts: openssl-devel
+
+Requires:       dia
 Requires:       pstoedit
+Requires:       ghostscript
 Requires:       perl(Image::Magick)
+Requires:       tex(latex)
+Requires:       tex(dvips)
+Requires:       transfig
+Requires:       gimp
 Requires:       numpy
-Requires:       PyXML
 Requires:       python-lxml
 Requires:       uniconvertor
 
@@ -59,43 +58,43 @@ Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
 
 %description
-Inkscape is a vector-based drawing program, like CorelDraw® or Adobe
-Illustrator® from the proprietary software world, and Sketch or Karbon14 from
-the free software world. It is free software, distributed under the terms of
-the Gnu General Public License, Version 2.
+Inkscape is a vector graphics editor, with capabilities similar to
+Illustrator, CorelDraw, or Xara X, using the W3C standard Scalable Vector
+Graphics (SVG) file format.  It is therefore a very useful tool for web
+designers and as an interchange format for desktop publishing.
 
-Inkscape uses W3C SVG as its native file format. It is therefore a very useful
-tool for web designers and as an interchange format for desktop publishing.
-
-It has a relatively modern display engine, giving you finely antialiased
-display, alpha transparencies, vector fonts and so on. Inkscape is written in
-C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
+Inkscape supports many advanced SVG features (markers, clones, alpha
+blending, etc.) and great care is taken in designing a streamlined
+interface. It is very easy to edit nodes, perform complex path operations,
+trace bitmaps and much more.
 
 
 %prep
-%setup -q -n %{name}-0.46+devel
-%patch0 -p1 -b .cxxinclude
-%patch1 -p1 -b .desktop
-%patch2 -p1 -b .icons
-%patch5 -p1 -b .gtk2.13.3
-%patch7 -p1 -b .uniconv
-find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
-find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
+%setup -q -n %{name}
+%patch0 -p1 -b .uniconv
+
+# https://bugs.launchpad.net/inkscape/+bug/314381
+# A couple of files have executable bits set,
+# despite not being executable
+(find . \( -name '*.cpp' -o -name '*.h' \) -perm +111
+	find share/extensions -name '*.py' -perm +111
+) |xargs chmod -x
+
+# Fix end of line encodings
 dos2unix -k -q share/extensions/*.py
 
 
 %build
-%configure                     \
---disable-dependency-tracking  \
---with-xinerama                \
---enable-static=no             \
---with-python                  \
---with-perl                    \
---with-gnome-vfs               \
---with-inkjar                  \
---enable-inkboard              \
---enable-lcms                  \
---enable-poppler-cairo
+%configure                      \
+        --with-python           \
+        --with-perl             \
+        --with-gnome-vfs        \
+        --with-xft              \
+        --enable-inkboard       \
+        --enable-lcms           \
+        --enable-poppler-cairo  \
+        --disable-dependency-tracking
+
 
 make %{?_smp_mflags}
 
@@ -103,15 +102,16 @@ make %{?_smp_mflags}
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-%find_lang %{name}
 find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 
-rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/outline2svg.*
-rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/txt2svg.*
+desktop-file-install --vendor fedora --delete-original  \
+        --dir $RPM_BUILD_ROOT%{_datadir}/applications   \
+        $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop
 
-desktop-file-install --vendor fedora --delete-original     \
-  --dir $RPM_BUILD_ROOT%{_datadir}/applications            \
-  $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop
+# No skencil yet
+$RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/sk2svg.sh
+
+%find_lang %{name}
 
 
 %clean
@@ -131,13 +131,21 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 %doc AUTHORS COPYING ChangeLog NEWS README
 %doc %{_mandir}/man1/*
 %{_bindir}/*
-%{_datadir}/%{name}/
+%{_datadir}/%{name}
 %{_datadir}/applications/*.desktop
 %{_datadir}/pixmaps/*
 %{_mandir}/fr/man1/*
 
 
 %changelog
+* Tue Jan 06 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.3.20090105svn
+- Update to newer SVN
+- Drop upstreamed patched
+- Enable WordPerfect Graphics support
+- Enable embedded Perl scripting
+- Enable Imagemagick support
+- Disable OpenSSL due to licensing issues
+
 * Thu Aug 14 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.3.20080814svn
 - Update to today's SVN snapshot
 - Drop the upstreamed poppler patch
