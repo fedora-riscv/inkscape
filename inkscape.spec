@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        7%{?dist}
+Release:        6%{?dist}.1
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -86,6 +86,7 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch6 -p1 -b .poppler-0.8.3
 %patch7 -p1 -b .uniconv
 %patch8 -p2 -b .colors
+%patch9 -p2 -b .bitmap-fonts
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix -k -q share/extensions/*.py
@@ -145,7 +146,7 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
-* Tue Jan 13 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.46-7
+* Tue Jan 13 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.46-6.1
 - Fix crash with bitmap font (#477158)
 
 * Fri Oct 17 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.46-6
