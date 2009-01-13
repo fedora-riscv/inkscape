@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -16,6 +16,7 @@ Patch5:         inkscape-0.46-gtk2.13.3.patch
 Patch6:         inkscape-0.46-poppler-0.8.3.patch
 Patch7:         inkscape-0.46-uniconv.patch
 Patch8:         inkscape-0.46-colors.patch
+Patch9:         inkscape-0.46-bitmap-fonts.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -144,12 +145,15 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Tue Jan 13 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.46-9
+- Fix crash with bitmap font (#477158)
+
 * Sun Nov 30 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.46-8
 - Rebuild for Python 2.6
 
 * Fri Nov 28 2008 Caolán McNamara <caolanm@redhat.com> - 0.46-7
 - rebuild for dependencies
-
+ 
 * Fri Oct 17 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.46-6
 - Fix color sliders with recent GTK (#467431)
 
