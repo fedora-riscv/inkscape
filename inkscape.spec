@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -146,6 +146,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Sat Jan 17 2009 Tomas Mraz <tmraz@redhat.com> - 0.46-10
+- rebuild with new openssl
+
 * Tue Jan 13 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.46-9
 - Fix crash with bitmap font (#477158)
 
