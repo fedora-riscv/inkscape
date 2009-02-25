@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        2%{?dist}.1
+Release:        2%{?dist}.2
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -11,6 +11,10 @@ Patch0:         inkscape-16571-cxxinclude.patch
 Patch1:         inkscape-0.45.1-desktop.patch
 Patch2:         inkscape-0.46pre2-icons.patch
 Patch3:         inkscape-0.46-fixlatex.patch
+Patch4:		inkscape-0.46-perl-5.10-bindings2.patch
+Patch5:		inkscape-0.46-perl-5.10-bindings3.patch
+Patch6:		inkscape-0.46-perl-5.10.patch
+Patch7:		inkscape-0.46-poppler-0.8.3.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -33,7 +37,7 @@ BuildRequires:  openssl-devel
 BuildRequires:  dos2unix
 BuildRequires:  perl-XML-Parser
 BuildRequires:  python-devel
-BuildRequires:  poppler-devel
+BuildRequires:  poppler-devel >= 0.8.3
 BuildRequires:  loudmouth-devel
 BuildRequires:  boost-devel
 
@@ -74,12 +78,20 @@ C and C++, using the Gtk+ toolkit and optionally some Gnome libraries.
 %patch1 -p1 -b .desktop
 %patch2 -p1 -b .icons
 %patch3 -p1 -b .fixlatex
+%patch4 -p1 -b .perl-5.10-bindings2
+%patch5 -p1 -b .perl-5.10-bindings3
+%patch6 -p1 -b .perl-5.10
+%patch7 -p1 -b .poppler-0.8.3
+
 find -type f -regex '.*\.\(cpp\|h\)' -perm +111 -exec chmod -x {} ';'
 find share/extensions/ -type f -regex '.*\.py' -perm +111 -exec chmod -x {} ';'
 dos2unix -k -q share/extensions/*.py
 
 
 %build
+%ifarch alpha
+CXXFLAGS="$CXXFLAGS -Wl,--no-relax"
+%endif
 %configure                     \
 --disable-dependency-tracking  \
 --with-xinerama                \
@@ -133,6 +145,12 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Tue Feb 24 2009 Oliver Falk <oliver@linux-kernel.at>	- 0.46-2.2
+- Fix build with newer poppler
+- Add BR poppler >= 0.8.3, so our patch will work
+- Fix build with newer perl
+- Add -Wl,--no-relax on alpha, else we get relocation errors from LD
+
 * Fri Apr 11 2008 Lubomir Kundrak <lkundrak@redhat.com> - 0.46-2.1
 - More buildrequires more flexible, so that this builds on RHEL
 
