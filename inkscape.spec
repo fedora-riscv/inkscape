@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.46
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -146,6 +146,9 @@ update-desktop-database %{_datadir}/applications > /dev/null 2>&1 || :
 
 
 %changelog
+* Tue Feb 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.46-11
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
 * Sat Jan 17 2009 Tomas Mraz <tmraz@redhat.com> - 0.46-10
 - rebuild with new openssl
 
