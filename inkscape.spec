@@ -214,7 +214,7 @@ touch --no-create %{_datadir}/icons/hicolor
 * Fri Feb 27 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.4.20090227svn
 - Enable the test suite
 
-* Thu Feb 27 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.3.20090227svn
+* Fri Feb 27 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.3.20090227svn
 - Past midnight! :)
 - More recent snapshot, our gcc44 fixes now upstream
 - One more gcc44 fix, it even compiles now
@@ -245,7 +245,6 @@ touch --no-create %{_datadir}/icons/hicolor
 
 * Sun Nov 30 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.46-8
 - Rebuild for Python 2.6
->>>>>>> 1.63
 
 * Wed Aug 13 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.2.20080705svn
 - Rediff patches for zero fuzz
