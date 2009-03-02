@@ -1,0 +1,53 @@
+Be able to autogen with older automake, that doesn't correctly compile
+assembly language source files.
+
+Lubomir Rintel <lkundrak@v3.sk>
+
+Index: src/Makefile.am
+===================================================================
+--- src/Makefile.am	(revision 20789)
++++ src/Makefile.am	(working copy)
+@@ -282,3 +282,8 @@
+ 
+ distclean-local:
+ 	rm -f cxxtests.xml cxxtests.log
++
++# Work around old Automake bug (fixed in 1.10)
++CCASCOMPILE ?= $(CPPASCOMPILE)
++.S.o:
++	$(CCASCOMPILE) -c -o $@ $<
+Index: autogen.sh
+===================================================================
+--- autogen.sh	(revision 20789)
++++ autogen.sh	(working copy)
+@@ -15,7 +15,7 @@
+ FILE=inkscape.spec.in
+ 
+ AUTOCONF_REQUIRED_VERSION=2.52
+-AUTOMAKE_REQUIRED_VERSION=1.10
++AUTOMAKE_REQUIRED_VERSION=1.9.6
+ GLIB_REQUIRED_VERSION=2.0.0
+ INTLTOOL_REQUIRED_VERSION=0.17
+ 
+@@ -86,9 +86,9 @@
+ 
+ echo -n "checking for automake >= $AUTOMAKE_REQUIRED_VERSION ... "
+ # Prefer earlier versions just so that the earliest supported version gets test coverage by developers.
+-if (automake-1.10 --version) < /dev/null > /dev/null 2>&1; then
+-   AUTOMAKE=automake-1.10
+-   ACLOCAL=aclocal-1.10
++if (automake-$AUTOMAKE_REQUIRED_VERSION --version) < /dev/null > /dev/null 2>&1; then
++   AUTOMAKE=automake-$AUTOMAKE_REQUIRED_VERSION
++   ACLOCAL=aclocal-$AUTOMAKE_REQUIRED_VERSION
+ elif (automake --version) < /dev/null > /dev/null 2>&1; then
+    # Leave unversioned automake for a last resort: it may be a version earlier
+    # than what we require.
+@@ -98,7 +98,7 @@
+    ACLOCAL=aclocal
+ else
+     echo
+-    echo "  You must have automake 1.10 or newer installed to compile $PROJECT."
++    echo "  You must have automake $AUTOMAKE_REQUIRED_VERSION or newer installed to compile $PROJECT."
+     DIE=1
+ fi
+ if test x$AUTOMAKE != x; then
