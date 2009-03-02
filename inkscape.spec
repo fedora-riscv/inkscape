@@ -206,22 +206,22 @@ touch --no-create %{_datadir}/icons/hicolor
 
 
 %changelog
-* Tue Mar 01 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.4.20090301svn
+* Mon Mar 02 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.4.20090301svn
 - Bump to later SVN snapshot to fix inkscape/+bug/331864
 - Fix a startup crash when compiled with GCC 4.4
 - It even runs now! :)
 
-* Tue Feb 27 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.4.20090227svn
+* Fri Feb 27 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.4.20090227svn
 - Enable the test suite
 
-* Tue Feb 27 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.3.20090227svn
+* Thu Feb 27 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.3.20090227svn
 - Past midnight! :)
 - More recent snapshot, our gcc44 fixes now upstream
 - One more gcc44 fix, it even compiles now
 - We install icons now, update icon cache
 - Disable inkboard, for it won't currently compile
 
-* Tue Feb 26 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.3.20090226svn
+* Thu Feb 26 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.3.20090226svn
 - Later snapshot
 - Compile with GCC 4.4
 
