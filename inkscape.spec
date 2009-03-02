@@ -237,15 +237,6 @@ touch --no-create %{_datadir}/icons/hicolor
 - Update to today's SVN snapshot
 - Drop the upstreamed poppler patch
 
-* Sat Jan 17 2009 Tomas Mraz <tmraz@redhat.com> - 0.46-10
-- rebuild with new openssl
-
-* Tue Jan 13 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.46-9
-- Fix crash with bitmap font (#477158)
-
-* Sun Nov 30 2008 Ignacio Vazquez-Abrams <ivazqueznet+rpm@gmail.com> - 0.46-8
-- Rebuild for Python 2.6
-
 * Wed Aug 13 2008 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.2.20080705svn
 - Rediff patches for zero fuzz
 - Use uniconvertor to handle CDR and WMF (#458845)
