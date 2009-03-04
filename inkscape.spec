@@ -215,6 +215,7 @@ touch --no-create %{_datadir}/icons/hicolor
 %dir %{_datadir}/inkscape
 %{_datadir}/inkscape/clipart
 %{_datadir}/inkscape/extensions
+%{_datadir}/inkscape/filters
 %{_datadir}/inkscape/fonts
 %{_datadir}/inkscape/gradients
 %{_datadir}/inkscape/icons
