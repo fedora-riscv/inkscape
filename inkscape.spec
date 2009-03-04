@@ -4,7 +4,7 @@
 
 Name:           inkscape
 Version:        0.47
-Release:        0.4.20090301svn%{?dist}
+Release:        0.5.20090301svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -116,6 +116,24 @@ interface. It is very easy to edit nodes, perform complex path operations,
 trace bitmaps and much more.
 
 
+%package view
+Summary:        Viewing program for SVG files
+Group:          Applications/Productivity
+
+%description view
+Viewer for files in W3C standard Scalable Vector Graphics (SVG) file
+format.
+
+
+%package docs
+Summary:        Documentation for Inkscape
+Group:          Documentation
+
+%description docs
+Tutorial and examples for Inkscape, a graphics editor for vector
+graphics in W3C standard Scalable Vector Graphics (SVG) file format.
+
+
 %prep
 %setup -q -n %{name}
 %patch0 -p1 -b .uniconv
@@ -193,10 +211,20 @@ touch --no-create %{_datadir}/icons/hicolor
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING ChangeLog NEWS README
 %{_bindir}/inkscape
-%{_bindir}/inkview
-%{_datadir}/inkscape
+%dir %{_datadir}/inkscape
+%{_datadir}/inkscape/clipart
+%{_datadir}/inkscape/extensions
+%{_datadir}/inkscape/fonts
+%{_datadir}/inkscape/gradients
+%{_datadir}/inkscape/icons
+%{_datadir}/inkscape/keys
+%{_datadir}/inkscape/markers
+%{_datadir}/inkscape/palettes
+%{_datadir}/inkscape/patterns
+%{_datadir}/inkscape/screens
+%{_datadir}/inkscape/templates
+%{_datadir}/inkscape/ui
 %{_datadir}/applications/fedora-inkscape.desktop
 %{_datadir}/icons/hicolor/scalable/apps/inkscape.svg
 %{_datadir}/pixmaps/inkscape.png
@@ -205,7 +233,24 @@ touch --no-create %{_datadir}/icons/hicolor
 %{_mandir}/fr/man1/inkscape.1*
 
 
+%files view
+%defattr(-,root,root,-)
+%dir %{_datadir}/inkscape
+%{_datadir}/inkscape/tutorials
+%{_datadir}/inkscape/examples
+%doc AUTHORS COPYING ChangeLog NEWS README
+
+
+%files docs
+%defattr(-,root,root,-)
+%{_bindir}/inkview
+%doc AUTHORS COPYING ChangeLog NEWS README
+
+
 %changelog
+* Wed Mar 04 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.5.20090301svn
+- Split documentation and inkview into subpackages
+
 * Mon Mar 02 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.4.20090301svn
 - Bump to later SVN snapshot to fix inkscape/+bug/331864
 - Fix a startup crash when compiled with GCC 4.4
