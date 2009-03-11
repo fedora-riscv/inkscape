@@ -4,7 +4,7 @@
 
 Name:           inkscape
 Version:        0.47
-Release:        0.5.20090301svn%{?dist}
+Release:        0.6.20090301svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -249,6 +249,9 @@ touch --no-create %{_datadir}/icons/hicolor
 
 
 %changelog
+* Wed Mar 04 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.6.20090301svn
+- Rebuild for new ImageMagick
+
 * Wed Mar 04 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.5.20090301svn
 - Split documentation and inkview into subpackages
 
