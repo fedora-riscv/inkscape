@@ -1,25 +1,22 @@
-# Preserve lot of debugging information for now. This effectively
-# disables FORTIFY_SOURCE, so it must be enabled before Gold
-%define optflags %(rpm --eval %%optflags |sed 's/-O2/-O0/')
-
 Name:           inkscape
 Version:        0.47
-Release:        0.6.20090301svn%{?dist}
+Release:        0.6.20090410svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# svn export -r20798 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@20798 inkscape
+# svn export -r21114 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@21114 inkscape
 # tar cf - inkscape |lzma -9 -c >inkscape.tar.lzma
 # Chuck the SVN snapshot specific blocks when bumping to a release:
 # perl -e 'while (<>) {/^# BEGIN SVN/ .. /^# END SVN/ or print}' <inkscape.spec
 Source0:        %{name}.tar.lzma
 
-Patch0:         inkscape-0.46+devel-uniconv.patch
-Patch1:         inkscape-20090227svn-gcc44.patch
+Patch0:         inkscape-20090410svn-uniconv.patch
+Patch1:         inkscape-20090410svn-gcc44.patch
 Patch2:         inkscape-20090226svn-oldcairo.patch
+Patch4:         inkscape-20090410svn-formats.patch
 # BEGIN SVN SNAPSHOT SPECIFIC
 Patch3:         inkscape-20090227svn-automake.patch
 # END SVN SNAPSHOT SPECIFIC
@@ -128,6 +125,7 @@ format.
 %package docs
 Summary:        Documentation for Inkscape
 Group:          Documentation
+Requires:       inkscape
 
 %description docs
 Tutorial and examples for Inkscape, a graphics editor for vector
@@ -139,6 +137,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch0 -p1 -b .uniconv
 %patch1 -p1 -b .gcc44
 %patch2 -p0 -b .oldcairo
+%patch4 -p1 -b .formats
 # BEGIN SVN SNAPSHOT SPECIFIC
 %patch3 -p0 -b .automake
 # END SVN SNAPSHOT SPECIFIC
@@ -236,19 +235,22 @@ touch --no-create %{_datadir}/icons/hicolor
 
 %files view
 %defattr(-,root,root,-)
-%dir %{_datadir}/inkscape
-%{_datadir}/inkscape/tutorials
-%{_datadir}/inkscape/examples
+%{_bindir}/inkview
 %doc AUTHORS COPYING ChangeLog NEWS README
 
 
 %files docs
 %defattr(-,root,root,-)
-%{_bindir}/inkview
-%doc AUTHORS COPYING ChangeLog NEWS README
+%dir %{_datadir}/inkscape
+%{_datadir}/inkscape/tutorials
+%{_datadir}/inkscape/examples
 
 
 %changelog
+* Fri Apr 10 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.6.20090410svn
+- Update to newer snapshot
+- Fix doc/incview reversed subpackage content
+
 * Wed Mar 04 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.6.20090301svn
 - Rebuild for new ImageMagick
 
