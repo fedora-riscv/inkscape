@@ -224,7 +224,7 @@ touch --no-create %{_datadir}/icons/hicolor
 %{_datadir}/inkscape/templates
 %{_datadir}/inkscape/ui
 %{_datadir}/applications/fedora-inkscape.desktop
-%{_datadir}/icons/hicolor/scalable/apps/inkscape.svg
+%{_datadir}/icons/hicolor/*/apps/inkscape.*
 %{_datadir}/pixmaps/inkscape.png
 %{_mandir}/man1/inkscape.1*
 %{_mandir}/man1/inkview.1*
