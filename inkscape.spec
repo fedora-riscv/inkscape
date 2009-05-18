@@ -1,20 +1,20 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.6.20090410svn%{?dist}
+Release:        0.8.20090508svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# svn export -r21114 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@21114 inkscape
+# svn export -r21302 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@21302 inkscape
 # tar cf - inkscape |lzma -9 -c >inkscape.tar.lzma
 # Chuck the SVN snapshot specific blocks when bumping to a release:
 # perl -e 'while (<>) {/^# BEGIN SVN/ .. /^# END SVN/ or print}' <inkscape.spec
 Source0:        %{name}.tar.lzma
 
 Patch0:         inkscape-20090410svn-uniconv.patch
-Patch1:         inkscape-20090410svn-gcc44.patch
+Patch1:         inkscape-20090508svn-crc32.patch
 Patch2:         inkscape-20090226svn-oldcairo.patch
 Patch4:         inkscape-20090410svn-formats.patch
 # BEGIN SVN SNAPSHOT SPECIFIC
@@ -135,7 +135,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %setup -q -n %{name}
 %patch0 -p1 -b .uniconv
-%patch1 -p1 -b .gcc44
+%patch1 -p1 -b .crc32
 %patch2 -p0 -b .oldcairo
 %patch4 -p1 -b .formats
 # BEGIN SVN SNAPSHOT SPECIFIC
@@ -226,7 +226,7 @@ touch --no-create %{_datadir}/icons/hicolor
 %{_datadir}/inkscape/templates
 %{_datadir}/inkscape/ui
 %{_datadir}/applications/fedora-inkscape.desktop
-%{_datadir}/icons/hicolor/scalable/apps/inkscape.svg
+%{_datadir}/icons/hicolor/*/apps/inkscape.*
 %{_datadir}/pixmaps/inkscape.png
 %{_mandir}/man1/inkscape.1*
 %{_mandir}/man1/inkview.1*
@@ -247,6 +247,13 @@ touch --no-create %{_datadir}/icons/hicolor
 
 
 %changelog
+* Mon May 18 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.8.20090508svn
+- Fix ODG export
+
+* Fri May 08 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.7.20090508svn
+- Update to a post-alpha snapshot
+- Upstream applied our GCC 4.4 patch
+
 * Fri Apr 10 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.6.20090410svn
 - Update to newer snapshot
 - Fix doc/incview reversed subpackage content
