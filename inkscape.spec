@@ -1,13 +1,13 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.8.20090508svn%{?dist}
+Release:        0.9.20090518svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# svn export -r21302 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@21302 inkscape
+# svn export -r21374 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@21374 inkscape
 # tar cf - inkscape |lzma -9 -c >inkscape.tar.lzma
 # Chuck the SVN snapshot specific blocks when bumping to a release:
 # perl -e 'while (<>) {/^# BEGIN SVN/ .. /^# END SVN/ or print}' <inkscape.spec
@@ -247,6 +247,9 @@ touch --no-create %{_datadir}/icons/hicolor
 
 
 %changelog
+* Mon May 18 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.9.20090518svn
+- Update past upstream Beta release
+
 * Mon May 18 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.8.20090508svn
 - Fix ODG export
 
