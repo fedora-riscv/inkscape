@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.7.20090508svn%{?dist}
+Release:        0.8.20090508svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -14,6 +14,7 @@ URL:            http://inkscape.sourceforge.net/
 Source0:        %{name}.tar.lzma
 
 Patch0:         inkscape-20090410svn-uniconv.patch
+Patch1:         inkscape-20090508svn-crc32.patch
 Patch2:         inkscape-20090226svn-oldcairo.patch
 Patch4:         inkscape-20090410svn-formats.patch
 # BEGIN SVN SNAPSHOT SPECIFIC
@@ -134,6 +135,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %setup -q -n %{name}
 %patch0 -p1 -b .uniconv
+%patch1 -p1 -b .crc32
 %patch2 -p0 -b .oldcairo
 %patch4 -p1 -b .formats
 # BEGIN SVN SNAPSHOT SPECIFIC
@@ -245,6 +247,9 @@ touch --no-create %{_datadir}/icons/hicolor
 
 
 %changelog
+* Mon May 18 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.8.20090508svn
+- Fix ODG export
+
 * Fri May 08 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.7.20090508svn
 - Update to a post-alpha snapshot
 - Upstream applied our GCC 4.4 patch
