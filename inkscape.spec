@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.9.20090518svn%{?dist}
+Release:        0.10.20090518svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -247,6 +247,9 @@ touch --no-create %{_datadir}/icons/hicolor
 
 
 %changelog
+* Sat May 23 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.10.20090518svn
+- Rebuild for new poppler
+
 * Mon May 18 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.9.20090518svn
 - Update past upstream Beta release
 
