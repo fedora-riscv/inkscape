@@ -1,13 +1,13 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.9.20090518svn%{?dist}
+Release:        0.11.20090602svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# svn export -r21374 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@21374 inkscape
+# svn export -r21467 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@21467 inkscape
 # tar cf - inkscape |lzma -9 -c >inkscape.tar.lzma
 # Chuck the SVN snapshot specific blocks when bumping to a release:
 # perl -e 'while (<>) {/^# BEGIN SVN/ .. /^# END SVN/ or print}' <inkscape.spec
@@ -194,20 +194,6 @@ make -k check || :
 rm -rf $RPM_BUILD_ROOT
 
 
-%post
-exec >/dev/null 2>&1
-update-desktop-database %{_datadir}/applications || :
-touch --no-create %{_datadir}/icons/hicolor
-%{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-
-
-%postun
-exec >/dev/null 2>&1
-update-desktop-database %{_datadir}/applications || :
-touch --no-create %{_datadir}/icons/hicolor
-%{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-
-
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %{_bindir}/inkscape
@@ -226,7 +212,6 @@ touch --no-create %{_datadir}/icons/hicolor
 %{_datadir}/inkscape/templates
 %{_datadir}/inkscape/ui
 %{_datadir}/applications/fedora-inkscape.desktop
-%{_datadir}/icons/hicolor/*/apps/inkscape.*
 %{_datadir}/pixmaps/inkscape.png
 %{_mandir}/man1/inkscape.1*
 %{_mandir}/man1/inkview.1*
@@ -247,6 +232,13 @@ touch --no-create %{_datadir}/icons/hicolor
 
 
 %changelog
+* Tue Jun 02 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.11.20090602svn
+- More recent snapshot
+- Upstream removed rasterized icons again
+
+* Sat May 23 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.10.20090518svn
+- Rebuild for new poppler
+
 * Mon May 18 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.9.20090518svn
 - Update past upstream Beta release
 
