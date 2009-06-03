@@ -194,20 +194,6 @@ make -k check || :
 rm -rf $RPM_BUILD_ROOT
 
 
-%post
-exec >/dev/null 2>&1
-update-desktop-database %{_datadir}/applications || :
-touch --no-create %{_datadir}/icons/hicolor
-%{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-
-
-%postun
-exec >/dev/null 2>&1
-update-desktop-database %{_datadir}/applications || :
-touch --no-create %{_datadir}/icons/hicolor
-%{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
-
-
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %{_bindir}/inkscape
@@ -226,7 +212,6 @@ touch --no-create %{_datadir}/icons/hicolor
 %{_datadir}/inkscape/templates
 %{_datadir}/inkscape/ui
 %{_datadir}/applications/fedora-inkscape.desktop
-%{_datadir}/icons/hicolor/*/apps/inkscape.*
 %{_datadir}/pixmaps/inkscape.png
 %{_mandir}/man1/inkscape.1*
 %{_mandir}/man1/inkview.1*
@@ -249,6 +234,7 @@ touch --no-create %{_datadir}/icons/hicolor
 %changelog
 * Tue Jun 02 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.11.20090602svn
 - More recent snapshot
+- Upstream removed rasterized icons again
 
 * Sat May 23 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.10.20090518svn
 - Rebuild for new poppler
