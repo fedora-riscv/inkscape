@@ -1,13 +1,15 @@
+%global optflags -O0 -g3 -pipe -Wall -fasynchronous-unwind-tables
+
 Name:           inkscape
 Version:        0.47
-Release:        0.12.pre0.20090616svn%{?dist}
+Release:        0.13.pre0.20090629svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# svn export -r21597 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@21597 inkscape
+# svn export -r21707 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@21707 inkscape
 # tar cf - inkscape |lzma -9 -c >inkscape.tar.lzma
 # Chuck the SVN snapshot specific blocks when bumping to a release:
 # perl -e 'while (<>) {/^# BEGIN SVN/ .. /^# END SVN/ or print}' <inkscape.spec
@@ -232,6 +234,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jun 29 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.13.pre0.20090629svn
+- Update to a newer snapshot
+
 * Tue Jun 16 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.12.pre0.20090616svn
 - Update to post-pre0 snapshot
 
