@@ -1,20 +1,21 @@
+%global optflags -O0 -g3 -pipe -Wall -fasynchronous-unwind-tables
+
 Name:           inkscape
 Version:        0.47
-Release:        0.12.pre0.20090616svn%{?dist}
+Release:        0.15.pre1.20090810svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# svn export -r21597 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@21597 inkscape
-# tar cf - inkscape |lzma -9 -c >inkscape.tar.lzma
+# svn export -r22040 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@22040 inkscape
+# tar cf - inkscape |xz -9 -c >inkscape.tar.xz
 # Chuck the SVN snapshot specific blocks when bumping to a release:
 # perl -e 'while (<>) {/^# BEGIN SVN/ .. /^# END SVN/ or print}' <inkscape.spec
-Source0:        %{name}.tar.lzma
+Source0:        %{name}.tar.xz
 
 Patch0:         inkscape-20090410svn-uniconv.patch
-Patch1:         inkscape-20090508svn-crc32.patch
 Patch2:         inkscape-20090226svn-oldcairo.patch
 Patch4:         inkscape-20090410svn-formats.patch
 # BEGIN SVN SNAPSHOT SPECIFIC
@@ -135,7 +136,6 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %setup -q -n %{name}
 %patch0 -p1 -b .uniconv
-%patch1 -p1 -b .crc32
 %patch2 -p0 -b .oldcairo
 %patch4 -p1 -b .formats
 # BEGIN SVN SNAPSHOT SPECIFIC
@@ -232,6 +232,16 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Aug 10 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.15.pre1.20090629svn
+- Update to a post-pre1 snapshot
+- Drop upstreamed CRC32 fix
+
+* Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.47-0.14.pre0.20090629svn
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+
+* Mon Jun 29 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.13.pre0.20090629svn
+- Update to a newer snapshot
+
 * Tue Jun 16 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.12.pre0.20090616svn
 - Update to post-pre0 snapshot
 
