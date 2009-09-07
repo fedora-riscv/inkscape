@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        0.47
-Release:        0.15.pre2.20090907svn%{?dist}
+Release:        0.16.pre2.20090907svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -214,13 +214,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/fedora-inkscape.desktop
 %{_datadir}/pixmaps/inkscape.png
 %{_mandir}/man1/inkscape.1*
-%{_mandir}/man1/inkview.1*
 %{_mandir}/fr/man1/inkscape.1*
+%doc AUTHORS COPYING ChangeLog NEWS README
 
 
 %files view
 %defattr(-,root,root,-)
 %{_bindir}/inkview
+%{_mandir}/man1/inkview.1*
 %doc AUTHORS COPYING ChangeLog NEWS README
 
 
@@ -232,6 +233,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.16.pre2.20090907svn
+- Move inkview man page to -view subpackage (#515358)
+- Add license, etc. to main package
+
 * Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.15.pre2.20090907svn
 - Update to a post-pre2 snapshot
 
