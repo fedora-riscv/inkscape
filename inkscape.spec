@@ -2,14 +2,14 @@
 
 Name:           inkscape
 Version:        0.47
-Release:        0.15.pre1.20090810svn%{?dist}
+Release:        0.15.pre2.20090907svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# svn export -r22040 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@22040 inkscape
+# svn export -r22202 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@22202 inkscape
 # tar cf - inkscape |xz -9 -c >inkscape.tar.xz
 # Chuck the SVN snapshot specific blocks when bumping to a release:
 # perl -e 'while (<>) {/^# BEGIN SVN/ .. /^# END SVN/ or print}' <inkscape.spec
@@ -232,6 +232,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.15.pre2.20090907svn
+- Update to a post-pre2 snapshot
+
 * Mon Aug 10 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.15.pre1.20090629svn
 - Update to a post-pre1 snapshot
 - Drop upstreamed CRC32 fix
