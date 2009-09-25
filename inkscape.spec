@@ -1,26 +1,19 @@
-%global optflags -O0 -g3 -pipe -Wall -fasynchronous-unwind-tables
-
 Name:           inkscape
 Version:        0.47
-Release:        0.15.pre1.20090810svn%{?dist}
+Release:        0.16.pre3.20090925svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# svn export -r22040 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@22040 inkscape
+# svn export -r22293 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@22293 inkscape
 # tar cf - inkscape |xz -9 -c >inkscape.tar.xz
-# Chuck the SVN snapshot specific blocks when bumping to a release:
-# perl -e 'while (<>) {/^# BEGIN SVN/ .. /^# END SVN/ or print}' <inkscape.spec
-Source0:        %{name}.tar.xz
+Source0:        %{name}.tar.gz
 
 Patch0:         inkscape-20090410svn-uniconv.patch
-Patch2:         inkscape-20090226svn-oldcairo.patch
 Patch4:         inkscape-20090410svn-formats.patch
-# BEGIN SVN SNAPSHOT SPECIFIC
-Patch3:         inkscape-20090227svn-automake.patch
-# END SVN SNAPSHOT SPECIFIC
+Patch5:         inkscape-20090925svn-el5.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -56,10 +49,8 @@ BuildRequires:  popt-devel
 %else
 BuildRequires:  popt
 %endif
-# BEGIN SVN SNAPSHOT SPECIFIC
 BuildRequires:  autoconf
 BuildRequires:  automake
-# END SVN SNAPSHOT SPECIFIC
 
 # Incompatible license
 BuildConflicts: openssl-devel
@@ -136,11 +127,8 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %setup -q -n %{name}
 %patch0 -p1 -b .uniconv
-%patch2 -p0 -b .oldcairo
 %patch4 -p1 -b .formats
-# BEGIN SVN SNAPSHOT SPECIFIC
-%patch3 -p0 -b .automake
-# END SVN SNAPSHOT SPECIFIC
+%patch5 -p1 -b .el5
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -154,9 +142,7 @@ dos2unix -k -q share/extensions/*.py
 
 
 %build
-# BEGIN SVN SNAPSHOT SPECIFIC
 sh autogen.sh
-# END SVN SNAPSHOT SPECIFIC
 %configure                      \
         --with-python           \
         --with-perl             \
@@ -165,7 +151,6 @@ sh autogen.sh
         --enable-lcms           \
         --enable-poppler-cairo  \
         --disable-dependency-tracking
-#        --enable-inkboard       \
 
 make %{?_smp_mflags}
 
@@ -214,13 +199,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/applications/fedora-inkscape.desktop
 %{_datadir}/pixmaps/inkscape.png
 %{_mandir}/man1/inkscape.1*
-%{_mandir}/man1/inkview.1*
 %{_mandir}/fr/man1/inkscape.1*
+%doc AUTHORS COPYING ChangeLog NEWS README
 
 
 %files view
 %defattr(-,root,root,-)
 %{_bindir}/inkview
+%{_mandir}/man1/inkview.1*
 %doc AUTHORS COPYING ChangeLog NEWS README
 
 
@@ -232,6 +218,18 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.16.pre3.20090925svn
+- Move to a later snapshot
+- Drop debugging compiler flags, enable optimizations again
+- Make it build on everything since EL5 again
+
+* Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.16.pre2.20090907svn
+- Move inkview man page to -view subpackage (#515358)
+- Add license, etc. to main package
+
+* Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.15.pre2.20090907svn
+- Update to a post-pre2 snapshot
+
 * Mon Aug 10 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.15.pre1.20090629svn
 - Update to a post-pre1 snapshot
 - Drop upstreamed CRC32 fix
