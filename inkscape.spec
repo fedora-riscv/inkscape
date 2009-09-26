@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.16.pre3.20090925svn%{?dist}
+Release:        0.16.pre3.20090925svn%{?dist}.1
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -38,7 +38,13 @@ BuildRequires:  poppler-devel
 BuildRequires:  loudmouth-devel
 BuildRequires:  boost-devel
 BuildRequires:  gsl-devel
+%if 0%{el5}
+%ifnarch ppc
 BuildRequires:  libwpg-devel
+%endif
+%else
+BuildRequires:  libwpg-devel
+%endif
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  perl(XML::Parser)
 BuildRequires:  perl(ExtUtils::Embed)
@@ -218,6 +224,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Sep 26 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.16.pre3.20090925svn.1
+- Do not use wpg on EL-5 w/o Desktop (ppc)
+
 * Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.16.pre3.20090925svn
 - Move to a later snapshot
 - Drop debugging compiler flags, enable optimizations again
