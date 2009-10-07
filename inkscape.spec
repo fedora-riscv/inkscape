@@ -1,14 +1,14 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.16.pre3.20090925svn%{?dist}.1
+Release:        0.16.pre3.20091017svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# svn export -r22293 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@22293 inkscape
-# tar cf - inkscape |xz -9 -c >inkscape.tar.xz
+# svn export -r22413 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@22413 inkscape
+# tar czf inkscape.tar.gz inkscape
 Source0:        %{name}.tar.gz
 
 Patch0:         inkscape-20090410svn-uniconv.patch
@@ -38,13 +38,7 @@ BuildRequires:  poppler-devel
 BuildRequires:  loudmouth-devel
 BuildRequires:  boost-devel
 BuildRequires:  gsl-devel
-%if 0%{el5}
-%ifnarch ppc
 BuildRequires:  libwpg-devel
-%endif
-%else
-BuildRequires:  libwpg-devel
-%endif
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  perl(XML::Parser)
 BuildRequires:  perl(ExtUtils::Embed)
@@ -224,8 +218,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Sat Sep 26 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.16.pre3.20090925svn.1
-- Do not use wpg on EL-5 w/o Desktop (ppc)
+* Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.16.pre3.20091017svn
+- Move to a later snapshot
 
 * Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.16.pre3.20090925svn
 - Move to a later snapshot
