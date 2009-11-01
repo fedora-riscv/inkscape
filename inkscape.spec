@@ -1,13 +1,13 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.16.pre3.20091017svn%{?dist}
+Release:        0.16.pre4.20091101svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# svn export -r22413 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@22413 inkscape
+# svn export -r22548 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@22548 inkscape
 # tar czf inkscape.tar.gz inkscape
 Source0:        %{name}.tar.gz
 
@@ -84,6 +84,8 @@ Requires:       uniconvertor
 # perl(vars)
 # perl(warnings)
 %endif
+Requires:       python-lxml
+Requires:       numpy
 
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
@@ -218,6 +220,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.16.pre4.20091101svn
+- Move to a later snapshot
+- python-lxml and numpy seem to be rather popular, add them as hard deps
+
 * Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.16.pre3.20091017svn
 - Move to a later snapshot
 
