@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.16.pre4.20091101svn%{?dist}
+Release:        0.17.pre4.20091101svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -14,6 +14,7 @@ Source0:        %{name}.tar.gz
 Patch0:         inkscape-20090410svn-uniconv.patch
 Patch4:         inkscape-20090410svn-formats.patch
 Patch5:         inkscape-20090925svn-el5.patch
+Patch6:         inkscape-20091101svn-icon.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -131,6 +132,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch0 -p1 -b .uniconv
 %patch4 -p1 -b .formats
 %patch5 -p1 -b .el5
+%patch6 -p0 -b .japierdole
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -220,6 +222,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.17.pre4.20091101svn
+- Icon for main window (#532325)
+
 * Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.16.pre4.20091101svn
 - Move to a later snapshot
 - python-lxml and numpy seem to be rather popular, add them as hard deps
