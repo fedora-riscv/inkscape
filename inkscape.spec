@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.17.pre4.20091101svn%{?dist}
+Release:        0.18.pre4.20091101svn%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -45,7 +45,7 @@ BuildRequires:  perl(XML::Parser)
 BuildRequires:  perl(ExtUtils::Embed)
 BuildRequires:  intltool
 # A packaging bug in EL-5
-%if 0%{?fedora > 6}
+%if 0%{?fedora > 6}%{?rhel > 5}
 BuildRequires:  popt-devel
 %else
 BuildRequires:  popt
@@ -222,6 +222,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Nov 23 2009 Adam Jackson <ajax@redhat.com> 0.47-0.18.pre4.20091101svn
+- Fix RHEL6 build.
+
 * Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.17.pre4.20091101svn
 - Icon for main window (#532325)
 
