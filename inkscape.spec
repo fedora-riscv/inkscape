@@ -42,7 +42,7 @@ BuildRequires:  perl(XML::Parser)
 BuildRequires:  perl(ExtUtils::Embed)
 BuildRequires:  intltool
 # A packaging bug in EL-5
-%if 0%{?fedora > 6}%{?rhel > 5}
+%if 0%{?fedora} > 6 || 0%{?rhel} > 5
 BuildRequires:  popt-devel
 %else
 BuildRequires:  popt
