@@ -47,6 +47,8 @@ BuildRequires:  popt-devel
 %else
 BuildRequires:  popt
 %endif
+BuildRequires:  autoconf
+BuildRequires:  automake
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -138,6 +140,7 @@ dos2unix -k -q share/extensions/*.py
 
 
 %build
+autoreconf -i
 %configure                      \
         --with-python           \
         --with-perl             \
