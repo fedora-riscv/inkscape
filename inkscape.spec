@@ -1,15 +1,12 @@
 Name:           inkscape
 Version:        0.47
-Release:        0.17.pre4.20091101svn%{?dist}
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
-#Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# svn export -r22548 https://inkscape.svn.sourceforge.net/svnroot/inkscape/inkscape/trunk@22548 inkscape
-# tar czf inkscape.tar.gz inkscape
-Source0:        %{name}.tar.gz
+Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 
 Patch0:         inkscape-20090410svn-uniconv.patch
 Patch4:         inkscape-20090410svn-formats.patch
@@ -45,16 +42,11 @@ BuildRequires:  perl(XML::Parser)
 BuildRequires:  perl(ExtUtils::Embed)
 BuildRequires:  intltool
 # A packaging bug in EL-5
-%if 0%{?fedora > 6}
+%if 0%{?fedora > 6}%{?rhel > 5}
 BuildRequires:  popt-devel
 %else
 BuildRequires:  popt
 %endif
-BuildRequires:  autoconf
-BuildRequires:  automake
-
-# Incompatible license
-BuildConflicts: openssl-devel
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -128,7 +120,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -q -n %{name}
+%setup -q
 %patch0 -p1 -b .uniconv
 %patch4 -p1 -b .formats
 %patch5 -p1 -b .el5
@@ -146,7 +138,6 @@ dos2unix -k -q share/extensions/*.py
 
 
 %build
-sh autogen.sh
 %configure                      \
         --with-python           \
         --with-perl             \
@@ -222,6 +213,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov 25 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-1
+- Stable release
+
+* Mon Nov 23 2009 Adam Jackson <ajax@redhat.com> 0.47-0.18.pre4.20091101svn
+- Fix RHEL6 build.
+
 * Mon Sep 07 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-0.17.pre4.20091101svn
 - Icon for main window (#532325)
 
