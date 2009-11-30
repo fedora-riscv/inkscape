@@ -29,41 +29,6 @@ URIs.
  src/xml/rebase-hrefs.cpp                |   13 ++++++++++++-
  6 files changed, 30 insertions(+), 7 deletions(-)
 
-diff --git a/autogen.sh b/autogen.sh
-index 6a7c631..5c4e34a 100755
---- a/autogen.sh
-+++ b/autogen.sh
-@@ -15,7 +15,7 @@ TEST_TYPE=-f
- FILE=inkscape.spec.in
- 
- AUTOCONF_REQUIRED_VERSION=2.52
--AUTOMAKE_REQUIRED_VERSION=1.10
-+AUTOMAKE_REQUIRED_VERSION=1.9.6
- GLIB_REQUIRED_VERSION=2.0.0
- INTLTOOL_REQUIRED_VERSION=0.17
- 
-@@ -86,9 +86,9 @@ fi
- 
- echo -n "checking for automake >= $AUTOMAKE_REQUIRED_VERSION ... "
- # Prefer earlier versions just so that the earliest supported version gets test coverage by developers.
--if (automake-1.10 --version) < /dev/null > /dev/null 2>&1; then
--   AUTOMAKE=automake-1.10
--   ACLOCAL=aclocal-1.10
-+if (automake-$AUTOMAKE_REQUIRED_VERSION --version) < /dev/null > /dev/null 2>&1; then
-+   AUTOMAKE=automake-$AUTOMAKE_REQUIRED_VERSION
-+   ACLOCAL=aclocal-$AUTOMAKE_REQUIRED_VERSION
- elif (automake --version) < /dev/null > /dev/null 2>&1; then
-    # Leave unversioned automake for a last resort: it may be a version earlier
-    # than what we require.
-@@ -98,7 +98,7 @@ elif (automake --version) < /dev/null > /dev/null 2>&1; then
-    ACLOCAL=aclocal
- else
-     echo
--    echo "  You must have automake 1.10 or newer installed to compile $PROJECT."
-+    echo "  You must have automake $AUTOMAKE_REQUIRED_VERSION or newer installed to compile $PROJECT."
-     DIE=1
- fi
- if test x$AUTOMAKE != x; then
 diff --git a/configure.ac b/configure.ac
 index fbfa2e5..32ff5a4 100644
 --- a/configure.ac
