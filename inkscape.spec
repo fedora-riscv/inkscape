@@ -141,6 +141,8 @@ dos2unix -k -q share/extensions/*.py
 
 %build
 autoreconf -i
+rm intltool*
+intltoolize --automake
 %configure                      \
         --with-python           \
         --with-perl             \
