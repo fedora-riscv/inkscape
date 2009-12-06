@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.47
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -12,6 +12,7 @@ Patch0:         inkscape-20090410svn-uniconv.patch
 Patch4:         inkscape-20090410svn-formats.patch
 Patch5:         inkscape-20090925svn-el5.patch
 Patch6:         inkscape-20091101svn-icon.patch
+Patch7:         inkscape-0.47-newpoppler.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -127,6 +128,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch4 -p1 -b .formats
 %patch5 -p1 -b .el5
 %patch6 -p0 -b .japierdole
+%patch7 -p0 -b .poppler
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -218,6 +220,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Dec 06 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-2
+- Fix Rawhide build.
+
 * Wed Nov 25 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-1
 - Stable release
 
