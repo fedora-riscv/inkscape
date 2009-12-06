@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.47
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -220,6 +220,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Dec  4 2009 Stepan Kasal <skasal@redhat.com> - 0.47-3
+- rebuild against perl 5.10.1
+
 * Sun Dec 06 2009 Lubomir Rintel <lkundrak@v3.sk> - 0.47-2
 - Fix Rawhide build.
 
