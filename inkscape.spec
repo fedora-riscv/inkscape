@@ -128,7 +128,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch4 -p1 -b .formats
 %patch5 -p1 -b .el5
 %patch6 -p0 -b .japierdole
-%patch7 -p0 -b .poppler
+%patch7 -p1 -b .poppler
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
