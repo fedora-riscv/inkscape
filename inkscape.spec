@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.47
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -34,7 +34,6 @@ BuildRequires:  cairo-devel
 BuildRequires:  dos2unix
 BuildRequires:  python-devel
 BuildRequires:  poppler-devel
-BuildRequires:  loudmouth-devel
 BuildRequires:  boost-devel
 BuildRequires:  gsl-devel
 BuildRequires:  libwpg-devel
@@ -220,6 +219,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jan  8 2010 Owen Taylor <otaylor@redhat.com> - 0.47-4
+- Remove loudmouth BuildRequires; there is no current usage of loudmouth in the code
+
 * Fri Dec  4 2009 Stepan Kasal <skasal@redhat.com> - 0.47-3
 - rebuild against perl 5.10.1
 
