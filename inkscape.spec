@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.47
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -82,6 +82,9 @@ Requires:       uniconvertor
 Requires:       python-lxml
 Requires:       numpy
 
+# the package requires libperl.so, so it also has to require this:
+Requires:  perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
 
@@ -105,6 +108,8 @@ trace bitmaps and much more.
 %package view
 Summary:        Viewing program for SVG files
 Group:          Applications/Productivity
+# the package requires libperl.so, so it also has to require this:
+Requires:  perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description view
 Viewer for files in W3C standard Scalable Vector Graphics (SVG) file
@@ -219,6 +224,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jan 15 2010 Stepan Kasal <skasal@redhat.com> - 0.47-5
+- require perl(:MODULE_COMPAT_5.10.x) because the package requires libperl.so
+- the same for inkscape-view
+
 * Fri Jan  8 2010 Owen Taylor <otaylor@redhat.com> - 0.47-4
 - Remove loudmouth BuildRequires; there is no current usage of loudmouth in the code
 
