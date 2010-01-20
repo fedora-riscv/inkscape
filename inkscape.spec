@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.47
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -14,7 +14,8 @@ Patch5:         inkscape-20090925svn-el5.patch
 Patch6:         inkscape-20091101svn-icon.patch
 Patch7:         inkscape-0.47-newpoppler.patch
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+ExcludeArch: s390 s390x
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
@@ -224,6 +225,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jan 20 2010 Stepan Kasal <skasal@redhat.com> - 0.47-6
+- ExcludeArch: s390 s390x
+
 * Fri Jan 15 2010 Stepan Kasal <skasal@redhat.com> - 0.47-5
 - require perl(:MODULE_COMPAT_5.10.x) because the package requires libperl.so
 - the same for inkscape-view
