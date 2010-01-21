@@ -15,6 +15,8 @@ Patch6:         inkscape-20091101svn-icon.patch
 Patch7:         inkscape-0.47-newpoppler.patch
 
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+
+# Don't bother
 ExcludeArch: s390 s390x
 
 BuildRequires:  atk-devel
