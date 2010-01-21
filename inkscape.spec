@@ -16,7 +16,7 @@ Patch7:         inkscape-0.47-newpoppler.patch
 
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-# Don't bother
+# Do not bother building this desktop app on s390*
 ExcludeArch: s390 s390x
 
 BuildRequires:  atk-devel
