@@ -1,12 +1,16 @@
 Name:           inkscape
-Version:        0.47
-Release:        7%{?dist}
+Version:        0.48
+Release:        0.1.20100318bzr%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+# bzr branch lp:inkscape
+# cd inkscape
+# bzr export -r9206 ../inkscape.tar.bz2
+Source0:        inkscape.tar.bz2
+#Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 
 Patch0:         inkscape-20090410svn-uniconv.patch
 Patch4:         inkscape-20090410svn-formats.patch
@@ -131,7 +135,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -q
+%setup -q -n %{name}
 %patch0 -p1 -b .uniconv
 %patch4 -p1 -b .formats
 %patch5 -p1 -b .el5
@@ -152,7 +156,6 @@ dos2unix -k -q share/extensions/*.py
 
 %build
 autoreconf -i
-rm intltool*
 intltoolize --automake
 %configure                      \
         --with-python           \
@@ -229,6 +232,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Mar 18 2010 Lubomir Rintel <lkundrak@v3.sk> - 0.48-0.1.20100318bzr
+- Update to latest bazaar snapshot
+
 * Thu Feb 18 2010 Lubomir Rintel <lkundrak@v3.sk> - 0.47-7
 - Fix build
 
