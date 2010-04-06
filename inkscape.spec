@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48
-Release:        0.1.20100318bzr%{?dist}
+Release:        0.2.20100318bzr%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -192,6 +192,29 @@ make -k check || :
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+if [ -x /usr/bin/gtk-update-icon-cache ]; then
+  for theme in hicolor; do
+    if test -d "%{_datadir}/icons/$theme"; then
+      if test -f "%{_datadir}/icons/$theme/index.theme"; then
+        touch --no-create %{_datadir}/icons/$theme
+        gtk-update-icon-cache -q %{_datadir}/icons/$theme
+      fi
+    fi
+  done
+fi
+
+%postun
+if [ -x /usr/bin/gtk-update-icon-cache ]; then
+  for theme in hicolor; do
+    if test -d "%{_datadir}/icons/$theme"; then
+      if test -f "%{_datadir}/icons/$theme/index.theme"; then
+        touch --no-create %{_datadir}/icons/$theme
+        gtk-update-icon-cache -q %{_datadir}/icons/$theme
+      fi
+    fi
+  done
+fi
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -211,7 +234,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/inkscape/templates
 %{_datadir}/inkscape/ui
 %{_datadir}/applications/fedora-inkscape.desktop
-%{_datadir}/pixmaps/inkscape.png
+%{_datadir}/icons/*/*/*/inkscape*
 %{_mandir}/man1/inkscape.1*
 %{_mandir}/fr/man1/inkscape.1*
 %doc AUTHORS COPYING ChangeLog NEWS README
@@ -232,6 +255,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Apr 06 2010 Caolán McNamara <caolanm@redhat.com> - 0.48-0.2.20100318bzr
+- Resolves: rhbz#565106 fix inkscape-0.47-x11.patch to not clobber INKSCAPE_LIBS
+
 * Thu Mar 18 2010 Lubomir Rintel <lkundrak@v3.sk> - 0.48-0.1.20100318bzr
 - Update to latest bazaar snapshot
 
