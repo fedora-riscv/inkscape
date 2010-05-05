@@ -8,15 +8,14 @@ License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 # bzr branch lp:inkscape
 # cd inkscape
-# bzr export -r9206 ../inkscape.tar.bz2
+# bzr export -r9395 ../inkscape.tar.bz2
 Source0:        inkscape.tar.bz2
 #Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 
-Patch0:         inkscape-20090410svn-uniconv.patch
 Patch4:         inkscape-20090410svn-formats.patch
-Patch5:         inkscape-20090925svn-el5.patch
+Patch5:         inkscape-0.48-el5.patch
 Patch6:         inkscape-20091101svn-icon.patch
-Patch7:         inkscape-0.47-newpoppler.patch
+Patch7:         inkscape-0.48-newpoppler.patch
 Patch8:         inkscape-0.47-x11.patch
 
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
@@ -136,7 +135,6 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 %prep
 %setup -q -n %{name}
-%patch0 -p1 -b .uniconv
 %patch4 -p1 -b .formats
 %patch5 -p1 -b .el5
 %patch6 -p0 -b .japierdole
@@ -255,6 +253,10 @@ fi
 
 
 %changelog
+* Wed May 05 2010 Lubomir Rintel <lkundrak@v3.sk> - 0.48-0.1.20100505bzr
+- Move to later snapshot
+- Drop uniconvertor patch
+
 * Tue Apr 06 2010 Caolán McNamara <caolanm@redhat.com> - 0.48-0.2.20100318bzr
 - Resolves: rhbz#565106 fix inkscape-0.47-x11.patch to not clobber INKSCAPE_LIBS
 

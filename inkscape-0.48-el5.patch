@@ -1,4 +1,4 @@
-From 61ef28dbb939d8a65c17e07834d7e31bae7955f2 Mon Sep 17 00:00:00 2001
+From e7a6bc54086917865a8accac50b185e72012ddb3 Mon Sep 17 00:00:00 2001
 From: Lubomir Rintel <lkundrak@v3.sk>
 Date: Fri, 25 Sep 2009 15:15:56 +0200
 Subject: [PATCH] Make it possible to build Inkscape 0.47 on RHEL 5
@@ -21,19 +21,17 @@ gtk_entry_completion_set_inline_selection () function
 * GLib prior to version 2.15.1 did not provide mechanisms for parsing
 URIs.
 ---
- autogen.sh                              |   10 +++++-----
  configure.ac                            |    2 +-
  src/Makefile.am                         |    5 +++++
  src/extension/internal/cairo-ps-out.cpp |    5 +++++
- src/widgets/toolbox.cpp                 |    2 ++
  src/xml/rebase-hrefs.cpp                |   13 ++++++++++++-
- 6 files changed, 30 insertions(+), 7 deletions(-)
+ 4 files changed, 23 insertions(+), 2 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
-index fbfa2e5..32ff5a4 100644
+index a85c9c2..802f5fd 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -649,7 +649,7 @@ if test $cc_vers_major -gt 3; then
+@@ -719,7 +719,7 @@ if test $cc_vers_major -gt 3; then
  else
    min_sigc_version=2.0.11
  fi
@@ -43,10 +41,10 @@ index fbfa2e5..32ff5a4 100644
  # Check for Apple Mac OS X Carbon framework
  carbon_ok=no
 diff --git a/src/Makefile.am b/src/Makefile.am
-index 4d57de8..07339ad 100644
+index 03b58c6..deb284b 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
-@@ -284,3 +284,8 @@ dist-hook:
+@@ -275,3 +275,8 @@ dist-hook:
  
  distclean-local:
  	rm -f cxxtests.xml cxxtests.log
@@ -56,10 +54,10 @@ index 4d57de8..07339ad 100644
 +.S.o:
 +	$(CCASCOMPILE) -c -o $@ $<
 diff --git a/src/extension/internal/cairo-ps-out.cpp b/src/extension/internal/cairo-ps-out.cpp
-index 9ac1932..d3bda7f 100644
+index 61760e9..1ab3342 100644
 --- a/src/extension/internal/cairo-ps-out.cpp
 +++ b/src/extension/internal/cairo-ps-out.cpp
-@@ -38,6 +38,11 @@
+@@ -39,6 +39,11 @@
  
  #include "io/sys.h"
  
@@ -71,20 +69,6 @@ index 9ac1932..d3bda7f 100644
  namespace Inkscape {
  namespace Extension {
  namespace Internal {
-diff --git a/src/widgets/toolbox.cpp b/src/widgets/toolbox.cpp
-index 46ad082..5d3cdea 100644
---- a/src/widgets/toolbox.cpp
-+++ b/src/widgets/toolbox.cpp
-@@ -6563,7 +6563,9 @@ cbe_add_completion (GtkComboBoxEntry *cbe, GObject *tbl){
-     gtk_entry_completion_set_model(completion, model);
-     gtk_entry_completion_set_text_column(completion, 0);
-     gtk_entry_completion_set_inline_completion(completion, FALSE);
-+#if GTK_CHECK_VERSION(2,12,0)
-     gtk_entry_completion_set_inline_selection(completion, FALSE);
-+#endif
-     gtk_entry_completion_set_popup_completion(completion, TRUE);
-     gtk_entry_set_completion(entry, completion);
- 
 diff --git a/src/xml/rebase-hrefs.cpp b/src/xml/rebase-hrefs.cpp
 index c387672..69b2c60 100644
 --- a/src/xml/rebase-hrefs.cpp
@@ -125,5 +109,5 @@ index c387672..69b2c60 100644
      /* If absolute then keep it as is.
       *
 -- 
-1.6.2.5
+1.7.0.1
 
