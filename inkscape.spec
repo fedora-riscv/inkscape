@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48
-Release:        0.2.20100505bzr%{?dist}
+Release:        0.3.20100505bzr%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -253,6 +253,9 @@ fi
 
 
 %changelog
+* Tue Jun 01 2010 Marcela Maslanova <mmaslano@redhat.com> - 0.48-0.3.20100505bzr
+- Mass rebuild with perl-5.12.0
+
 * Wed May 05 2010 Lubomir Rintel <lkundrak@v3.sk> - 0.48-0.2.20100505bzr
 - Move to later snapshot
 - Drop uniconvertor patch
