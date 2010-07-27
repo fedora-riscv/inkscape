@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48
-Release:        0.3.20100505bzr%{?dist}
+Release:        0.4.20100505bzr%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -253,6 +253,9 @@ fi
 
 
 %changelog
+* Tue Jul 27 2010 David Malcolm <dmalcolm@redhat.com> - 0.48-0.4.20100505bzr
+- Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
+
 * Tue Jun 01 2010 Marcela Maslanova <mmaslano@redhat.com> - 0.48-0.3.20100505bzr
 - Mass rebuild with perl-5.12.0
 
