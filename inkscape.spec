@@ -1,24 +1,13 @@
 Name:           inkscape
-Version:        0.48
-Release:        0.5.20100505bzr%{?dist}
+Version:        0.48.0
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
-# bzr branch lp:inkscape
-# cd inkscape
-# bzr export -r9395 ../inkscape.tar.bz2
-Source0:        inkscape.tar.bz2
-#Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-
-Patch4:         inkscape-20090410svn-formats.patch
-Patch5:         inkscape-0.48-el5.patch
-Patch6:         inkscape-20091101svn-icon.patch
-Patch7:         inkscape-0.48-newpoppler.patch
-Patch8:         inkscape-0.47-x11.patch
-
-BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+Patch0:         inkscape-0.48.0-types.patch
 
 # Do not bother building this desktop app on s390*
 ExcludeArch: s390 s390x
@@ -48,14 +37,7 @@ BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  perl(XML::Parser)
 BuildRequires:  perl(ExtUtils::Embed)
 BuildRequires:  intltool
-# A packaging bug in EL-5
-%if 0%{?fedora} > 6 || 0%{?rhel} > 5
 BuildRequires:  popt-devel
-%else
-BuildRequires:  popt
-%endif
-BuildRequires:  autoconf
-BuildRequires:  automake
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -134,18 +116,14 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -q -n %{name}
-%patch4 -p1 -b .formats
-%patch5 -p1 -b .el5
-%patch6 -p0 -b .japierdole
-%patch7 -p1 -b .poppler
-%patch8 -p1 -b .x11
+%setup -q
+%patch0 -p1 -b .types
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
 # despite not being executable
 (find . \( -name '*.cpp' -o -name '*.h' \) -perm +111
-	find share/extensions -name '*.py' -perm +111
+        find share/extensions -name '*.py' -perm +111
 ) |xargs chmod -x
 
 # Fix end of line encodings
@@ -153,8 +131,6 @@ dos2unix -k -q share/extensions/*.py
 
 
 %build
-autoreconf -i
-intltoolize --automake
 %configure                      \
         --with-python           \
         --with-perl             \
@@ -170,7 +146,6 @@ make %{?_smp_mflags}
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-find $RPM_BUILD_ROOT -type f -name "*.la" -exec rm -f {} ';'
 
 desktop-file-install --vendor fedora --delete-original  \
         --dir $RPM_BUILD_ROOT%{_datadir}/applications   \
@@ -253,6 +228,10 @@ fi
 
 
 %changelog
+* Wed Aug 25 2010 Lubomir Rintel <lkundrak@v3.sk> - 0.48.0-1
+- New upstream release
+- Drop el5 support
+
 * Thu Aug 19 2010 Rex Dieter <rdieter@fedoraproject.org> - 0.48-0.5.20100505bzr
 - rebuild (poppler)
 
