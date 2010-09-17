@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.0
-Release:        1%{?dist}
+Release:        1%{?dist}.1
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -228,6 +228,9 @@ fi
 
 
 %changelog
+* Fri Sep 17 2010 Rex Dieter <rdieter@fedoraproject.org> - 0.48.0-1.1
+- rebuild (ImageMagick)
+
 * Wed Aug 25 2010 Lubomir Rintel <lkundrak@v3.sk> - 0.48.0-1
 - New upstream release
 - Drop el5 support
