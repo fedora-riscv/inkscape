@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.0
-Release:        1%{?dist}.1
+Release:        1%{?dist}.2
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -8,9 +8,6 @@ License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 Patch0:         inkscape-0.48.0-types.patch
-
-# Do not bother building this desktop app on s390*
-ExcludeArch: s390 s390x
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
@@ -228,6 +225,9 @@ fi
 
 
 %changelog
+* Wed Sep 29 2010 Dan Horák <dan[at]danny.cz> - 0.48.0-1.2
+- drop the s390(x) ExcludeArch
+
 * Fri Sep 17 2010 Rex Dieter <rdieter@fedoraproject.org> - 0.48.0-1.1
 - rebuild (ImageMagick)
 
