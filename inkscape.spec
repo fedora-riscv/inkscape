@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -225,6 +225,9 @@ fi
 
 
 %changelog
+* Wed Sep 29 2010 jkeating - 0.48.0-4
+- Rebuilt for gcc bug 634757
+
 * Wed Sep 29 2010 Dan Horák <dan[at]danny.cz> - 0.48.0-3
 - drop the s390(x) ExcludeArch
 
