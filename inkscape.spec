@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -225,6 +225,9 @@ fi
 
 
 %changelog
+* Tue Oct 05 2010 Nils Philippsen <nils@redhat.com> - 0.48.0-5
+- Rebuild for poppler update
+
 * Wed Sep 29 2010 jkeating - 0.48.0-4
 - Rebuilt for gcc bug 634757
 
