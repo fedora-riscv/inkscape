@@ -8,6 +8,7 @@ License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 Patch0:         inkscape-0.48.0-types.patch
+Patch1:         inkscape-0.48.0-poppler.patch
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
@@ -35,6 +36,9 @@ BuildRequires:  perl(XML::Parser)
 BuildRequires:  perl(ExtUtils::Embed)
 BuildRequires:  intltool
 BuildRequires:  popt-devel
+# We detect new poppler in inkscape-0.48.0-poppler.patch
+BuildRequires:  autoconf
+BuildRequires:  automake
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -128,6 +132,7 @@ dos2unix -k -q share/extensions/*.py
 
 
 %build
+autoreconf -i
 %configure                      \
         --with-python           \
         --with-perl             \
@@ -225,7 +230,7 @@ fi
 
 
 %changelog
-* Sat Nov 06 2010 Rex Dieter <rdieter@fedoraproject.org> - 0.48.0-6
+* Sun Nov 14 2010 Lubomir Rintel <lkundrak@v3.sk> - 0.48.0-6
 - rebuilt (poppler)
 
 * Tue Oct 05 2010 Nils Philippsen <nils@redhat.com> - 0.48.0-5
