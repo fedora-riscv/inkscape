@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -9,6 +9,7 @@ URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 Patch0:         inkscape-0.48.0-types.patch
 Patch1:         inkscape-0.48.0-poppler.patch
+Patch2:         inkscape-0.48.0-libwpd.patch
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
@@ -120,6 +121,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %setup -q
 %patch0 -p1 -b .types
 %patch1 -p1 -b .poppler
+%patch2 -p1 -b .libwpd
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -231,6 +233,9 @@ fi
 
 
 %changelog
+* Wed Dec 08 2010 Caolán McNamara <caolanm@redhat.com> - 0.48.0-7
+- rebuilt (libwpd)
+
 * Sun Nov 14 2010 Lubomir Rintel <lkundrak@v3.sk> - 0.48.0-6
 - rebuilt (poppler)
 
