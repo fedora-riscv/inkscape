@@ -126,3 +126,543 @@ index bd3805e..d977162 100644
  #include <sigc++/sigc++.h>
  #include <sigc++/connection.h>
  #include "event-context.h"
+diff --git a/src/application/editor.h b/src/application/editor.h
+index 4545022..b77e0ad 100644
+--- a/src/application/editor.h
++++ b/src/application/editor.h
+@@ -15,6 +15,7 @@
+ #ifndef INKSCAPE_APPLICATION_EDITOR_H
+ #define INKSCAPE_APPLICATION_EDITOR_H
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <glib/gslist.h>
+ #include <glibmm/ustring.h>
+diff --git a/src/box3d-context.h b/src/box3d-context.h
+index 8bafa75..69b4a05 100644
+--- a/src/box3d-context.h
++++ b/src/box3d-context.h
+@@ -15,6 +15,7 @@
+  * Released under GNU GPL
+  */
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "event-context.h"
+ #include "proj_pt.h"
+diff --git a/src/connection-pool.h b/src/connection-pool.h
+index 67bcf00..4aa44e3 100644
+--- a/src/connection-pool.h
++++ b/src/connection-pool.h
+@@ -3,6 +3,7 @@
+ 
+ #include <glib-object.h>
+ #include <gtkmm.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ namespace Inkscape
+diff --git a/src/desktop.h b/src/desktop.h
+index af2473b..5ca4aa5 100644
+--- a/src/desktop.h
++++ b/src/desktop.h
+@@ -27,6 +27,7 @@
+ 
+ #include <gdk/gdkevents.h>
+ #include <gtk/gtktypeutils.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ #include <2geom/matrix.h>
+diff --git a/src/display/canvas-temporary-item.h b/src/display/canvas-temporary-item.h
+index 5077fb5..61e096a 100644
+--- a/src/display/canvas-temporary-item.h
++++ b/src/display/canvas-temporary-item.h
+@@ -14,6 +14,7 @@
+ 
+ #include "display/display-forward.h"
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ namespace Inkscape {
+diff --git a/src/document-private.h b/src/document-private.h
+index fa47542..cc9872d 100644
+--- a/src/document-private.h
++++ b/src/document-private.h
+@@ -14,6 +14,7 @@
+  */
+ 
+ #include <map>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "xml/event-fns.h"
+ #include "sp-defs.h"
+diff --git a/src/document.h b/src/document.h
+index 5810b53..5500549 100644
+--- a/src/document.h
++++ b/src/document.h
+@@ -17,6 +17,7 @@
+ 
+ #include <glib-object.h>
+ #include <gtk/gtksignal.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <sigc++/class_slot.h>
+ 
+diff --git a/src/draw-context.h b/src/draw-context.h
+index 30ebaa6..1d42a71 100644
+--- a/src/draw-context.h
++++ b/src/draw-context.h
+@@ -14,6 +14,7 @@
+  * Released under GNU GPL
+  */
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "event-context.h"
+ #include <forward.h>
+diff --git a/src/extension/timer.h b/src/extension/timer.h
+index ebae62b..33b9829 100644
+--- a/src/extension/timer.h
++++ b/src/extension/timer.h
+@@ -13,6 +13,7 @@
+ #ifndef INKSCAPE_EXTENSION_TIMER_H__
+ #define INKSCAPE_EXTENSION_TIMER_H__
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <glibmm/timeval.h>
+ #include "extension-forward.h"
+diff --git a/src/flood-context.h b/src/flood-context.h
+index af537de..d9da960 100644
+--- a/src/flood-context.h
++++ b/src/flood-context.h
+@@ -11,6 +11,7 @@
+  * Released under GNU GPL
+  */
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <gtk/gtk.h>
+ #include "event-context.h"
+diff --git a/src/gradient-context.h b/src/gradient-context.h
+index 6f8a804..8c2a5f7 100644
+--- a/src/gradient-context.h
++++ b/src/gradient-context.h
+@@ -15,6 +15,7 @@
+  * Released under GNU GPL
+  */
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "event-context.h"
+ 
+diff --git a/src/gradient-drag.h b/src/gradient-drag.h
+index 8cbe9f3..40ab065 100644
+--- a/src/gradient-drag.h
++++ b/src/gradient-drag.h
+@@ -15,6 +15,7 @@
+  */
+ 
+ #include <glib/gslist.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <vector>
+ 
+diff --git a/src/knot.h b/src/knot.h
+index 351c7f7..a651956 100644
+--- a/src/knot.h
++++ b/src/knot.h
+@@ -20,6 +20,7 @@
+ #include "forward.h"
+ #include <2geom/point.h>
+ #include "knot-enums.h"
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ class SPKnot;
+diff --git a/src/live_effects/lpeobject-reference.h b/src/live_effects/lpeobject-reference.h
+index 48d7eb3..8d2b406 100644
+--- a/src/live_effects/lpeobject-reference.h
++++ b/src/live_effects/lpeobject-reference.h
+@@ -11,6 +11,7 @@
+ 
+ #include <forward.h>
+ #include <uri-references.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ namespace Inkscape {
+diff --git a/src/live_effects/parameter/path-reference.h b/src/live_effects/parameter/path-reference.h
+index 67508e5..739c447 100644
+--- a/src/live_effects/parameter/path-reference.h
++++ b/src/live_effects/parameter/path-reference.h
+@@ -11,6 +11,7 @@
+ 
+ #include <forward.h>
+ #include <uri-references.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ class Path;
+diff --git a/src/live_effects/parameter/path.h b/src/live_effects/parameter/path.h
+index 23ad514..8fe9382 100644
+--- a/src/live_effects/parameter/path.h
++++ b/src/live_effects/parameter/path.h
+@@ -16,6 +16,7 @@
+ 
+ #include "live_effects/parameter/parameter.h"
+ #include "live_effects/parameter/path-reference.h"
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ namespace Inkscape {
+diff --git a/src/message-stack.h b/src/message-stack.h
+index 24ec2d5..33b077d 100644
+--- a/src/message-stack.h
++++ b/src/message-stack.h
+@@ -14,6 +14,7 @@
+ #ifndef SEEN_INKSCAPE_MESSAGE_STACK_H
+ #define SEEN_INKSCAPE_MESSAGE_STACK_H
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <glib.h>
+ #include <stdarg.h>
+diff --git a/src/persp3d-reference.h b/src/persp3d-reference.h
+index 7c2ce31..c5f2857 100644
+--- a/src/persp3d-reference.h
++++ b/src/persp3d-reference.h
+@@ -11,6 +11,7 @@
+  */
+ 
+ #include "uri-references.h"
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "persp3d.h"
+ 
+diff --git a/src/rect-context.h b/src/rect-context.h
+index 0445338..54f790c 100644
+--- a/src/rect-context.h
++++ b/src/rect-context.h
+@@ -14,6 +14,7 @@
+  * Released under GNU GPL
+  */
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "event-context.h"
+ #include "libnr/nr-point.h"
+diff --git a/src/selcue.h b/src/selcue.h
+index c9266ac..0869a59 100644
+--- a/src/selcue.h
++++ b/src/selcue.h
+@@ -14,6 +14,7 @@
+  */
+ 
+ #include <list>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ class SPDesktop;
+diff --git a/src/selection-describer.h b/src/selection-describer.h
+index 4b0e3d8..10a613e 100644
+--- a/src/selection-describer.h
++++ b/src/selection-describer.h
+@@ -12,6 +12,7 @@
+ #ifndef SEEN_INKSCAPE_SELECTION_DESCRIPTION_HANDLER_H
+ #define SEEN_INKSCAPE_SELECTION_DESCRIPTION_HANDLER_H
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "message-context.h"
+ 
+diff --git a/src/selection.h b/src/selection.h
+index b5a511e..ae19316 100644
+--- a/src/selection.h
++++ b/src/selection.h
+@@ -19,6 +19,7 @@
+ #include <vector>
+ #include <map>
+ #include <list>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ //#include "libnr/nr-rect.h"
+diff --git a/src/seltrans.h b/src/seltrans.h
+index 0183683..11652e1 100644
+--- a/src/seltrans.h
++++ b/src/seltrans.h
+@@ -15,6 +15,7 @@
+  * Released under GNU GPL, read the file 'COPYING' for more information
+  */
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <2geom/point.h>
+ #include <2geom/matrix.h>
+diff --git a/src/sp-offset.h b/src/sp-offset.h
+index caecdb1..304ffb0 100644
+--- a/src/sp-offset.h
++++ b/src/sp-offset.h
+@@ -16,6 +16,7 @@
+ 
+ #include "sp-shape.h"
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ #define SP_TYPE_OFFSET            (sp_offset_get_type ())
+diff --git a/src/sp-text.h b/src/sp-text.h
+index d9b1539..b90fe37 100644
+--- a/src/sp-text.h
++++ b/src/sp-text.h
+@@ -14,6 +14,7 @@
+  */
+ 
+ #include <glib/gtypes.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "sp-item.h"
+ #include "sp-string.h"
+diff --git a/src/sp-tref-reference.h b/src/sp-tref-reference.h
+index 37a5e21..8af5b53 100644
+--- a/src/sp-tref-reference.h
++++ b/src/sp-tref-reference.h
+@@ -13,6 +13,7 @@
+ 
+ #include <forward.h>
+ #include <uri-references.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ #include "util/share.h"
+diff --git a/src/sp-use-reference.h b/src/sp-use-reference.h
+index b30819a..46123e0 100644
+--- a/src/sp-use-reference.h
++++ b/src/sp-use-reference.h
+@@ -11,6 +11,7 @@
+ 
+ #include <forward.h>
+ #include <uri-references.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ class Path;
+diff --git a/src/sp-use.h b/src/sp-use.h
+index c5c0715..f886c07 100644
+--- a/src/sp-use.h
++++ b/src/sp-use.h
+@@ -13,6 +13,7 @@
+  * Released under GNU GPL, read the file 'COPYING' for more information
+  */
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "svg/svg-length.h"
+ #include "sp-item.h"
+diff --git a/src/spiral-context.h b/src/spiral-context.h
+index d80c974..29a5f41 100644
+--- a/src/spiral-context.h
++++ b/src/spiral-context.h
+@@ -16,6 +16,7 @@
+  */
+ 
+ #include <gtk/gtktypeutils.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "event-context.h"
+ #include "libnr/nr-point.h"
+diff --git a/src/star-context.h b/src/star-context.h
+index 024bf8d..3bc8ca3 100644
+--- a/src/star-context.h
++++ b/src/star-context.h
+@@ -14,6 +14,7 @@
+  * Released under GNU GPL, read the file 'COPYING' for more information
+  */
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "event-context.h"
+ #include "libnr/nr-point.h"
+diff --git a/src/text-context.h b/src/text-context.h
+index a6e2e8d..97501e8 100644
+--- a/src/text-context.h
++++ b/src/text-context.h
+@@ -15,6 +15,7 @@
+  */
+ 
+ /*  #include <gdk/gdkic.h> */
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <gtk/gtkimcontext.h>
+ 
+diff --git a/src/ui/dialog/document-metadata.h b/src/ui/dialog/document-metadata.h
+index f21bb0d..bb1dea7 100644
+--- a/src/ui/dialog/document-metadata.h
++++ b/src/ui/dialog/document-metadata.h
+@@ -14,6 +14,7 @@
+ #define INKSCAPE_UI_DIALOG_DOCUMENT_METADATA_H
+ 
+ #include <list>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <gtkmm/notebook.h>
+ #include <glibmm/i18n.h>
+diff --git a/src/ui/dialog/document-properties.h b/src/ui/dialog/document-properties.h
+index c67dc97..08ba0ae 100644
+--- a/src/ui/dialog/document-properties.h
++++ b/src/ui/dialog/document-properties.h
+@@ -15,6 +15,7 @@
+ #define INKSCAPE_UI_DIALOG_DOCUMENT_PREFERENCES_H
+ 
+ #include <list>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>//
+ #include <gtkmm/notebook.h>
+ #include <glibmm/i18n.h>
+diff --git a/src/ui/dialog/inkscape-preferences.h b/src/ui/dialog/inkscape-preferences.h
+index 5ee916e..a39a8dd 100644
+--- a/src/ui/dialog/inkscape-preferences.h
++++ b/src/ui/dialog/inkscape-preferences.h
+@@ -28,6 +28,7 @@
+ #include <gtkmm/frame.h>
+ #include <gtkmm/notebook.h>
+ #include "ui/widget/preferences-widget.h"
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <glibmm/i18n.h>
+ #include <gtkmm/textview.h>
+diff --git a/src/ui/dialog/undo-history.cpp b/src/ui/dialog/undo-history.cpp
+index 8017af8..fa2eb00 100644
+--- a/src/ui/dialog/undo-history.cpp
++++ b/src/ui/dialog/undo-history.cpp
+@@ -14,6 +14,7 @@
+ 
+ #include <glibmm/i18n.h>
+ #include <gtk/gtkimage.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ 
+diff --git a/src/ui/tool/control-point-selection.h b/src/ui/tool/control-point-selection.h
+index 8023c3e..f4e54e9 100644
+--- a/src/ui/tool/control-point-selection.h
++++ b/src/ui/tool/control-point-selection.h
+@@ -14,6 +14,7 @@
+ 
+ #include <memory>
+ #include <boost/optional.hpp>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <2geom/forward.h>
+ #include <2geom/point.h>
+diff --git a/src/ui/tool/control-point.h b/src/ui/tool/control-point.h
+index 48c7074..ef5d046 100644
+--- a/src/ui/tool/control-point.h
++++ b/src/ui/tool/control-point.h
+@@ -12,6 +12,7 @@
+ #define SEEN_UI_TOOL_CONTROL_POINT_H
+ 
+ #include <boost/utility.hpp>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <gdkmm.h>
+ #include <gtkmm.h>
+diff --git a/src/ui/tool/manipulator.h b/src/ui/tool/manipulator.h
+index 799dad0..f7be27d 100644
+--- a/src/ui/tool/manipulator.h
++++ b/src/ui/tool/manipulator.h
+@@ -13,6 +13,7 @@
+ 
+ #include <set>
+ #include <map>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <glib.h>
+ #include <gdk/gdk.h>
+diff --git a/src/ui/tool/node-tool.h b/src/ui/tool/node-tool.h
+index 641d064..3cbf62e 100644
+--- a/src/ui/tool/node-tool.h
++++ b/src/ui/tool/node-tool.h
+@@ -13,6 +13,7 @@
+ 
+ #include <memory>
+ #include <glib.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include "event-context.h"
+ #include "forward.h"
+diff --git a/src/ui/widget/color-picker.h b/src/ui/widget/color-picker.h
+index 477aa1c..167040c 100644
+--- a/src/ui/widget/color-picker.h
++++ b/src/ui/widget/color-picker.h
+@@ -13,6 +13,7 @@
+ #ifndef __COLOR_PICKER_H__
+ #define __COLOR_PICKER_H__
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <gtkmm/button.h>
+ #include <gtkmm/dialog.h>
+diff --git a/src/ui/widget/page-sizer.h b/src/ui/widget/page-sizer.h
+index ba6c8dd..2072aec 100644
+--- a/src/ui/widget/page-sizer.h
++++ b/src/ui/widget/page-sizer.h
+@@ -13,6 +13,7 @@
+ #define INKSCAPE_UI_WIDGET_PAGE_SIZER__H
+ 
+ #include <gtkmm.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ #include "helper/units.h"
+diff --git a/src/ui/widget/preferences-widget.h b/src/ui/widget/preferences-widget.h
+index 6c45334..52e83e3 100644
+--- a/src/ui/widget/preferences-widget.h
++++ b/src/ui/widget/preferences-widget.h
+@@ -26,6 +26,7 @@
+ #include <gtkmm/drawingarea.h>
+ #include <gtkmm/frame.h>
+ #include <gtkmm/filechooserbutton.h>
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <glibmm/i18n.h>
+ 
+diff --git a/src/ui/widget/selected-style.h b/src/ui/widget/selected-style.h
+index 0229364..e74d5b1 100644
+--- a/src/ui/widget/selected-style.h
++++ b/src/ui/widget/selected-style.h
+@@ -23,6 +23,7 @@
+ #include <gtkmm/adjustment.h>
+ #include <gtkmm/spinbutton.h>
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ #include <glibmm/i18n.h>
+diff --git a/src/ui/widget/style-subject.h b/src/ui/widget/style-subject.h
+index 6f46eff..11c9ed0 100644
+--- a/src/ui/widget/style-subject.h
++++ b/src/ui/widget/style-subject.h
+@@ -14,6 +14,7 @@
+ #include "libnr/nr-rect.h"
+ #include <2geom/rect.h>
+ #include "sp-item.h"
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ class SPDesktop;
+diff --git a/src/xml/helper-observer.h b/src/xml/helper-observer.h
+index d028d39..e7881cd 100644
+--- a/src/xml/helper-observer.h
++++ b/src/xml/helper-observer.h
+@@ -5,6 +5,7 @@
+ #include "node.h"
+ #include "../sp-object.h"
+ //#include "../sp-object-repr.h"
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ 
+ namespace Inkscape {
