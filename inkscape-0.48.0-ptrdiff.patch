@@ -114,3 +114,15 @@ index 6c51130..8ddce8c 100644
 -- 
 1.7.3.4
 
+diff --git a/src/connector-context.h b/src/connector-context.h
+index bd3805e..d977162 100644
+--- a/src/connector-context.h
++++ b/src/connector-context.h
+@@ -12,6 +12,7 @@
+  * Released under GNU GPL, read the file 'COPYING' for more information
+  */
+ 
++#include <stddef.h>
+ #include <sigc++/sigc++.h>
+ #include <sigc++/connection.h>
+ #include "event-context.h"
