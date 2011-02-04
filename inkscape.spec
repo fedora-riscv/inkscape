@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.0
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
