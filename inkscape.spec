@@ -10,6 +10,7 @@ Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.
 Patch0:         inkscape-0.48.0-types.patch
 Patch1:         inkscape-0.48.0-poppler.patch
 Patch2:         inkscape-0.48.0-libwpd.patch
+Patch3:         inkscape-0.48.0-ptrdiff.patch
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
@@ -121,6 +122,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch0 -p1 -b .types
 %patch1 -p1 -b .poppler
 %patch2 -p1 -b .libwpd
+%patch3 -p1 -b .ptrdiff
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -233,6 +235,7 @@ fi
 %changelog
 * Fri Feb 04 2011 Lubomir Rintel <lkundrak@v3.sk> - 0.48.0-10
 - Drop gnome-vfs requirement
+- Fix Rawhide build
 
 * Sat Jan 01 2011 Rex Dieter <rdieter@fedoraproject.org> - 0.48.0-9
 - rebuild (poppler)

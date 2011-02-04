@@ -1,0 +1,116 @@
+From 49889057938c99fa594a101bc2ddfe585cdf7031 Mon Sep 17 00:00:00 2001
+From: Lubomir Rintel <lkundrak@v3.sk>
+Date: Fri, 4 Feb 2011 18:00:38 +0100
+Subject: [PATCH] Add cstddef headers for ptrdiff_h
+
+---
+ src/gc-alloc.h                      |    1 +
+ src/gc-finalized.h                  |    1 +
+ src/gc.cpp                          |    1 +
+ src/ui/tool/node.h                  |    1 +
+ src/util/forward-pointer-iterator.h |    1 +
+ src/util/share.h                    |    1 +
+ src/util/unordered-containers.h     |    2 ++
+ src/widgets/sp-color-notebook.cpp   |    1 +
+ 8 files changed, 9 insertions(+), 0 deletions(-)
+
+diff --git a/src/gc-alloc.h b/src/gc-alloc.h
+index 83811c0..bcd6d6a 100644
+--- a/src/gc-alloc.h
++++ b/src/gc-alloc.h
+@@ -16,6 +16,7 @@
+ #define SEEN_INKSCAPE_GC_ALLOC_H
+ 
+ #include <limits>
++#include <cstddef>
+ #include "gc-core.h"
+ 
+ namespace Inkscape {
+diff --git a/src/gc-finalized.h b/src/gc-finalized.h
+index cf47cb0..036740b 100644
+--- a/src/gc-finalized.h
++++ b/src/gc-finalized.h
+@@ -17,6 +17,7 @@
+ #define SEEN_INKSCAPE_GC_FINALIZED_H
+ 
+ #include <new>
++#include <cstddef>
+ #include "gc-core.h"
+ 
+ namespace Inkscape {
+diff --git a/src/gc.cpp b/src/gc.cpp
+index ee988af..8622059 100644
+--- a/src/gc.cpp
++++ b/src/gc.cpp
+@@ -16,6 +16,7 @@
+ #include <glib/gmessages.h>
+ #include <sigc++/functors/ptr_fun.h>
+ #include <glibmm/main.h>
++#include <cstddef>
+ 
+ namespace Inkscape {
+ namespace GC {
+diff --git a/src/ui/tool/node.h b/src/ui/tool/node.h
+index af4cd7e..156cabd 100644
+--- a/src/ui/tool/node.h
++++ b/src/ui/tool/node.h
+@@ -15,6 +15,7 @@
+ #include <iterator>
+ #include <iosfwd>
+ #include <stdexcept>
++#include <cstddef>
+ #include <tr1/functional>
+ #include <boost/utility.hpp>
+ #include <boost/shared_ptr.hpp>
+diff --git a/src/util/forward-pointer-iterator.h b/src/util/forward-pointer-iterator.h
+index 1603fed..0ee2460 100644
+--- a/src/util/forward-pointer-iterator.h
++++ b/src/util/forward-pointer-iterator.h
+@@ -15,6 +15,7 @@
+ #define SEEN_INKSCAPE_UTIL_FORWARD_POINTER_ITERATOR_H
+ 
+ #include <iterator>
++#include <cstddef>
+ #include "util/reference.h"
+ 
+ namespace Inkscape {
+diff --git a/src/util/share.h b/src/util/share.h
+index 3a2b735..74f3c3c 100644
+--- a/src/util/share.h
++++ b/src/util/share.h
+@@ -14,6 +14,7 @@
+ 
+ #include "gc-core.h"
+ #include <cstring>
++#include <cstddef>
+ 
+ namespace Inkscape {
+ namespace Util {
+diff --git a/src/util/unordered-containers.h b/src/util/unordered-containers.h
+index aaf7719..ea066c1 100644
+--- a/src/util/unordered-containers.h
++++ b/src/util/unordered-containers.h
+@@ -41,6 +41,8 @@
+ # define INK_UNORDERED_MAP __gnu_cxx::hash_map
+ # define INK_HASH __gnu_cxx::hash
+ 
++#include <cstddef>
++
+ namespace __gnu_cxx {
+ // hash function for pointers
+ // TR1 and Boost have this defined by default, __gnu_cxx doesn't
+diff --git a/src/widgets/sp-color-notebook.cpp b/src/widgets/sp-color-notebook.cpp
+index 6c51130..8ddce8c 100644
+--- a/src/widgets/sp-color-notebook.cpp
++++ b/src/widgets/sp-color-notebook.cpp
+@@ -22,6 +22,7 @@
+ #include <cstring>
+ #include <string>
+ #include <cstdlib>
++#include <cstddef>
+ #include <gtk/gtk.h>
+ #include <glibmm/i18n.h>
+ 
+-- 
+1.7.3.4
+
