@@ -10,7 +10,7 @@ Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.
 Patch0:         inkscape-0.48.0-types.patch
 Patch1:         inkscape-0.48.0-poppler.patch
 Patch2:         inkscape-0.48.0-libwpd.patch
-Patch3:         inkscape-0.48.0-ptrdiff.patch
+Patch3:         inkscape-0.48.0-gcc46.patch
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
@@ -122,7 +122,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch0 -p1 -b .types
 %patch1 -p1 -b .poppler
 %patch2 -p1 -b .libwpd
-%patch3 -p1 -b .ptrdiff
+%patch3 -p1 -b .gcc46
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
