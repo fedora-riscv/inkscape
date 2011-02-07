@@ -1,6 +1,6 @@
 Name:           inkscape
-Version:        0.48.0
-Release:        10%{?dist}
+Version:        0.48.1
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -8,7 +8,6 @@ License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 Patch0:         inkscape-0.48.0-types.patch
-Patch1:         inkscape-0.48.0-poppler.patch
 Patch2:         inkscape-0.48.0-libwpd.patch
 Patch3:         inkscape-0.48.0-gcc46.patch
 
@@ -120,7 +119,6 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %setup -q
 %patch0 -p1 -b .types
-%patch1 -p1 -b .poppler
 %patch2 -p1 -b .libwpd
 %patch3 -p1 -b .gcc46
 
@@ -233,6 +231,9 @@ fi
 
 
 %changelog
+* Mon Feb 07 2011 Lubomir Rintel <lkundrak@v3.sk> - 0.48.1-1
+- Bump release
+
 * Fri Feb 04 2011 Lubomir Rintel <lkundrak@v3.sk> - 0.48.0-10
 - Drop gnome-vfs requirement
 - Fix Rawhide build

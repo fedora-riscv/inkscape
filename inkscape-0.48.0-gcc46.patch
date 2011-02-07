@@ -1,4 +1,4 @@
-From b92d337b9d69465053e3f8ac9300d8ce49fad087 Mon Sep 17 00:00:00 2001
+From a04762c1177c62075f9a106815d63fe1e4a7a883 Mon Sep 17 00:00:00 2001
 From: Lubomir Rintel <lkundrak@v3.sk>
 Date: Fri, 4 Feb 2011 18:00:38 +0100
 Subject: [PATCH] Fix build with GCC 4.6
@@ -739,7 +739,7 @@ index c67dc97..08ba0ae 100644
  #include <gtkmm/notebook.h>
  #include <glibmm/i18n.h>
 diff --git a/src/ui/dialog/inkscape-preferences.h b/src/ui/dialog/inkscape-preferences.h
-index 5ee916e..a39a8dd 100644
+index 72975f7..31ec07a 100644
 --- a/src/ui/dialog/inkscape-preferences.h
 +++ b/src/ui/dialog/inkscape-preferences.h
 @@ -28,6 +28,7 @@
@@ -799,7 +799,7 @@ index 799dad0..f7be27d 100644
  #include <glib.h>
  #include <gdk/gdk.h>
 diff --git a/src/ui/tool/multi-path-manipulator.h b/src/ui/tool/multi-path-manipulator.h
-index 181ae6d..97e85f7 100644
+index 7a4cfdb..d7b8f8f 100644
 --- a/src/ui/tool/multi-path-manipulator.h
 +++ b/src/ui/tool/multi-path-manipulator.h
 @@ -11,6 +11,7 @@
@@ -811,19 +811,19 @@ index 181ae6d..97e85f7 100644
  #include "display/display-forward.h"
  #include "forward.h"
 diff --git a/src/ui/tool/node-tool.h b/src/ui/tool/node-tool.h
-index 641d064..3cbf62e 100644
+index 39d04a1..f46b7dc 100644
 --- a/src/ui/tool/node-tool.h
 +++ b/src/ui/tool/node-tool.h
-@@ -13,6 +13,7 @@
- 
+@@ -14,6 +14,7 @@
  #include <memory>
+ #include <boost/ptr_container/ptr_map.hpp>
  #include <glib.h>
 +#include <stddef.h>
  #include <sigc++/sigc++.h>
  #include "event-context.h"
  #include "forward.h"
 diff --git a/src/ui/tool/node.h b/src/ui/tool/node.h
-index af4cd7e..156cabd 100644
+index 494bd35..563d094 100644
 --- a/src/ui/tool/node.h
 +++ b/src/ui/tool/node.h
 @@ -15,6 +15,7 @@
@@ -1028,5 +1028,5 @@ index d028d39..e7881cd 100644
  
  namespace Inkscape {
 -- 
-1.7.1
+1.7.3.4
 
