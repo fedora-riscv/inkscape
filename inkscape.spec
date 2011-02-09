@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -18,6 +18,7 @@ BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
 BuildRequires:  gtkmm24-devel >= 2.8.0
 BuildRequires:  gtkspell-devel
+BuildRequires:  gnome-vfs2-devel >= 2.0
 BuildRequires:  libpng-devel >= 1.2
 BuildRequires:  libxml2-devel >= 2.6.11
 BuildRequires:  libxslt-devel >= 1.0.15
@@ -138,6 +139,7 @@ autoreconf -i
 %configure                      \
         --with-python           \
         --with-perl             \
+        --with-gnome-vfs        \
         --with-xft              \
         --enable-lcms           \
         --enable-poppler-cairo  \
@@ -231,6 +233,9 @@ fi
 
 
 %changelog
+* Wed Feb 09 2011 Lubomir Rintel <lkundrak@v3.sk> - 0.48.1-2
+- Re-enable GVFS for OCAL
+
 * Mon Feb 07 2011 Lubomir Rintel <lkundrak@v3.sk> - 0.48.1-1
 - Bump release
 
