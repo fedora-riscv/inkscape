@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -233,6 +233,9 @@ fi
 
 
 %changelog
+* Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.48.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Wed Feb 09 2011 Lubomir Rintel <lkundrak@v3.sk> - 0.48.1-2
 - Re-enable GVFS for OCAL
 
