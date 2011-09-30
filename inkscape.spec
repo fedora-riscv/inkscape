@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -233,6 +233,9 @@ fi
 
 
 %changelog
+* Fri Sep 30 2011 Marek Kasik <mkasik@redhat.com> - 0.48.1-9
+- Rebuild (poppler-0.18.0)
+
 * Mon Sep 19 2011 Marek Kasik <mkasik@redhat.com> - 0.48.1-8
 - Rebuild (poppler-0.17.3)
 
