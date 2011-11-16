@@ -1,15 +1,16 @@
 Name:           inkscape
-Version:        0.48.1
-Release:        10%{?dist}
+Version:        0.48.2
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Patch0:         inkscape-0.48.0-types.patch
-Patch2:         inkscape-0.48.0-libwpd.patch
-Patch3:         inkscape-0.48.0-gcc46.patch
+Patch0:         inkscape-0.48.2-types.patch
+Patch4:         inkscape-0.48.2-glib.patch
+Patch5:         inkscape-0.48.2-png.patch
+Patch6:         inkscape-0.48.2-png-write.patch
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
@@ -120,8 +121,9 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %setup -q
 %patch0 -p1 -b .types
-%patch2 -p1 -b .libwpd
-%patch3 -p1 -b .gcc46
+%patch4 -p1 -b .glib
+%patch5 -p0 -b .png
+%patch6 -p0 -b .png-write
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -233,6 +235,11 @@ fi
 
 
 %changelog
+* Tue Nov 15 2011 German Ruiz <germanrs@fedoraproject.org> - 0.48.2-1
+- New upstream version
+- Fix glib include compile problem
+- Fix compilation against libpng-1.5
+
 * Fri Oct 28 2011 Rex Dieter <rdieter@fedoraproject.org> - 0.48.1-10
 - rebuild(poppler)
 
