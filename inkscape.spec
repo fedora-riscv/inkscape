@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -11,6 +11,7 @@ Patch0:         inkscape-0.48.2-types.patch
 Patch4:         inkscape-0.48.2-glib.patch
 Patch5:         inkscape-0.48.2-png.patch
 Patch6:         inkscape-0.48.2-png-write.patch
+Patch7:         inkscape-0.48.2-gcc47.patch
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
@@ -124,6 +125,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch4 -p1 -b .glib
 %patch5 -p0 -b .png
 %patch6 -p0 -b .png-write
+%patch7 -p0 -b .gcc47
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -235,6 +237,9 @@ fi
 
 
 %changelog
+* Thu Mar  8 2012 Daniel Drake <dsd@laptop.org> - 0.48.2-4
+- Fix build with GCC 4.7
+
 * Tue Feb 28 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.48.2-3
 - Rebuilt for c++ ABI breakage
 
