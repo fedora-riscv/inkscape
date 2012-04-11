@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -237,6 +237,9 @@ fi
 
 
 %changelog
+* Wed Apr 11 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 0.48.2-5
+- Rebuild for ImageMagik
+
 * Thu Mar  8 2012 Daniel Drake <dsd@laptop.org> - 0.48.2-4
 - Fix build with GCC 4.7
 
