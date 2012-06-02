@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.1
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -233,6 +233,9 @@ fi
 
 
 %changelog
+* Sun Jun 3 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 0.48.1-10
+- Rebuild for ImageMagick update http://lists.fedoraproject.org/pipermail/devel/2012-May/167462.html
+
 * Mon Oct  3 2011 Marek Kasik <mkasik@redhat.com> - 0.48.1-9
 - Rebuild (poppler-0.18.0 stable)
 
