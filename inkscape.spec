@@ -14,9 +14,7 @@ Patch6:         inkscape-0.48.2-png-write.patch
 Patch7:         inkscape-0.48.2-gcc47.patch
 Patch8:         inkscape-0.48.2-poppler_020.patch
 
-%if 0%{?fedora} > 18
-%define poppler_020 1
-%else
+%if 0%{?fedora} && 0%{?fedora} < 18
 %define desktop_vendor fedora
 %endif
 
@@ -37,7 +35,7 @@ BuildRequires:  lcms-devel >= 1.13
 BuildRequires:  cairo-devel
 BuildRequires:  dos2unix
 BuildRequires:  python-devel
-BuildRequires:  poppler-glib-devel%{?poppler_020: >= 0.20.0}
+BuildRequires:  poppler-glib-devel
 BuildRequires:  boost-devel
 BuildRequires:  gsl-devel
 BuildRequires:  libwpg-devel
@@ -46,6 +44,8 @@ BuildRequires:  perl(XML::Parser)
 BuildRequires:  perl(ExtUtils::Embed)
 BuildRequires:  intltool
 BuildRequires:  popt-devel
+# We detect new poppler in inkscape-0.48.2-poppler_020.patch
+BuildRequires:  automake 
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -127,10 +127,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch5 -p0 -b .png
 %patch6 -p0 -b .png-write
 %patch7 -p0 -b .gcc47
-%if 0%{?poppler_020} 
-# seems this patch works *only* with poppler-0.20.x
 %patch8 -p1 -b .poppler_020
-%endif
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -141,6 +138,8 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 # Fix end of line encodings
 dos2unix -k -q share/extensions/*.py
+
+autoreconf -i
 
 
 %build
