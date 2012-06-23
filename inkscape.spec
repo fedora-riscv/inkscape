@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.2
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -12,6 +12,13 @@ Patch4:         inkscape-0.48.2-glib.patch
 Patch5:         inkscape-0.48.2-png.patch
 Patch6:         inkscape-0.48.2-png-write.patch
 Patch7:         inkscape-0.48.2-gcc47.patch
+Patch8:         inkscape-0.48.2-poppler_020.patch
+
+%if 0%{?fedora} > 18
+%define poppler_020 1
+%else
+%define desktop_vendor fedora
+%endif
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
@@ -30,7 +37,7 @@ BuildRequires:  lcms-devel >= 1.13
 BuildRequires:  cairo-devel
 BuildRequires:  dos2unix
 BuildRequires:  python-devel
-BuildRequires:  poppler-devel
+BuildRequires:  poppler-glib-devel%{?poppler_020: >= 0.20.0}
 BuildRequires:  boost-devel
 BuildRequires:  gsl-devel
 BuildRequires:  libwpg-devel
@@ -39,9 +46,6 @@ BuildRequires:  perl(XML::Parser)
 BuildRequires:  perl(ExtUtils::Embed)
 BuildRequires:  intltool
 BuildRequires:  popt-devel
-# We detect new poppler in inkscape-0.48.0-poppler.patch
-BuildRequires:  autoconf
-BuildRequires:  automake
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -77,9 +81,6 @@ Requires:       numpy
 
 # the package requires libperl.so, so it also has to require this:
 Requires:  perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-
-Requires(post):   desktop-file-utils
-Requires(postun): desktop-file-utils
 
 # Filter out perl requires and provides
 # XXX: For now _all_
@@ -126,6 +127,10 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch5 -p0 -b .png
 %patch6 -p0 -b .png-write
 %patch7 -p0 -b .gcc47
+%if 0%{?poppler_020} 
+# seems this patch works *only* with poppler-0.20.x
+%patch8 -p1 -b .poppler_020
+%endif
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -139,15 +144,13 @@ dos2unix -k -q share/extensions/*.py
 
 
 %build
-autoreconf -i
 %configure                      \
         --with-python           \
         --with-perl             \
         --with-gnome-vfs        \
         --with-xft              \
         --enable-lcms           \
-        --enable-poppler-cairo  \
-        --disable-dependency-tracking
+        --enable-poppler-cairo 
 
 make %{?_smp_mflags}
 
@@ -156,7 +159,7 @@ make %{?_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
-desktop-file-install --vendor fedora --delete-original  \
+desktop-file-install --vendor="%{?desktop_vendor}" --delete-original  \
         --dir $RPM_BUILD_ROOT%{_datadir}/applications   \
         $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop
 
@@ -175,28 +178,19 @@ make -k check || :
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  for theme in hicolor; do
-    if test -d "%{_datadir}/icons/$theme"; then
-      if test -f "%{_datadir}/icons/$theme/index.theme"; then
-        touch --no-create %{_datadir}/icons/$theme
-        gtk-update-icon-cache -q %{_datadir}/icons/$theme
-      fi
-    fi
-  done
-fi
+/bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null || :
+
+%posttrans
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
+/usr/bin/update-desktop-database -q &> /dev/null ||:
 
 %postun
-if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  for theme in hicolor; do
-    if test -d "%{_datadir}/icons/$theme"; then
-      if test -f "%{_datadir}/icons/$theme/index.theme"; then
-        touch --no-create %{_datadir}/icons/$theme
-        gtk-update-icon-cache -q %{_datadir}/icons/$theme
-      fi
-    fi
-  done
+if [ $1 -eq 0 ] ; then
+/bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null || :
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
+/usr/bin/update-desktop-database -q &> /dev/null ||:
 fi
+
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -215,8 +209,8 @@ fi
 %{_datadir}/inkscape/screens
 %{_datadir}/inkscape/templates
 %{_datadir}/inkscape/ui
-%{_datadir}/applications/fedora-inkscape.desktop
-%{_datadir}/icons/*/*/*/inkscape*
+%{_datadir}/applications/*inkscape.desktop
+%{_datadir}/icons/hicolor/*/*/inkscape*
 %{_mandir}/man1/inkscape.1*
 %{_mandir}/fr/man1/inkscape.1*
 %doc AUTHORS COPYING ChangeLog NEWS README
@@ -237,6 +231,12 @@ fi
 
 
 %changelog
+* Sat Jun 23 2012 Rex Dieter <rdieter@fedoraproject.org> 
+- 0.48.2-8
+- fix icon/desktop-file scriptlets (#739375)
+- drop .desktop vendor (f18+)
+- inkscape doesn't build with poppler-0.20.0 (#822413)
+
 * Fri Jun 15 2012 Petr Pisar <ppisar@redhat.com> - 0.48.2-7
 - Perl 5.16 rebuild
 
