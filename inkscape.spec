@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.2
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -230,6 +230,9 @@ fi
 
 
 %changelog
+* Wed Jun 27 2012 Petr Pisar <ppisar@redhat.com> - 0.48.2-9
+- Perl 5.16 rebuild
+
 * Sat Jun 23 2012 Rex Dieter <rdieter@fedoraproject.org> 
 - 0.48.2-8
 - fix icon/desktop-file scriptlets (#739375)
