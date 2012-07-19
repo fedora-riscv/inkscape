@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.2
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -230,6 +230,9 @@ fi
 
 
 %changelog
+* Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.48.2-12
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Mon Jul 09 2012 Petr Pisar <ppisar@redhat.com> - 0.48.2-11
 - Perl 5.16 rebuild
 
