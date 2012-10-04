@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.2
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -59,7 +59,6 @@ Requires:       transfig
 Requires:       gimp
 Requires:       numpy
 Requires:       python-lxml
-Requires:       uniconvertor
 # TODO: Deal with these (autoreqs, disabled now):
 # perl(Cwd)
 # perl(Exporter)
@@ -78,6 +77,7 @@ Requires:       uniconvertor
 %endif
 Requires:       python-lxml
 Requires:       numpy
+Requires:       uniconvertor
 
 # the package requires libperl.so, so it also has to require this:
 Requires:  perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -230,6 +230,9 @@ fi
 
 
 %changelog
+* Thu Oct 04 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.2-13
+- Added dep on uniconvertor, BZ 796424.
+
 * Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.48.2-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
