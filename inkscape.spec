@@ -1,6 +1,6 @@
 Name:           inkscape
-Version:        0.48.2
-Release:        13%{?dist}
+Version:        0.48.3.1
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -8,10 +8,10 @@ License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 Patch0:         inkscape-0.48.2-types.patch
-Patch4:         inkscape-0.48.2-glib.patch
+#Patch4:         inkscape-0.48.2-glib.patch
 Patch5:         inkscape-0.48.2-png.patch
 Patch6:         inkscape-0.48.2-png-write.patch
-Patch7:         inkscape-0.48.2-gcc47.patch
+#Patch7:         inkscape-0.48.2-gcc47.patch
 Patch8:         inkscape-0.48.2-poppler_020.patch
 
 %if 0%{?fedora} && 0%{?fedora} < 18
@@ -123,10 +123,10 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %setup -q
 %patch0 -p1 -b .types
-%patch4 -p1 -b .glib
+#%patch4 -p1 -b .glib
 %patch5 -p0 -b .png
 %patch6 -p0 -b .png-write
-%patch7 -p0 -b .gcc47
+#%patch7 -p0 -b .gcc47
 %patch8 -p1 -b .poppler_020
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
@@ -210,8 +210,8 @@ fi
 %{_datadir}/inkscape/ui
 %{_datadir}/applications/*inkscape.desktop
 %{_datadir}/icons/hicolor/*/*/inkscape*
-%{_mandir}/man1/inkscape.1*
-%{_mandir}/fr/man1/inkscape.1*
+%{_mandir}/
+%exclude %{_mandir}/man1/inkview.1*
 %doc AUTHORS COPYING ChangeLog NEWS README
 
 
@@ -230,6 +230,9 @@ fi
 
 
 %changelog
+* Fri Oct 05 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-1
+- Lastest upstream.
+
 * Thu Oct 04 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.2-13
 - Added dep on uniconvertor, BZ 796424.
 
