@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.3.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -13,6 +13,7 @@ Patch5:         inkscape-0.48.2-png.patch
 Patch6:         inkscape-0.48.2-png-write.patch
 #Patch7:         inkscape-0.48.2-gcc47.patch
 Patch8:         inkscape-0.48.2-poppler_020.patch
+Patch9:         inkscape-0.48.3.1-hugexml.patch
 
 %if 0%{?fedora} && 0%{?fedora} < 18
 %define desktop_vendor fedora
@@ -128,6 +129,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch6 -p0 -b .png-write
 #%patch7 -p0 -b .gcc47
 %patch8 -p1 -b .poppler_020
+%patch9 -p0 -b .hugexml
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -230,6 +232,9 @@ fi
 
 
 %changelog
+* Thu Nov 01 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-2
+- Allow loading large XML, BZ 871012.
+
 * Fri Oct 05 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-1
 - Lastest upstream.
 
