@@ -1,12 +1,12 @@
 Name:           inkscape
 Version:        0.48.3.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 Patch0:         inkscape-0.48.2-types.patch
 #Patch4:         inkscape-0.48.2-glib.patch
 Patch5:         inkscape-0.48.2-png.patch
@@ -232,6 +232,9 @@ fi
 
 
 %changelog
+* Mon Nov 19 2012 Nils Philippsen <nils@redhat.com> - 0.48.2-6
+- update sourceforge download URL
+
 * Thu Nov 01 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-2
 - Allow loading large XML, BZ 871012.
 
