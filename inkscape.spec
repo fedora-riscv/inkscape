@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.3.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -212,7 +212,7 @@ fi
 %{_datadir}/inkscape/ui
 %{_datadir}/applications/*inkscape.desktop
 %{_datadir}/icons/hicolor/*/*/inkscape*
-%{_mandir}/
+%{_mandir}/*/*
 %exclude %{_mandir}/man1/inkview.1*
 %doc AUTHORS COPYING ChangeLog NEWS README
 
@@ -232,7 +232,11 @@ fi
 
 
 %changelog
-* Mon Nov 19 2012 Nils Philippsen <nils@redhat.com> - 0.48.2-6
+* Thu Dec 06 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-4
+- Fix directory ownership, BZ 873817.
+- Fix previous changelog version.
+
+* Mon Nov 19 2012 Nils Philippsen <nils@redhat.com> - 0.48.3.1-3
 - update sourceforge download URL
 
 * Thu Nov 01 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-2
