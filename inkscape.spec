@@ -1,15 +1,23 @@
 Name:           inkscape
-Version:        0.48.1
-Release:        10%{?dist}
+Version:        0.48.4
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Patch0:         inkscape-0.48.0-types.patch
-Patch2:         inkscape-0.48.0-libwpd.patch
-Patch3:         inkscape-0.48.0-gcc46.patch
+Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+Patch0:         inkscape-0.48.2-types.patch
+#Patch4:         inkscape-0.48.2-glib.patch
+#Patch5:         inkscape-0.48.2-png.patch
+#Patch6:         inkscape-0.48.2-png-write.patch
+#Patch7:         inkscape-0.48.2-gcc47.patch
+#Patch8:         inkscape-0.48.2-poppler_020.patch
+#Patch9:         inkscape-0.48.3.1-hugexml.patch
+
+%if 0%{?fedora} && 0%{?fedora} < 18
+%define desktop_vendor fedora
+%endif
 
 BuildRequires:  atk-devel
 BuildRequires:  desktop-file-utils
@@ -28,7 +36,7 @@ BuildRequires:  lcms-devel >= 1.13
 BuildRequires:  cairo-devel
 BuildRequires:  dos2unix
 BuildRequires:  python-devel
-BuildRequires:  poppler-devel
+BuildRequires:  poppler-glib-devel
 BuildRequires:  boost-devel
 BuildRequires:  gsl-devel
 BuildRequires:  libwpg-devel
@@ -37,9 +45,8 @@ BuildRequires:  perl(XML::Parser)
 BuildRequires:  perl(ExtUtils::Embed)
 BuildRequires:  intltool
 BuildRequires:  popt-devel
-# We detect new poppler in inkscape-0.48.0-poppler.patch
-BuildRequires:  autoconf
-BuildRequires:  automake
+# We detect new poppler in inkscape-0.48.2-poppler_020.patch
+BuildRequires:  automake 
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -53,7 +60,6 @@ Requires:       transfig
 Requires:       gimp
 Requires:       numpy
 Requires:       python-lxml
-Requires:       uniconvertor
 # TODO: Deal with these (autoreqs, disabled now):
 # perl(Cwd)
 # perl(Exporter)
@@ -72,12 +78,10 @@ Requires:       uniconvertor
 %endif
 Requires:       python-lxml
 Requires:       numpy
+Requires:       uniconvertor
 
 # the package requires libperl.so, so it also has to require this:
 Requires:  perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-
-Requires(post):   desktop-file-utils
-Requires(postun): desktop-file-utils
 
 # Filter out perl requires and provides
 # XXX: For now _all_
@@ -120,8 +124,12 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %setup -q
 %patch0 -p1 -b .types
-%patch2 -p1 -b .libwpd
-%patch3 -p1 -b .gcc46
+#%patch4 -p1 -b .glib
+#%patch5 -p0 -b .png
+#%patch6 -p0 -b .png-write
+#%patch7 -p0 -b .gcc47
+#%patch8 -p1 -b .poppler_020
+#%patch9 -p0 -b .hugexml
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -133,17 +141,17 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 # Fix end of line encodings
 dos2unix -k -q share/extensions/*.py
 
+autoreconf -i
+
 
 %build
-autoreconf -i
 %configure                      \
         --with-python           \
         --with-perl             \
         --with-gnome-vfs        \
         --with-xft              \
         --enable-lcms           \
-        --enable-poppler-cairo  \
-        --disable-dependency-tracking
+        --enable-poppler-cairo 
 
 make %{?_smp_mflags}
 
@@ -152,7 +160,7 @@ make %{?_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
-desktop-file-install --vendor fedora --delete-original  \
+desktop-file-install --vendor="%{?desktop_vendor}" --delete-original  \
         --dir $RPM_BUILD_ROOT%{_datadir}/applications   \
         $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop
 
@@ -171,28 +179,19 @@ make -k check || :
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  for theme in hicolor; do
-    if test -d "%{_datadir}/icons/$theme"; then
-      if test -f "%{_datadir}/icons/$theme/index.theme"; then
-        touch --no-create %{_datadir}/icons/$theme
-        gtk-update-icon-cache -q %{_datadir}/icons/$theme
-      fi
-    fi
-  done
-fi
+/bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null || :
+
+%posttrans
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
+/usr/bin/update-desktop-database -q &> /dev/null ||:
 
 %postun
-if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  for theme in hicolor; do
-    if test -d "%{_datadir}/icons/$theme"; then
-      if test -f "%{_datadir}/icons/$theme/index.theme"; then
-        touch --no-create %{_datadir}/icons/$theme
-        gtk-update-icon-cache -q %{_datadir}/icons/$theme
-      fi
-    fi
-  done
+if [ $1 -eq 0 ] ; then
+/bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null || :
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
+/usr/bin/update-desktop-database -q &> /dev/null ||:
 fi
+
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -211,10 +210,11 @@ fi
 %{_datadir}/inkscape/screens
 %{_datadir}/inkscape/templates
 %{_datadir}/inkscape/ui
-%{_datadir}/applications/fedora-inkscape.desktop
-%{_datadir}/icons/*/*/*/inkscape*
-%{_mandir}/man1/inkscape.1*
-%{_mandir}/fr/man1/inkscape.1*
+%{_datadir}/applications/*inkscape.desktop
+%{_datadir}/icons/hicolor/*/*/inkscape*
+%{_mandir}/*/*gz
+%{_mandir}/*/*/*gz
+%exclude %{_mandir}/man1/inkview.1*
 %doc AUTHORS COPYING ChangeLog NEWS README
 
 
@@ -233,13 +233,74 @@ fi
 
 
 %changelog
-* Sun Jun 3 2012 Pavel Alexeev <Pahan@Hubbitus.info> - 0.48.1-10
-- Rebuild for ImageMagick update http://lists.fedoraproject.org/pipermail/devel/2012-May/167462.html
+* Tue Dec 06 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-4
+- 0.48.4, fix XXE security flaw.
+- Correct man page ownership.
 
-* Mon Oct  3 2011 Marek Kasik <mkasik@redhat.com> - 0.48.1-9
-- Rebuild (poppler-0.18.0 stable)
+* Thu Dec 06 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-4
+- Fix directory ownership, BZ 873817.
+- Fix previous changelog version.
 
-* Wed Sep 21 2011 Marek Kasik <mkasik@redhat.com> - 0.48.1-8
+* Mon Nov 19 2012 Nils Philippsen <nils@redhat.com> - 0.48.3.1-3
+- update sourceforge download URL
+
+* Thu Nov 01 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-2
+- Allow loading large XML, BZ 871012.
+
+* Fri Oct 05 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-1
+- Lastest upstream.
+
+* Thu Oct 04 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.2-13
+- Added dep on uniconvertor, BZ 796424.
+
+* Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.48.2-12
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
+* Mon Jul 09 2012 Petr Pisar <ppisar@redhat.com> - 0.48.2-11
+- Perl 5.16 rebuild
+
+* Mon Jul  2 2012 Marek Kasik <mkasik@redhat.com> - 0.48.2-10
+- Rebuild (poppler-0.20.1)
+
+* Wed Jun 27 2012 Petr Pisar <ppisar@redhat.com> - 0.48.2-9
+- Perl 5.16 rebuild
+
+* Sat Jun 23 2012 Rex Dieter <rdieter@fedoraproject.org> 
+- 0.48.2-8
+- fix icon/desktop-file scriptlets (#739375)
+- drop .desktop vendor (f18+)
+- inkscape doesn't build with poppler-0.20.0 (#822413)
+
+* Fri Jun 15 2012 Petr Pisar <ppisar@redhat.com> - 0.48.2-7
+- Perl 5.16 rebuild
+
+* Mon Jun 11 2012 Adel Gadllah <adel.gadllah@gmail.com> - 0.48.2-6
+- Rebuild for new poppler
+
+* Wed Apr 11 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 0.48.2-5
+- Rebuild for ImageMagik
+
+* Thu Mar  8 2012 Daniel Drake <dsd@laptop.org> - 0.48.2-4
+- Fix build with GCC 4.7
+
+* Tue Feb 28 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.48.2-3
+- Rebuilt for c++ ABI breakage
+
+* Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.48.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
+* Tue Nov 15 2011 German Ruiz <germanrs@fedoraproject.org> - 0.48.2-1
+- New upstream version
+- Fix glib include compile problem
+- Fix compilation against libpng-1.5
+
+* Fri Oct 28 2011 Rex Dieter <rdieter@fedoraproject.org> - 0.48.1-10
+- rebuild(poppler)
+
+* Fri Sep 30 2011 Marek Kasik <mkasik@redhat.com> - 0.48.1-9
+- Rebuild (poppler-0.18.0)
+
+* Mon Sep 19 2011 Marek Kasik <mkasik@redhat.com> - 0.48.1-8
 - Rebuild (poppler-0.17.3)
 
 * Thu Jul 21 2011 Petr Sabata <contyk@redhat.com> - 0.48.1-7
