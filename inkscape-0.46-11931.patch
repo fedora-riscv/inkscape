@@ -1,0 +1,60 @@
+=== modified file 'src/preferences-skeleton.h'
+--- src/preferences-skeleton.h	2012-05-23 12:00:49 +0000
++++ src/preferences-skeleton.h	2012-12-05 22:39:22 +0000
+@@ -337,6 +337,10 @@
+ "           check_on_reading=\"0\" "
+ "           check_on_editing=\"0\" "
+ "           check_on_writing=\"0\"/>\n"
++"    <group id=\"externalresources\">\n"
++"      <group id=\"xml\" "
++"           allow_net_access=\"0\"/>\n"
++"    </group>\n"
+ "    <group id=\"forkgradientvectors\" value=\"1\"/>\n"
+ "    <group id=\"iconrender\" named_nodelay=\"0\"/>\n"
+ "    <group id=\"autosave\" enable=\"0\" interval=\"10\" path=\"\" max=\"10\"/>\n"
+
+=== modified file 'src/ui/dialog/ocaldialogs.cpp'
+--- src/ui/dialog/ocaldialogs.cpp	2012-11-26 10:33:19 +0000
++++ src/ui/dialog/ocaldialogs.cpp	2012-12-05 22:39:22 +0000
+@@ -1112,8 +1112,14 @@
+     xmlDoc *doc = NULL;
+     xmlNode *root_element = NULL;
+ 
+-    doc = xmlReadMemory(data, (int) length, xml_uri.c_str(), NULL,
+-            XML_PARSE_RECOVER + XML_PARSE_NOWARNING + XML_PARSE_NOERROR);
++    int parse_options = XML_PARSE_RECOVER + XML_PARSE_NOWARNING + XML_PARSE_NOERROR;  // do not use XML_PARSE_NOENT ! see bug lp:1025185
++    Inkscape::Preferences *prefs = Inkscape::Preferences::get();
++    bool allowNetAccess = prefs->getBool("/options/externalresources/xml/allow_net_access", false);
++    if (!allowNetAccess) {
++        parse_options |= XML_PARSE_NONET;
++    }
++
++    doc = xmlReadMemory(data, (int) length, xml_uri.c_str(), NULL, parse_options);
+         
+     if (doc == NULL) {
+         // If nothing is returned, no results could be found
+
+=== modified file 'src/xml/repr-io.cpp'
+--- src/xml/repr-io.cpp	2012-05-12 11:16:29 +0000
++++ src/xml/repr-io.cpp	2012-12-05 22:39:22 +0000
+@@ -297,12 +297,18 @@
+         XmlSource src;
+ 
+         if ( (src.setFile(filename) == 0) ) {
++            int parse_options = XML_PARSE_HUGE; // do not use XML_PARSE_NOENT ! see bug lp:1025185
++            Inkscape::Preferences *prefs = Inkscape::Preferences::get();
++            bool allowNetAccess = prefs->getBool("/options/externalresources/xml/allow_net_access", false);
++            if (!allowNetAccess) {
++                parse_options |= XML_PARSE_NONET;
++            }
+             doc = xmlReadIO( XmlSource::readCb,
+                              XmlSource::closeCb,
+                              &src,
+                              localFilename,
+                              src.getEncoding(),
+-                             XML_PARSE_NOENT | XML_PARSE_HUGE);
++                             parse_options);
+         }
+     }
+ 
+
