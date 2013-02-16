@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.4
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -14,6 +14,7 @@ Patch0:         inkscape-0.48.2-types.patch
 #Patch7:         inkscape-0.48.2-gcc47.patch
 #Patch8:         inkscape-0.48.2-poppler_020.patch
 #Patch9:         inkscape-0.48.3.1-hugexml.patch
+Patch10:        inkscape-0.48.4-spuriouscomma.h
 
 %if 0%{?fedora} && 0%{?fedora} < 18
 %define desktop_vendor fedora
@@ -130,13 +131,14 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 #%patch7 -p0 -b .gcc47
 #%patch8 -p1 -b .poppler_020
 #%patch9 -p0 -b .hugexml
+%patch10 -p0 -b .spuriouscomma
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
 # despite not being executable
-(find . \( -name '*.cpp' -o -name '*.h' \) -perm +111
-        find share/extensions -name '*.py' -perm +111
-) |xargs chmod -x
+find . -name '*.cpp' | xargs chmod -x
+find . -name '*.h' | xargs chmod -x
+find share/extensions -name '*.py' | xargs chmod -x
 
 # Fix end of line encodings
 dos2unix -k -q share/extensions/*.py
@@ -233,13 +235,16 @@ fi
 
 
 %changelog
+* Fri Feb 15 2013 Jon Ciesla <limburgher@gmail.com> - 0.48.4-4
+- Fix FTBFS.
+
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.48.4-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
 * Fri Jan 18 2013 Marek Kasik <mkasik@redhat.com> - 0.48.4-2
 - Rebuild (poppler-0.22.0)
 
-* Tue Dec 06 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-4
+* Thu Dec 06 2012 Jon Ciesla <limburgher@gmail.com> - 0.48.3.1-4
 - 0.48.4, fix XXE security flaw.
 - Correct man page ownership.
 
@@ -657,7 +662,7 @@ fi
 * Sun May 22 2005 Jeremy Katz <katzj@redhat.com> - 0.41-3
 - rebuild on all arches
 
-* Fri Apr  7 2005 Michael Schwendt <mschwendt[AT]users.sf.net>
+* Thu Apr 07 2005 Michael Schwendt <mschwendt[AT]users.sf.net>
 - rebuilt
 
 * Wed Feb 09 2005 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.41-1
@@ -667,7 +672,7 @@ fi
 * Sat Dec 04 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.40-1
 - 0.40.
 
-* Mon Nov 16 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.40-0.pre3
+* Tue Nov 16 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.40-0.pre3
 - 0.40pre3.
 
 * Thu Nov 11 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0.39-0.fdr.2
@@ -677,7 +682,7 @@ fi
 * Sun Aug 29 2004 Phillip Compton <pcompton[AT]proteinmedia.com> - 0:0.39-0.fdr.1
 - 0.39.
 
-* Fri Apr 10 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.38.1-0.fdr.1
+* Sat Apr 10 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.38.1-0.fdr.1
 - respin real fix for Provides/Requires for perl(SpSVG)
 
 * Fri Apr 9 2004 P Linnell <scribusdocs at atlantictechsolutions.com> 0:0.38.1-0.fdr.0
