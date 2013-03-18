@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.4
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -235,6 +235,9 @@ fi
 
 
 %changelog
+* Mon Mar 18 2013 Jon Ciesla <limburgher@gmail.com> - 0.48.4-5
+- ImageMagick rebuild.
+
 * Fri Feb 15 2013 Jon Ciesla <limburgher@gmail.com> - 0.48.4-4
 - Fix FTBFS.
 
