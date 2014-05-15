@@ -1,0 +1,68 @@
+diff -rupN inkscape-0.48.4/configure.ac inkscape-0.48.4-new/configure.ac
+--- inkscape-0.48.4/configure.ac	2012-12-15 17:50:19.205918190 +0100
++++ inkscape-0.48.4-new/configure.ac	2014-05-15 00:29:24.076377009 +0200
+@@ -263,7 +263,7 @@ if test "x$gc_ok" = "xyes" && test "x$cr
+ 			# include <gc.h>
+ 			#endif
+ 			#include <stdio.h>
+-			extern unsigned GC_version;
++			unsigned GC_version = GC_get_version();
+ 			int main(void){
+ 				unsigned min = ((6 << 16) | (4 << 8) | 0);
+ 				printf("%d.%d.%d ",GC_version >> 16, (GC_version >> 8) & 0xFF, GC_version & 0xFF);
+diff -rupN inkscape-0.48.4/src/gc-core.h inkscape-0.48.4-new/src/gc-core.h
+--- inkscape-0.48.4/src/gc-core.h	2012-02-14 04:22:17.670697000 +0100
++++ inkscape-0.48.4-new/src/gc-core.h	2014-05-15 00:28:40.838404308 +0200
+@@ -57,7 +57,7 @@ struct Ops {
+                                            CleanupFunc *old_func,
+                                            void **old_data);
+     int (*general_register_disappearing_link)(void **p_ptr,
+-                                              void *base);
++                                              const void *base);
+     int (*unregister_disappearing_link)(void **p_ptr);
+     std::size_t (*get_heap_size)();
+     std::size_t (*get_free_bytes)();
+diff -rupN inkscape-0.48.4/src/gc.cpp inkscape-0.48.4-new/src/gc.cpp
+--- inkscape-0.48.4/src/gc.cpp	2012-02-14 04:22:17.670697000 +0100
++++ inkscape-0.48.4-new/src/gc.cpp	2014-05-15 00:28:40.839404331 +0200
+@@ -70,8 +70,8 @@ void *debug_base(void *ptr) {
+     return base + debug_base_fixup();
+ }
+ 
+-int debug_general_register_disappearing_link(void **p_ptr, void *base) {
+-    char *real_base=reinterpret_cast<char *>(base) - debug_base_fixup();
++int debug_general_register_disappearing_link(void **p_ptr, const void *base) {
++    char *real_base=const_cast<char *>(reinterpret_cast<const char *>(base)) - debug_base_fixup();
+     return GC_general_register_disappearing_link(p_ptr, real_base);
+ }
+ 
+@@ -90,7 +90,7 @@ void dummy_register_finalizer(void *, Cl
+     }
+ }
+ 
+-int dummy_general_register_disappearing_link(void **, void *) { return false; }
++int dummy_general_register_disappearing_link(void **, const void *) { return false; }
+ 
+ int dummy_unregister_disappearing_link(void **/*link*/) { return false; }
+ 
+@@ -112,7 +112,11 @@ Ops enabled_ops = {
+     &GC_malloc_atomic_uncollectable,
+     &GC_base,
+     &GC_register_finalizer_ignore_self,
++#if (GC_MAJOR_VERSION >= 7 && GC_MINOR_VERSION >= 4)
+     &GC_general_register_disappearing_link,
++#else
++    (int (*)(void**, const void*))(&GC_general_register_disappearing_link),
++#endif
+     &GC_unregister_disappearing_link,
+     &GC_get_heap_size,
+     &GC_get_free_bytes,
+@@ -202,7 +206,7 @@ void stub_register_finalizer_ignore_self
+     die_because_not_initialized();
+ }
+ 
+-int stub_general_register_disappearing_link(void **, void *) {
++int stub_general_register_disappearing_link(void **, const void *) {
+     die_because_not_initialized();
+     return 0;
+ }
