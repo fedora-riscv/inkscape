@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.4
-Release:        15%{?dist}
+Release:        16%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -19,6 +19,7 @@ Patch11:        inkscape-0.48.4-freetype.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1097945
 Patch12:        inkscape-0.48.4-poppler-0.26.patch
 Patch13:        inkscape-0.48.4-gc-7.4.patch
+Patch14:        0001-update-to-new-libwpg.patch
 
 %if 0%{?fedora} && 0%{?fedora} < 18
 %define desktop_vendor fedora
@@ -139,6 +140,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch11 -p0 -b .freetype
 %patch12 -p1 -b .poppler
 %patch13 -p1 -b .gc
+%patch14 -p1 -b .libwpg
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -242,6 +244,9 @@ fi
 
 
 %changelog
+* Tue May 27 2014 David Tardon <dtardon@redhat.com> - 0.48.4-16
+- switch to librevenge-based import libs
+
 * Fri May 23 2014 Petr Machata <pmachata@redhat.com> - 0.48.4-15
 - Rebuild for boost 1.55.0
 
