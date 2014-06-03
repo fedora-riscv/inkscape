@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.4
-Release:        16%{?dist}
+Release:        17%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -38,7 +38,7 @@ BuildRequires:  libxml2-devel >= 2.6.11
 BuildRequires:  libxslt-devel >= 1.0.15
 BuildRequires:  pango-devel
 BuildRequires:  pkgconfig
-BuildRequires:  lcms-devel >= 1.13
+BuildRequires:  lcms2-devel
 BuildRequires:  cairo-devel
 BuildRequires:  dos2unix
 BuildRequires:  python-devel
@@ -161,7 +161,7 @@ autoreconf -i
         --with-perl             \
         --with-gnome-vfs        \
         --with-xft              \
-        --enable-lcms           \
+        --enable-lcms2           \
         --enable-poppler-cairo 
 
 make %{?_smp_mflags}
@@ -244,6 +244,9 @@ fi
 
 
 %changelog
+* Tue Jun 03 2014 Jon Ciesla <limburgher@gmail.com> - 0.48.4-17
+- Switch to lcms2.
+
 * Tue May 27 2014 David Tardon <dtardon@redhat.com> - 0.48.4-16
 - switch to librevenge-based import libs
 
