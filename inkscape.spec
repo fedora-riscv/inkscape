@@ -1,6 +1,6 @@
 Name:           inkscape
-Version:        0.48.4
-Release:        18%{?dist}
+Version:        0.48.5
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -14,10 +14,10 @@ Patch0:         inkscape-0.48.2-types.patch
 #Patch7:         inkscape-0.48.2-gcc47.patch
 #Patch8:         inkscape-0.48.2-poppler_020.patch
 #Patch9:         inkscape-0.48.3.1-hugexml.patch
-Patch10:        inkscape-0.48.4-spuriouscomma.h
-Patch11:        inkscape-0.48.4-freetype.patch
+#Patch10:        inkscape-0.48.4-spuriouscomma.h
+#Patch11:        inkscape-0.48.4-freetype.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1097945
-Patch12:        inkscape-0.48.4-poppler-0.26.patch
+#Patch12:        inkscape-0.48.4-poppler-0.26.patch
 Patch13:        inkscape-0.48.4-gc-7.4.patch
 Patch14:        0001-update-to-new-libwpg.patch
 
@@ -136,9 +136,9 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 #%patch7 -p0 -b .gcc47
 #%patch8 -p1 -b .poppler_020
 #%patch9 -p0 -b .hugexml
-%patch10 -p0 -b .spuriouscomma
-%patch11 -p0 -b .freetype
-%patch12 -p1 -b .poppler
+#%patch10 -p0 -b .spuriouscomma
+#%patch11 -p0 -b .freetype
+#%patch12 -p1 -b .poppler
 %patch13 -p1 -b .gc
 %patch14 -p1 -b .libwpg
 
@@ -244,6 +244,11 @@ fi
 
 
 %changelog
+* Mon Jul 21 2014 Jon Ciesla <limburgher@gmail.com> - 0.48.5-1
+- Latest bugfix release.
+- Spurious comma patch upstreamed.
+- Dropped Freetype, poppler, gc patches.
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.48.4-18
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
