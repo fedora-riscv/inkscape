@@ -1,0 +1,11 @@
+2014-12-20: Retired because of broken deps:
+unresolved dependencies for inkscape-0.46-3.el5.i386:
+pstoedit
+libsigc-2.0.so.0
+libpangomm-1.4.so.1
+libgtkmm-2.4.so.1
+libglibmm-2.4.so.1
+libgdkmm-2.4.so.1
+libcairomm-1.0.so.1
+libatkmm-1.6.so.1
+
