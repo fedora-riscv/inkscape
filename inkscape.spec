@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.5
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -53,6 +53,7 @@ BuildRequires:  intltool
 BuildRequires:  popt-devel
 # We detect new poppler in inkscape-0.48.2-poppler_020.patch
 BuildRequires:  automake 
+BuildRequires:  aspell-devel
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -244,6 +245,9 @@ fi
 
 
 %changelog
+* Fri Jan 09 2015 Jon Ciesla <limburgher@gmail.com> - 0.48.5-5
+- Added aspell support, BZ 1171934.
+
 * Thu Nov 27 2014 Marek Kasik <mkasik@redhat.com> - 0.48.5-4
 - Rebuild (poppler-0.28.1)
 
