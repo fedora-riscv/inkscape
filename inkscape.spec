@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.48.5
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -20,6 +20,7 @@ Patch0:         inkscape-0.48.2-types.patch
 #Patch12:        inkscape-0.48.4-poppler-0.26.patch
 Patch13:        inkscape-0.48.4-gc-7.4.patch
 Patch14:        0001-update-to-new-libwpg.patch
+Patch15:        inkscape-0.48.5-poppler-0.29.0.patch
 
 %if 0%{?fedora} && 0%{?fedora} < 18
 %define desktop_vendor fedora
@@ -142,6 +143,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 #%patch12 -p1 -b .poppler
 %patch13 -p1 -b .gc
 %patch14 -p1 -b .libwpg
+%patch15 -p1 -b .poppler-0.29.0
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -245,6 +247,10 @@ fi
 
 
 %changelog
+* Fri Jan 23 2015 Marek Kasik <mkasik@redhat.com> - 0.48.5-6
+- Rebuild (poppler-0.30.0)
+- Backport commit "Fix build with poppler 0.29.0 (Bug #1399811)"
+
 * Fri Jan 09 2015 Jon Ciesla <limburgher@gmail.com> - 0.48.5-5
 - Added aspell support, BZ 1171934.
 
