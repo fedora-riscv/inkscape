@@ -1,6 +1,6 @@
 Name:           inkscape
-Version:        0.48.5
-Release:        7%{?dist}
+Version:        0.91
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -18,9 +18,10 @@ Patch0:         inkscape-0.48.2-types.patch
 #Patch11:        inkscape-0.48.4-freetype.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1097945
 #Patch12:        inkscape-0.48.4-poppler-0.26.patch
-Patch13:        inkscape-0.48.4-gc-7.4.patch
-Patch14:        0001-update-to-new-libwpg.patch
-Patch15:        inkscape-0.48.5-poppler-0.29.0.patch
+#Patch13:        inkscape-0.48.4-gc-7.4.patch
+#Patch14:        0001-update-to-new-libwpg.patch
+#Patch15:        inkscape-0.48.5-poppler-0.29.0.patch
+Patch16:	inkscape-0.91-desktop.patch
 
 %if 0%{?fedora} && 0%{?fedora} < 18
 %define desktop_vendor fedora
@@ -141,9 +142,10 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 #%patch10 -p0 -b .spuriouscomma
 #%patch11 -p0 -b .freetype
 #%patch12 -p1 -b .poppler
-%patch13 -p1 -b .gc
-%patch14 -p1 -b .libwpg
-%patch15 -p1 -b .poppler-0.29.0
+#%patch13 -p1 -b .gc
+#%patch14 -p1 -b .libwpg
+#%patch15 -p1 -b .poppler-0.29.0
+%patch16 -p1 -b .desktop
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -155,7 +157,7 @@ find share/extensions -name '*.py' | xargs chmod -x
 # Fix end of line encodings
 dos2unix -k -q share/extensions/*.py
 
-autoreconf -i
+#autoreconf -if
 
 
 %build
@@ -211,7 +213,9 @@ fi
 %defattr(-,root,root,-)
 %{_bindir}/inkscape
 %dir %{_datadir}/inkscape
-%{_datadir}/inkscape/clipart
+%{_datadir}/inkscape/attributes
+%{_datadir}/inkscape/branding
+#%{_datadir}/inkscape/clipart
 %{_datadir}/inkscape/extensions
 %{_datadir}/inkscape/filters
 %{_datadir}/inkscape/fonts
@@ -222,6 +226,7 @@ fi
 %{_datadir}/inkscape/palettes
 %{_datadir}/inkscape/patterns
 %{_datadir}/inkscape/screens
+%{_datadir}/inkscape/symbols
 %{_datadir}/inkscape/templates
 %{_datadir}/inkscape/ui
 %{_datadir}/applications/*inkscape.desktop
@@ -247,6 +252,9 @@ fi
 
 
 %changelog
+* Thu Jan 29 2015 Jon Ciesla <limburgher@gmail.com> - 0.91-1
+- Latest upstream.
+
 * Tue Jan 27 2015 Petr Machata <pmachata@redhat.com> - 0.48.5-7
 - Rebuild for boost 1.57.0
 
