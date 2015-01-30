@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -235,6 +235,7 @@ fi
 %{_mandir}/*/*/*gz
 %exclude %{_mandir}/man1/inkview.1*
 %doc AUTHORS COPYING ChangeLog NEWS README
+%{_datadir}/inkscape/tutorials
 
 
 %files view
@@ -247,11 +248,13 @@ fi
 %files docs
 %defattr(-,root,root,-)
 %dir %{_datadir}/inkscape
-%{_datadir}/inkscape/tutorials
 %{_datadir}/inkscape/examples
 
 
 %changelog
+* Fri Jan 30 2015 Jon Ciesla <limburgher@gmail.com> - 0.91-2
+- Move tutorials into main package, BZ 1187686.
+
 * Thu Jan 29 2015 Jon Ciesla <limburgher@gmail.com> - 0.91-1
 - Latest upstream.
 
