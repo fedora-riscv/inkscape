@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -252,6 +252,9 @@ fi
 
 
 %changelog
+* Wed Feb 04 2015 Petr Machata <pmachata@redhat.com> - 0.91-3
+- Bump for rebuild.
+
 * Fri Jan 30 2015 Jon Ciesla <limburgher@gmail.com> - 0.91-2
 - Move tutorials into main package, BZ 1187686.
 
