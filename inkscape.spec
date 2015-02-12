@@ -8,54 +8,33 @@ License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 Patch0:         inkscape-0.48.2-types.patch
-#Patch4:         inkscape-0.48.2-glib.patch
-#Patch5:         inkscape-0.48.2-png.patch
-#Patch6:         inkscape-0.48.2-png-write.patch
-#Patch7:         inkscape-0.48.2-gcc47.patch
-#Patch8:         inkscape-0.48.2-poppler_020.patch
-#Patch9:         inkscape-0.48.3.1-hugexml.patch
-#Patch10:        inkscape-0.48.4-spuriouscomma.h
-#Patch11:        inkscape-0.48.4-freetype.patch
-# https://bugzilla.redhat.com/show_bug.cgi?id=1097945
-#Patch12:        inkscape-0.48.4-poppler-0.26.patch
-#Patch13:        inkscape-0.48.4-gc-7.4.patch
-#Patch14:        0001-update-to-new-libwpg.patch
-#Patch15:        inkscape-0.48.5-poppler-0.29.0.patch
-Patch16:	inkscape-0.91-desktop.patch
+Patch1:         inkscape-0.91-desktop.patch
 
-%if 0%{?fedora} && 0%{?fedora} < 18
-%define desktop_vendor fedora
-%endif
-
+BuildRequires:  aspell-devel
 BuildRequires:  atk-devel
+BuildRequires:  boost-devel
+BuildRequires:  cairo-devel
+BuildRequires:  dos2unix
 BuildRequires:  desktop-file-utils
 BuildRequires:  freetype-devel
 BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
+BuildRequires:  gsl-devel
 BuildRequires:  gtkmm24-devel >= 2.8.0
 BuildRequires:  gtkspell-devel
 BuildRequires:  gnome-vfs2-devel >= 2.0
+BuildRequires:  ImageMagick-c++-devel
+BuildRequires:  intltool
+BuildRequires:  lcms2-devel
 BuildRequires:  libpng-devel >= 1.2
+BuildRequires:  libwpg-devel
 BuildRequires:  libxml2-devel >= 2.6.11
 BuildRequires:  libxslt-devel >= 1.0.15
 BuildRequires:  pango-devel
 BuildRequires:  pkgconfig
-BuildRequires:  lcms2-devel
-BuildRequires:  cairo-devel
-BuildRequires:  dos2unix
 BuildRequires:  python-devel
 BuildRequires:  poppler-glib-devel
-BuildRequires:  boost-devel
-BuildRequires:  gsl-devel
-BuildRequires:  libwpg-devel
-BuildRequires:  ImageMagick-c++-devel
-BuildRequires:  perl(XML::Parser)
-BuildRequires:  perl(ExtUtils::Embed)
-BuildRequires:  intltool
 BuildRequires:  popt-devel
-# We detect new poppler in inkscape-0.48.2-poppler_020.patch
-BuildRequires:  automake 
-BuildRequires:  aspell-devel
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -69,33 +48,10 @@ Requires:       transfig
 Requires:       gimp
 Requires:       numpy
 Requires:       python-lxml
-# TODO: Deal with these (autoreqs, disabled now):
-# perl(Cwd)
-# perl(Exporter)
-# perl(File::Basename)
-# perl(Getopt::Long)
-# perl(Getopt::Std)
-# perl(MIME::Base64)
-# perl(Pod::Usage)
-# perl(SVG)
-# perl(SVG::Parser)
-# perl(XML::XQL)
-# perl(XML::XQL::DOM)
-# perl(strict)
-# perl(vars)
-# perl(warnings)
 %endif
 Requires:       python-lxml
 Requires:       numpy
 Requires:       uniconvertor
-
-# the package requires libperl.so, so it also has to require this:
-Requires:  perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-
-# Filter out perl requires and provides
-# XXX: For now _all_
-%global __perl_provides %{nil}
-%global __perl_requires %{nil}
 
 %description
 Inkscape is a vector graphics editor, with capabilities similar to
@@ -112,8 +68,6 @@ trace bitmaps and much more.
 %package view
 Summary:        Viewing program for SVG files
 Group:          Applications/Productivity
-# the package requires libperl.so, so it also has to require this:
-Requires:  perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description view
 Viewer for files in W3C standard Scalable Vector Graphics (SVG) file
@@ -133,19 +87,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %setup -q
 %patch0 -p1 -b .types
-#%patch4 -p1 -b .glib
-#%patch5 -p0 -b .png
-#%patch6 -p0 -b .png-write
-#%patch7 -p0 -b .gcc47
-#%patch8 -p1 -b .poppler_020
-#%patch9 -p0 -b .hugexml
-#%patch10 -p0 -b .spuriouscomma
-#%patch11 -p0 -b .freetype
-#%patch12 -p1 -b .poppler
-#%patch13 -p1 -b .gc
-#%patch14 -p1 -b .libwpg
-#%patch15 -p1 -b .poppler-0.29.0
-%patch16 -p1 -b .desktop
+%patch1 -p1 -b .desktop
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -157,9 +99,6 @@ find share/extensions -name '*.py' | xargs chmod -x
 # Fix end of line encodings
 dos2unix -k -q share/extensions/*.py
 
-#autoreconf -if
-
-
 %build
 %configure                      \
         --with-python           \
@@ -169,11 +108,10 @@ dos2unix -k -q share/extensions/*.py
         --enable-lcms2           \
         --enable-poppler-cairo 
 
-make %{?_smp_mflags}
+make %{?_smp_mflags} V=1
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
 desktop-file-install --vendor="%{?desktop_vendor}" --delete-original  \
@@ -191,9 +129,6 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/sk2svg.sh
 make -k check || :
 
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %post
 /bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null || :
 
@@ -210,13 +145,17 @@ fi
 
 
 %files -f %{name}.lang
-%defattr(-,root,root,-)
+%{!?_licensedir:%global license %%doc}
+%license COPYING
+%doc AUTHORS NEWS README
 %{_bindir}/inkscape
 %dir %{_datadir}/inkscape
 %{_datadir}/inkscape/attributes
 %{_datadir}/inkscape/branding
 #%{_datadir}/inkscape/clipart
 %{_datadir}/inkscape/extensions
+# Pulls in perl, if needed should go into a -perl subpackage
+%exclude %{_datadir}/inkscape/extensions/embed_raster_in_svg.pl
 %{_datadir}/inkscape/filters
 %{_datadir}/inkscape/fonts
 %{_datadir}/inkscape/gradients
@@ -234,24 +173,29 @@ fi
 %{_mandir}/*/*gz
 %{_mandir}/*/*/*gz
 %exclude %{_mandir}/man1/inkview.1*
-%doc AUTHORS COPYING ChangeLog NEWS README
 %{_datadir}/inkscape/tutorials
 
 
 %files view
-%defattr(-,root,root,-)
+%{!?_licensedir:%global license %%doc}
+%license COPYING
+%doc AUTHORS NEWS README
 %{_bindir}/inkview
 %{_mandir}/man1/inkview.1*
-%doc AUTHORS COPYING ChangeLog NEWS README
 
 
 %files docs
-%defattr(-,root,root,-)
 %dir %{_datadir}/inkscape
 %{_datadir}/inkscape/examples
 
 
 %changelog
+* Thu Feb 12 2015 Peter Robinson <pbrobinson@fedoraproject.org> 0.91-4
+- Cleanup spec
+- Use %%license
+- Drop (now unneeded) perl requirements (rhbz#579390)
+- Drop ChangeLog as details are covered in NEWS
+
 * Wed Feb 04 2015 Petr Machata <pmachata@redhat.com> - 0.91-3
 - Bump for rebuild.
 
