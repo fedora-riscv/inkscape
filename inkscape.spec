@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -190,6 +190,9 @@ fi
 
 
 %changelog
+* Fri Mar 06 2015 Jon Ciesla <limburgher@gmail.com> - 0.91-5
+- ImageMagick rebuild.
+
 * Thu Feb 12 2015 Peter Robinson <pbrobinson@fedoraproject.org> 0.91-4
 - Cleanup spec
 - Use %%license
