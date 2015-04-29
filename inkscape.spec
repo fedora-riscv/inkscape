@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -233,6 +233,9 @@ fi
 
 
 %changelog
+* Wed Apr 29 2015 Kalev Lember <kalevlember@gmail.com> - 0.91-7
+- Rebuilt for GCC 5 ABI change
+
 * Thu Mar 26 2015 Richard Hughes <rhughes@redhat.com> - 0.91-6
 - Add an AppData file for the software center
 
