@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -233,6 +233,9 @@ fi
 
 
 %changelog
+* Fri Jun  5 2015 Marek Kasik <mkasik@redhat.com> - 0.91-8
+- Rebuild (poppler-0.33.0)
+
 * Wed Apr 29 2015 Kalev Lember <kalevlember@gmail.com> - 0.91-7
 - Rebuilt for GCC 5 ABI change
 
