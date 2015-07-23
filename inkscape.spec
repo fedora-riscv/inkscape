@@ -100,13 +100,18 @@ find share/extensions -name '*.py' | xargs chmod -x
 dos2unix -k -q share/extensions/*.py
 
 %build
+# --disable-strict-build is needed due to gtkmm using a deprecated glibmm
+# method: https://lists.fedoraproject.org/pipermail/devel/2015-July/212652.html
+# If upstream gtkmm fixes https://bugzilla.gnome.org/show_bug.cgi?id=752797
+# this can be removed.
 %configure                      \
         --with-python           \
         --with-perl             \
         --with-gnome-vfs        \
         --with-xft              \
         --enable-lcms2           \
-        --enable-poppler-cairo 
+        --enable-poppler-cairo  \
+        --disable-strict-build
 
 make %{?_smp_mflags} V=1
 
@@ -233,7 +238,10 @@ fi
 
 
 %changelog
-* Wed Jul 22 2015 David Tardon <dtardon@redhat.com> - 0.91-11
+* Thu Jul 23 2015 Adam Williamson <awilliam@redhat.com> - 0.91-11
+- --disable-strict-build (as gtkmm currently uses a deprecated glibmm symbol)
+
+* Wed Jul 22 2015 David Tardon <dtardon@redhat.com>
 - rebuild for Boost 1.58
 
 * Wed Jul 22 2015 Marek Kasik <mkasik@redhat.com> - 0.91-10
