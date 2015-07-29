@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -238,6 +238,9 @@ fi
 
 
 %changelog
+* Wed Jul 29 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.91-12
+- Rebuilt for https://fedoraproject.org/wiki/Changes/F23Boost159
+
 * Thu Jul 23 2015 Adam Williamson <awilliam@redhat.com> - 0.91-11
 - --disable-strict-build (as gtkmm currently uses a deprecated glibmm symbol)
 
