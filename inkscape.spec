@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        13%{?dist}
+Release:        14%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -39,15 +39,10 @@ BuildRequires:  popt-devel
 # Disable all for now. TODO: Be smarter
 %if 0
 Requires:       dia
-Requires:       pstoedit
 Requires:       ghostscript
 Requires:       perl(Image::Magick)
-Requires:       tex(latex)
-Requires:       tex(dvips)
 Requires:       transfig
 Requires:       gimp
-Requires:       numpy
-Requires:       python-lxml
 %endif
 Requires:       python-lxml
 Requires:       numpy
@@ -245,6 +240,10 @@ fi
 
 
 %changelog
+* Tue Aug  4 2015 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-14
+- Remove some entries from unused Requires block that we now
+  explicitly Require or Suggests.
+
 * Tue Aug  4 2015 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-13
 - Add Suggests deps for packages needed to enable LaTeX fragment
   embedding
