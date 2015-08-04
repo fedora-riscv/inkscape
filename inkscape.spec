@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -52,6 +52,13 @@ Requires:       python-lxml
 Requires:       python-lxml
 Requires:       numpy
 Requires:       uniconvertor
+
+# Weak dependencies for the LaTeX plugin
+Suggests:       pstoedit
+Suggests:       tex(latex)
+Suggests:       tex(dvips)
+Suggests:       texlive-amsmath
+Suggests:       texlive-amsfonts
 
 %description
 Inkscape is a vector graphics editor, with capabilities similar to
@@ -238,6 +245,10 @@ fi
 
 
 %changelog
+* Tue Aug  4 2015 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-13
+- Add Suggests deps for packages needed to enable LaTeX fragment
+  embedding
+
 * Wed Jul 29 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.91-12
 - Rebuilt for https://fedoraproject.org/wiki/Changes/F23Boost159
 
