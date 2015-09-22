@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        16%{?dist}
+Release:        17%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -102,6 +102,10 @@ find share/extensions -name '*.py' | xargs chmod -x
 dos2unix -k -q share/extensions/*.py
 
 %build
+# Build in C++11 mode as glibmm headers use C++11 features. This can be dropped
+# when GCC in Fedora switches to C++11 by default (with GCC 6, most likely).
+export CXXFLAGS="%{optflags} -std=c++11"
+
 # --disable-strict-build is needed due to gtkmm using a deprecated glibmm
 # method: https://lists.fedoraproject.org/pipermail/devel/2015-July/212652.html
 # If upstream gtkmm fixes https://bugzilla.gnome.org/show_bug.cgi?id=752797
@@ -240,6 +244,9 @@ fi
 
 
 %changelog
+* Wed Sep 23 2015 Kalev Lember <klember@redhat.com> - 0.91-17
+- Fix the build with latest glibmm24
+
 * Thu Aug 27 2015 Jonathan Wakely <jwakely@redhat.com> - 0.91-16
 - Rebuilt for Boost 1.59
 
