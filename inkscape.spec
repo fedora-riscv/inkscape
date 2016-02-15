@@ -210,12 +210,12 @@ fi
 - Validate appdata file once installed
 - Add BuildRequires for libappstream-glib (provides appstream-util)
 - Remove commented out line in file list
-- Re-add export CXXFLAGS="%{optflags} -std=c++11" to fix build
+- Re-add export CXXFLAGS="%%{optflags} -std=c++11" to fix build
 
 * Mon Feb 15 2016 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-22
 - Drop --disable-strict-build since this is fixed:
   https://bugzilla.gnome.org/show_bug.cgi?id=752797
-- Drop export CXXFLAGS="%{optflags} -std=c++11" since that's now default
+- Drop export CXXFLAGS="%%{optflags} -std=c++11" since that's now default
 
 * Mon Feb 15 2016 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-21
 - Remove BuildRequires for  gnome-vfs2-devel
