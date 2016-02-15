@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        21%{?dist}
+Release:        22%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -101,21 +101,12 @@ find share/extensions -name '*.py' | xargs chmod -x
 dos2unix -k -q share/extensions/*.py
 
 %build
-# Build in C++11 mode as glibmm headers use C++11 features. This can be dropped
-# when GCC in Fedora switches to C++11 by default (with GCC 6, most likely).
-export CXXFLAGS="%{optflags} -std=c++11"
-
-# --disable-strict-build is needed due to gtkmm using a deprecated glibmm
-# method: https://lists.fedoraproject.org/pipermail/devel/2015-July/212652.html
-# If upstream gtkmm fixes https://bugzilla.gnome.org/show_bug.cgi?id=752797
-# this can be removed.
 %configure                      \
         --with-python           \
         --with-perl             \
         --with-xft              \
         --enable-lcms2           \
-        --enable-poppler-cairo  \
-        --disable-strict-build
+        --enable-poppler-cairo
 
 make %{?_smp_mflags} V=1
 
@@ -242,6 +233,11 @@ fi
 
 
 %changelog
+* Mon Feb 15 2016 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-22
+- Drop --disable-strict-build since this is fixed:
+  https://bugzilla.gnome.org/show_bug.cgi?id=752797
+- Drop export CXXFLAGS="%{optflags} -std=c++11" since that's now default
+
 * Mon Feb 15 2016 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-21
 - Remove BuildRequires for  gnome-vfs2-devel
 
