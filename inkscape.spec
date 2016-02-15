@@ -7,8 +7,8 @@ Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-# AppData file. This has been submitted upstream:
-# https://bugs.launchpad.net/inkscape/+bug/1545754
+# AppData file. Upstream has merged a patch adding an appdata file
+# after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
 
 # Submitted upstream: https://bugs.launchpad.net/inkscape/+bug/1545769
