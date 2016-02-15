@@ -1,12 +1,16 @@
 Name:           inkscape
 Version:        0.91
-Release:        22%{?dist}
+Release:        23%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+# AppData file. This has been submitted upstream:
+# https://bugs.launchpad.net/inkscape/+bug/1545754
+Source1:        %{name}.appdata.xml
+
 Patch0:         inkscape-0.48.2-types.patch
 Patch1:         inkscape-0.91-desktop.patch
 
@@ -34,6 +38,7 @@ BuildRequires:  pkgconfig
 BuildRequires:  python-devel
 BuildRequires:  poppler-glib-devel
 BuildRequires:  popt-devel
+BuildRequires:  libappstream-glib
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -101,6 +106,9 @@ find share/extensions -name '*.py' | xargs chmod -x
 dos2unix -k -q share/extensions/*.py
 
 %build
+# This is still needed with gcc6 until this is fixed:
+# https://bugs.launchpad.net/inkscape/+bug/1488079
+export CXXFLAGS="%{optflags} -std=c++11"
 %configure                      \
         --with-python           \
         --with-perl             \
@@ -121,47 +129,10 @@ desktop-file-install --vendor="%{?desktop_vendor}" --delete-original  \
 # No skencil anymore
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/sk2svg.sh
 
-# Register as an application to be visible in the software center
-#
-# NOTE: It would be *awesome* if this file was maintained by the upstream
-# project, translated and installed into the right place during `make install`.
-#
-# See http://www.freedesktop.org/software/appstream/docs/ for more details.
-#
+# Install and validate appdata file
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/appdata
-cat > $RPM_BUILD_ROOT%{_datadir}/appdata/%{name}.appdata.xml <<EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2014 Richard Hughes <richard@hughsie.com> -->
-<!--
-BugReportURL: http://inkscape.13.x6.nabble.com/Inkscape-and-AppData-td4967842.html
-SentUpstream: 2013-09-06
--->
-<application>
-  <id type="desktop">inkscape.desktop</id>
-  <metadata_license>CC0-1.0</metadata_license>
-  <description>
-    <p>
-      An Open Source vector graphics editor, with capabilities similar to Illustrator,
-      CorelDraw, or Xara X, using the W3C standard Scalable Vector Graphics (SVG) file
-      format.
-    </p>
-    <p>
-      Inkscape supports many advanced SVG features (markers, clones, alpha blending,
-      etc.) and great care is taken in designing a streamlined interface. It is very
-      easy to edit nodes, perform complex path operations, trace bitmaps and much more.
-      We also aim to maintain a thriving user and developer community by using open,
-      community-oriented development.
-    </p>
-  </description>
-  <url type="homepage">http://inkscape.org/</url>
-  <screenshots>
-    <screenshot type="default">https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/inkscape/a.png</screenshot>
-  </screenshots>
-  <!-- FIXME: change this to an upstream email address for spec updates
-  <updatecontact>someone_who_cares@upstream_project.org</updatecontact>
-   -->
-</application>
-EOF
+cp -a %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/appdata
+appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/*.appdata.xml
 
 %find_lang %{name}
 
@@ -194,7 +165,6 @@ fi
 %dir %{_datadir}/inkscape
 %{_datadir}/inkscape/attributes
 %{_datadir}/inkscape/branding
-#%{_datadir}/inkscape/clipart
 %{_datadir}/inkscape/extensions
 # Pulls in perl, if needed should go into a -perl subpackage
 %exclude %{_datadir}/inkscape/extensions/embed_raster_in_svg.pl
@@ -233,6 +203,13 @@ fi
 
 
 %changelog
+* Mon Feb 15 2016 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-23
+- Break appdata file out of spec into its own file
+- Validate appdata file once installed
+- Add BuildRequires for libappstream-glib (provides appstream-util)
+- Remove commented out line in file list
+- Re-add export CXXFLAGS="%{optflags} -std=c++11" to fix build
+
 * Mon Feb 15 2016 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-22
 - Drop --disable-strict-build since this is fixed:
   https://bugzilla.gnome.org/show_bug.cgi?id=752797
