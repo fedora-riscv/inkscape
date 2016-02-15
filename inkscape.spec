@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        20%{?dist}
+Release:        21%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -22,7 +22,6 @@ BuildRequires:  gettext
 BuildRequires:  gsl-devel
 BuildRequires:  gtkmm24-devel >= 2.8.0
 BuildRequires:  gtkspell-devel
-BuildRequires:  gnome-vfs2-devel >= 2.0
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  intltool
 BuildRequires:  lcms2-devel
@@ -113,7 +112,6 @@ export CXXFLAGS="%{optflags} -std=c++11"
 %configure                      \
         --with-python           \
         --with-perl             \
-        --with-gnome-vfs        \
         --with-xft              \
         --enable-lcms2           \
         --enable-poppler-cairo  \
@@ -244,6 +242,9 @@ fi
 
 
 %changelog
+* Mon Feb 15 2016 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-21
+- Remove BuildRequires for  gnome-vfs2-devel
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 0.91-20
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
