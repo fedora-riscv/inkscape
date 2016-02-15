@@ -11,7 +11,9 @@ Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar
 # https://bugs.launchpad.net/inkscape/+bug/1545754
 Source1:        %{name}.appdata.xml
 
+# Submitted upstream: https://bugs.launchpad.net/inkscape/+bug/1545769
 Patch0:         inkscape-0.48.2-types.patch
+# Submitted upstream: https://bugs.launchpad.net/inkscape/+bug/1545771
 Patch1:         inkscape-0.91-desktop.patch
 
 BuildRequires:  aspell-devel
