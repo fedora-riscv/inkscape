@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        23%{?dist}
+Release:        24%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -53,6 +53,7 @@ Requires:       gimp
 Requires:       python-lxml
 Requires:       numpy
 Requires:       uniconvertor
+Requires:       gvfs # For ClipArt functionality
 
 # Weak dependencies for the LaTeX plugin
 Suggests:       pstoedit
@@ -205,6 +206,9 @@ fi
 
 
 %changelog
+* Tue Feb 16 2016 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-24
+- Add Requires for gvfs
+
 * Mon Feb 15 2016 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-23
 - Break appdata file out of spec into its own file
 - Validate appdata file once installed
