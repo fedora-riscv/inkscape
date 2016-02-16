@@ -53,7 +53,9 @@ Requires:       gimp
 Requires:       python-lxml
 Requires:       numpy
 Requires:       uniconvertor
-Requires:       gvfs # For ClipArt functionality
+
+# For ClipArt functionality
+Requires:       gvfs
 
 # Weak dependencies for the LaTeX plugin
 Suggests:       pstoedit
