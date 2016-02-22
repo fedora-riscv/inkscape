@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -208,6 +208,9 @@ fi
 
 
 %changelog
+* Mon Feb 22 2016 Orion Poplawski <orion@cora.nwra.com>
+- Rebuild for gsl 2.1
+
 * Tue Feb 16 2016 Jonathan Underwood <jonathan.underwood@gmail.com> - 0.91-24
 - Add Requires for gvfs
 
