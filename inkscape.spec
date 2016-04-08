@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        25%{?dist}
+Release:        26%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -15,6 +15,7 @@ Source1:        %{name}.appdata.xml
 Patch0:         inkscape-0.48.2-types.patch
 # Submitted upstream: https://bugs.launchpad.net/inkscape/+bug/1545771
 Patch1:         inkscape-0.91-desktop.patch
+Patch2:         inkscape-0.91-drop-wait-for-targets.patch
 
 BuildRequires:  aspell-devel
 BuildRequires:  atk-devel
@@ -99,6 +100,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %setup -q
 %patch0 -p1 -b .types
 %patch1 -p1 -b .desktop
+%patch2 -p0 -b .wft
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -208,6 +210,9 @@ fi
 
 
 %changelog
+* Fri Apr 08 2016 Jon Ciesla <limburgher@gmail.com> - 0.91-26
+- Fix FTBFS with patch from https://bugzilla.gnome.org/show_bug.cgi?id=586626
+
 * Mon Feb 22 2016 Orion Poplawski <orion@cora.nwra.com>
 - Rebuild for gsl 2.1
 
