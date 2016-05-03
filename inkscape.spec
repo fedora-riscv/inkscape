@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.91
-Release:        26%{?dist}
+Release:        27%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -210,6 +210,9 @@ fi
 
 
 %changelog
+* Tue May  3 2016 Marek Kasik <mkasik@redhat.com> - 0.91-27
+- Rebuild for poppler-0.43.0
+
 * Fri Apr 08 2016 Jon Ciesla <limburgher@gmail.com> - 0.91-26
 - Fix FTBFS with patch from https://bugzilla.gnome.org/show_bug.cgi?id=586626
 
