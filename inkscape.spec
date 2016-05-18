@@ -1,21 +1,22 @@
 Name:           inkscape
-Version:        0.91
-Release:        27%{?dist}
+Version:        0.92
+Release:        0%{?dist}pre0
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
-Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+#Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+Source0:	https://inkscape.org/en/gallery/item/9591/inkscape-0.92pre0.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
 
 # Submitted upstream: https://bugs.launchpad.net/inkscape/+bug/1545769
-Patch0:         inkscape-0.48.2-types.patch
+#Patch0:         inkscape-0.48.2-types.patch
 # Submitted upstream: https://bugs.launchpad.net/inkscape/+bug/1545771
 Patch1:         inkscape-0.91-desktop.patch
-Patch2:         inkscape-0.91-drop-wait-for-targets.patch
+#Patch2:         inkscape-0.91-drop-wait-for-targets.patch
 
 BuildRequires:  aspell-devel
 BuildRequires:  atk-devel
@@ -42,6 +43,7 @@ BuildRequires:  python-devel
 BuildRequires:  poppler-glib-devel
 BuildRequires:  popt-devel
 BuildRequires:  libappstream-glib
+BuildRequires:  libtool
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -97,10 +99,10 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -q
-%patch0 -p1 -b .types
+%setup -qn inkscape-0.92pre0
+#%%patch0 -p1 -b .types
 %patch1 -p1 -b .desktop
-%patch2 -p0 -b .wft
+#%%patch2 -p0 -b .wft
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -116,13 +118,13 @@ dos2unix -k -q share/extensions/*.py
 # This is still needed with gcc6 until this is fixed:
 # https://bugs.launchpad.net/inkscape/+bug/1488079
 export CXXFLAGS="%{optflags} -std=c++11"
+./autogen.sh
 %configure                      \
         --with-python           \
         --with-perl             \
         --with-xft              \
         --enable-lcms2           \
         --enable-poppler-cairo
-
 make %{?_smp_mflags} V=1
 
 
@@ -210,6 +212,9 @@ fi
 
 
 %changelog
+* Tue May 17 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-0.pre0
+- 0.92pre0, BZ 1336412.
+
 * Tue May  3 2016 Marek Kasik <mkasik@redhat.com> - 0.91-27
 - Rebuild for poppler-0.43.0
 
