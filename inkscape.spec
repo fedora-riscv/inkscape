@@ -1,13 +1,13 @@
 Name:           inkscape
 Version:        0.92
-Release:        0%{?dist}pre0
+Release:        0%{?dist}pre1
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Source0:	https://inkscape.org/en/gallery/item/9591/inkscape-0.92pre0.tar.bz2
+Source0:	https://inkscape.org/en/gallery/item/9633/inkscape-0.92pre1.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
@@ -91,7 +91,6 @@ format.
 %package docs
 Summary:        Documentation for Inkscape
 Group:          Documentation
-Requires:       inkscape
 
 %description docs
 Tutorial and examples for Inkscape, a graphics editor for vector
@@ -99,7 +98,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-0.92pre0
+%setup -qn inkscape-0.92pre1
 #%%patch0 -p1 -b .types
 %patch1 -p1 -b .desktop
 #%%patch2 -p0 -b .wft
@@ -207,11 +206,16 @@ fi
 
 
 %files docs
+%license COPYING
 %dir %{_datadir}/inkscape
 %{_datadir}/inkscape/examples
 
 
 %changelog
+* Tue Jun 14 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-0.pre1
+- 0.92pre1.
+- Drop docs requirement on main package, BZ 1247239.
+
 * Tue May 17 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-0.pre0
 - 0.92pre0, BZ 1336412.
 
