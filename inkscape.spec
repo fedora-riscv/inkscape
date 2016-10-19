@@ -1,13 +1,13 @@
 Name:           inkscape
 Version:        0.92
-Release:        1%{?dist}pre1
+Release:        1%{?dist}pre2
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Source0:	https://inkscape.org/en/gallery/item/9633/inkscape-0.92pre1.tar.bz2
+Source0:	https://inkscape.org/en/gallery/item/9633/inkscape-0.92pre2.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
@@ -15,7 +15,7 @@ Source1:        %{name}.appdata.xml
 # Submitted upstream: https://bugs.launchpad.net/inkscape/+bug/1545769
 #Patch0:         inkscape-0.48.2-types.patch
 # Submitted upstream: https://bugs.launchpad.net/inkscape/+bug/1545771
-Patch1:         inkscape-0.91-desktop.patch
+#Patch1:         inkscape-0.91-desktop.patch
 #Patch2:         inkscape-0.91-drop-wait-for-targets.patch
 
 BuildRequires:  aspell-devel
@@ -98,9 +98,9 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-0.92pre1
+%setup -qn inkscape-0.92pre2
 #%%patch0 -p1 -b .types
-%patch1 -p1 -b .desktop
+#%patch1 -p1 -b .desktop
 #%%patch2 -p0 -b .wft
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
@@ -212,6 +212,9 @@ fi
 
 
 %changelog
+* Wed Oct 19 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-0.pre2
+- 0.92pre2.
+
 * Mon Jul 18 2016 Marek Kasik <mkasik@redhat.com> - 0.92-1.pre1
 - Rebuild for poppler-0.45.0
 
