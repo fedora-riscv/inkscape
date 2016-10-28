@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92
-Release:        3.pre2%{?dist}
+Release:        4.pre2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -44,6 +44,7 @@ BuildRequires:  poppler-glib-devel
 BuildRequires:  popt-devel
 BuildRequires:  libappstream-glib
 BuildRequires:  libtool
+BuildRequires:  potrace-devel
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -212,6 +213,9 @@ fi
 
 
 %changelog
+* Fri Oct 28 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-4.pre2
+- BR potrace-devel, BZ 1389772.
+
 * Fri Oct 21 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-3.pre2
 - Fix release tag.
 
