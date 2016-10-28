@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92
-Release:        4.pre2%{?dist}
+Release:        5.pre2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -57,6 +57,7 @@ Requires:       gimp
 Requires:       python-lxml
 Requires:       numpy
 Requires:       uniconvertor
+Requires:	python-scour
 
 # For ClipArt functionality
 Requires:       gvfs
@@ -213,6 +214,9 @@ fi
 
 
 %changelog
+* Fri Oct 28 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-5.pre2
+- Require python-scour, BZ 1389772.
+
 * Fri Oct 28 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-4.pre2
 - BR potrace-devel, BZ 1389772.
 
