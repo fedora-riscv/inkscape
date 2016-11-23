@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92
-Release:        5.pre2%{?dist}
+Release:        6.pre2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -214,6 +214,9 @@ fi
 
 
 %changelog
+* Wed Nov 23 2016 David Tardon <dtardon@redhat.com> - 0.92-6.pre2
+- rebuild for poppler 0.49.0
+
 * Fri Oct 28 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-5.pre2
 - Require python-scour, BZ 1389772.
 
