@@ -1,16 +1,18 @@
 Name:           inkscape
 Version:        0.92
-Release:        6.pre2%{?dist}
+Release:        7.pre3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
-License:        GPLv2+
+License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Source0:	https://inkscape.org/en/gallery/item/9633/inkscape-0.92pre2.tar.bz2
+Source0:	https://inkscape.org/en/gallery/item/9633/inkscape-0.92pre3.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
+# Fedora Color Palette, GIMP format, CC-BY 3.0
+Source2:	Fedora-Color-Palette.gpl
 
 # Submitted upstream: https://bugs.launchpad.net/inkscape/+bug/1545769
 #Patch0:         inkscape-0.48.2-types.patch
@@ -100,7 +102,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-0.92pre2
+%setup -qn inkscape-0.92pre3
 #%%patch0 -p1 -b .types
 #%patch1 -p1 -b .desktop
 #%%patch2 -p0 -b .wft
@@ -143,6 +145,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/sk2svg.sh
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/appdata
 cp -a %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/appdata
 appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/*.appdata.xml
+
+# Install Fedora Color Pallette
+install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
 %find_lang %{name}
 
@@ -214,6 +219,10 @@ fi
 
 
 %changelog
+* Mon Nov 28 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-7.pre3
+- 0.92pre3.
+- Include Fedora Color Palette, BZ 981748
+
 * Wed Nov 23 2016 David Tardon <dtardon@redhat.com> - 0.92-6.pre2
 - rebuild for poppler 0.49.0
 
