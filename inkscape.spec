@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92
-Release:        7.pre3%{?dist}
+Release:        8.pre3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -219,6 +219,9 @@ fi
 
 
 %changelog
+* Fri Dec 16 2016 David Tardon <dtardon@redhat.com> - 0.92-8.pre3
+- rebuild for poppler 0.50.0
+
 * Mon Nov 28 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-7.pre3
 - 0.92pre3.
 - Include Fedora Color Palette, BZ 981748
