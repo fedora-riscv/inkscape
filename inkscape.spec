@@ -1,13 +1,13 @@
 Name:           inkscape
 Version:        0.92
-Release:        8.pre3%{?dist}
+Release:        9.pre4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Source0:	https://inkscape.org/en/gallery/item/9633/inkscape-0.92pre3.tar.bz2
+Source0:	https://inkscape.org/en/gallery/item/10513/inkscape-0.92pre4.tar_Bv5Tl5T.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
@@ -102,7 +102,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-0.92pre3
+%setup -qn inkscape-0.92pre4
 #%%patch0 -p1 -b .types
 #%patch1 -p1 -b .desktop
 #%%patch2 -p0 -b .wft
@@ -219,6 +219,9 @@ fi
 
 
 %changelog
+* Thu Dec 22 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-9.pre4
+- 0.92pre4.
+
 * Fri Dec 16 2016 David Tardon <dtardon@redhat.com> - 0.92-8.pre3
 - rebuild for poppler 0.50.0
 
