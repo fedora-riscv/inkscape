@@ -1,13 +1,13 @@
 Name:           inkscape
 Version:        0.92
-Release:        9.pre4%{?dist}
+Release:        10.pre5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Source0:	https://inkscape.org/en/gallery/item/10513/inkscape-0.92pre4.tar_Bv5Tl5T.bz2
+Source0:	https://inkscape.org/en/gallery/item/10535/inkscape-0.92pre5.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
@@ -102,7 +102,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-0.92pre4
+%setup -qn inkscape-0.92pre5
 #%%patch0 -p1 -b .types
 #%patch1 -p1 -b .desktop
 #%%patch2 -p0 -b .wft
@@ -219,6 +219,9 @@ fi
 
 
 %changelog
+* Fri Dec 30 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-10.pre5
+- 0.92pre5.
+
 * Thu Dec 22 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-9.pre4
 - 0.92pre4.
 
