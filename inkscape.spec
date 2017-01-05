@@ -1,24 +1,18 @@
 Name:           inkscape
-Version:        0.92
-Release:        10.pre5%{?dist}
+Version:        0.92.0
+Release:        11%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Source0:	https://inkscape.org/en/gallery/item/10535/inkscape-0.92pre5.tar.bz2
+Source0:	https://inkscape.org/en/gallery/item/10552/inkscape-0.92.0.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
-
-# Submitted upstream: https://bugs.launchpad.net/inkscape/+bug/1545769
-#Patch0:         inkscape-0.48.2-types.patch
-# Submitted upstream: https://bugs.launchpad.net/inkscape/+bug/1545771
-#Patch1:         inkscape-0.91-desktop.patch
-#Patch2:         inkscape-0.91-drop-wait-for-targets.patch
 
 BuildRequires:  aspell-devel
 BuildRequires:  atk-devel
@@ -102,10 +96,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-0.92pre5
-#%%patch0 -p1 -b .types
-#%patch1 -p1 -b .desktop
-#%%patch2 -p0 -b .wft
+%setup -q
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -219,6 +210,9 @@ fi
 
 
 %changelog
+* Thu Jan 05 2017 Jon Ciesla <limburgher@gmail.com> - 0.92.0-11
+- 0.92 final.
+
 * Fri Dec 30 2016 Jon Ciesla <limburgher@gmail.com> - 0.92-10.pre5
 - 0.92pre5.
 
