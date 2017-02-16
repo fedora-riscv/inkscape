@@ -1,13 +1,13 @@
 Name:           inkscape
-Version:        0.92.0
-Release:        12%{?dist}
+Version:        0.92.1
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Source0:	https://inkscape.org/en/gallery/item/10552/inkscape-0.92.0.tar.bz2
+Source0:	https://inkscape.org/en/gallery/item/10682/inkscape-0.92.1.tar_XlpI7qT.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
@@ -210,6 +210,9 @@ fi
 
 
 %changelog
+* Thu Feb 16 2017 Jon Ciesla <limburgher@gmail.com> - 0.92.1-1
+- 0.92.1 final.
+
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.92.0-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
