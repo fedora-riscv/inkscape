@@ -1,13 +1,14 @@
 Name:           inkscape
 Version:        0.92.1
-Release:        1%{?dist}
+Release:        2.20170321bzr15604%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-Source0:	https://inkscape.org/en/gallery/item/10682/inkscape-0.92.1.tar_XlpI7qT.bz2
+#Source0:	https://inkscape.org/en/gallery/item/10682/inkscape-0.92.1.tar_XlpI7qT.bz2
+Source0:	inkscape-r15604.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
@@ -41,6 +42,7 @@ BuildRequires:  popt-devel
 BuildRequires:  libappstream-glib
 BuildRequires:  libtool
 BuildRequires:  potrace-devel
+BuildRequires:  cmake
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -96,7 +98,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -q
+%setup -qn inkscape-r15604
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -111,23 +113,43 @@ dos2unix -k -q share/extensions/*.py
 %build
 # This is still needed with gcc6 until this is fixed:
 # https://bugs.launchpad.net/inkscape/+bug/1488079
-export CXXFLAGS="%{optflags} -std=c++11"
-./autogen.sh
-%configure                      \
-        --with-python           \
-        --with-perl             \
-        --with-xft              \
-        --enable-lcms2           \
-        --enable-poppler-cairo
-make %{?_smp_mflags} V=1
+#export CXXFLAGS="%{optflags} -std=c++11"
+#./autogen.sh
+#%%configure                      \
+#        --with-python           \
+#        --with-perl             \
+#        --with-xft              \
+#        --enable-lcms2           \
+#        --enable-poppler-cairo
+mkdir build
+pushd build
+/usr/bin/cmake \
+        -DCMAKE_C_FLAGS_RELEASE:STRING="-DNDEBUG" \
+        -DCMAKE_CXX_FLAGS_RELEASE:STRING="-DNDEBUG" \
+        -DCMAKE_Fortran_FLAGS_RELEASE:STRING="-DNDEBUG" \
+        -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+        -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+        -DINCLUDE_INSTALL_DIR:PATH=/usr/include \
+        -DLIB_INSTALL_DIR:PATH=/usr/lib64 \
+        -DSYSCONF_INSTALL_DIR:PATH=/etc \
+        -DSHARE_INSTALL_PREFIX:PATH=/usr/share \
+%if "lib64" == "lib64" 
+        -DLIB_SUFFIX=64 \
+%endif 
+        -DBUILD_SHARED_LIBS:BOOL=OFF ..
+make
 
 
 %install
+pushd build
 make install DESTDIR=$RPM_BUILD_ROOT
+sed -i 's/Drawing Shortcut Group/X-Drawing Shortcut Group/g' $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop
+find $RPM_BUILD_ROOT -type f -name 'lib*.a' | xargs rm -f
 
-desktop-file-install --vendor="%{?desktop_vendor}" --delete-original  \
+desktop-file-install --vendor="%{?desktop_vendor}" --delete-original --remove-key=TargetEnvironment \
         --dir $RPM_BUILD_ROOT%{_datadir}/applications   \
         $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop
+
 
 # No skencil anymore
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/sk2svg.sh
@@ -140,12 +162,13 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/*.appda
 # Install Fedora Color Pallette
 install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
+popd
 %find_lang %{name}
 
 
-%check
+#%check
 # XXX: Tests fail, ignore it for now
-make -k check || :
+#make -k check || :
 
 
 %post
@@ -193,7 +216,7 @@ fi
 %{_mandir}/*/*/*gz
 %exclude %{_mandir}/man1/inkview.1*
 %{_datadir}/inkscape/tutorials
-
+/usr/lib/inkscape/lib*.so
 
 %files view
 %{!?_licensedir:%global license %%doc}
@@ -210,6 +233,9 @@ fi
 
 
 %changelog
+* Tue Mar 21 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-2.20170321bzr15604
+- Snapshot to fix gcc7 FTBFS.
+
 * Thu Feb 16 2017 Jon Ciesla <limburgher@gmail.com> - 0.92.1-1
 - 0.92.1 final.
 
