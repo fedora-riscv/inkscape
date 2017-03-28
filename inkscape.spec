@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.1
-Release:        2.20170321bzr15604%{?dist}
+Release:        3.20170321bzr15604%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -233,6 +233,9 @@ fi
 
 
 %changelog
+* Tue Mar 28 2017 David Tardon <dtardon@redhat.com> - 0.92.1-3.20170321bzr15604
+- rebuild for poppler 0.53.0
+
 * Tue Mar 21 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-2.20170321bzr15604
 - Snapshot to fix gcc7 FTBFS.
 
