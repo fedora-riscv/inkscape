@@ -25,7 +25,7 @@ BuildRequires:  freetype-devel
 BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
 BuildRequires:  gsl-devel
-BuildRequires:  gtkmm24-devel >= 2.8.0
+BuildRequires:  gtkmm30-devel
 BuildRequires:  gtkspell-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  intltool
@@ -43,6 +43,13 @@ BuildRequires:  libappstream-glib
 BuildRequires:  libtool
 BuildRequires:  potrace-devel
 BuildRequires:  cmake
+BuildRequires:	libwpd-devel
+BuildRequires:	gnome-vfs2-devel
+BuildRequires:	dbus-glib-devel
+BuildRequires:	gtk3-devel
+BuildRequires:	libgdl-devel
+BuildRequires:	libjpeg-devel
+BuildRequires:	libsigc++20-devel
 
 # Disable all for now. TODO: Be smarter
 %if 0
