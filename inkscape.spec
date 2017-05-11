@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.1
-Release:        3.20170321bzr15604%{?dist}
+Release:        4.20170510bzr15686%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -8,7 +8,7 @@ License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 #Source0:	https://inkscape.org/en/gallery/item/10682/inkscape-0.92.1.tar_XlpI7qT.bz2
-Source0:	inkscape-r15604.tar.bz2
+Source0:	inkscape-r15686.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
@@ -105,7 +105,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-r15604
+%setup -qn inkscape-r15686
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -118,19 +118,7 @@ find share/extensions -name '*.py' | xargs chmod -x
 dos2unix -k -q share/extensions/*.py
 
 %build
-# This is still needed with gcc6 until this is fixed:
-# https://bugs.launchpad.net/inkscape/+bug/1488079
-#export CXXFLAGS="%{optflags} -std=c++11"
-#./autogen.sh
-#%%configure                      \
-#        --with-python           \
-#        --with-perl             \
-#        --with-xft              \
-#        --enable-lcms2           \
-#        --enable-poppler-cairo
-mkdir build
-pushd build
-/usr/bin/cmake \
+%cmake \
         -DCMAKE_C_FLAGS_RELEASE:STRING="-DNDEBUG" \
         -DCMAKE_CXX_FLAGS_RELEASE:STRING="-DNDEBUG" \
         -DCMAKE_Fortran_FLAGS_RELEASE:STRING="-DNDEBUG" \
@@ -143,12 +131,11 @@ pushd build
 %if "lib64" == "lib64" 
         -DLIB_SUFFIX=64 \
 %endif 
-        -DBUILD_SHARED_LIBS:BOOL=OFF ..
-make
+        -DBUILD_SHARED_LIBS:BOOL=OFF .
+make %{?_smp_mflags}
 
 
 %install
-pushd build
 make install DESTDIR=$RPM_BUILD_ROOT
 sed -i 's/Drawing Shortcut Group/X-Drawing Shortcut Group/g' $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop
 find $RPM_BUILD_ROOT -type f -name 'lib*.a' | xargs rm -f
@@ -169,7 +156,6 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/*.appda
 # Install Fedora Color Pallette
 install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
-popd
 %find_lang %{name}
 
 
@@ -240,6 +226,10 @@ fi
 
 
 %changelog
+* Wed May 10 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-4.20170510bzr15686
+- Update to fix on Wayland.
+- Fix CFLAGS.
+
 * Tue Mar 28 2017 David Tardon <dtardon@redhat.com> - 0.92.1-3.20170321bzr15604
 - rebuild for poppler 0.53.0
 
