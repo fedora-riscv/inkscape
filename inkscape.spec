@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.1
-Release:        4.20170510bzr15686%{?dist}
+Release:        5.20170510bzr15686%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -26,7 +26,7 @@ BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
 BuildRequires:  gsl-devel
 BuildRequires:  gtkmm30-devel
-BuildRequires:  gtkspell-devel
+BuildRequires:  gtkspell3-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  intltool
 BuildRequires:  lcms2-devel
@@ -226,6 +226,9 @@ fi
 
 
 %changelog
+* Fri Jun 23 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-5.20170510bzr15686
+- Move from gtkspell to gtkspell3, BZ 1464487.
+
 * Wed May 10 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-4.20170510bzr15686
 - Update to fix on Wayland.
 - Fix CFLAGS.
