@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.1
-Release:        5.20170510bzr15686%{?dist}
+Release:        6.20170713bzr15740%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -8,7 +8,7 @@ License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
 #Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 #Source0:	https://inkscape.org/en/gallery/item/10682/inkscape-0.92.1.tar_XlpI7qT.bz2
-Source0:	inkscape-r15686.tar.bz2
+Source0:	inkscape-r15740.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
@@ -105,7 +105,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-r15686
+%setup -qn inkscape-r15740
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -226,6 +226,9 @@ fi
 
 
 %changelog
+* Thu Jul 13 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-6.20170713bzr15740
+- Updated snapshot.
+
 * Fri Jun 23 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-5.20170510bzr15686
 - Move from gtkspell to gtkspell3, BZ 1464487.
 
