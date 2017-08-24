@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.1
-Release:        4.20170510bzr15686%{?dist}
+Release:        4.20170510bzr15686%{?dist}.1
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -226,6 +226,9 @@ fi
 
 
 %changelog
+* Thu Aug 24 2017 Adam Williamson <awilliam@redhat.com> - 0.92.1-4.20170510bzr15686.1
+- Rebuild for ImageMagick 6.9.9
+
 * Wed May 10 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-4.20170510bzr15686
 - Update to fix on Wayland.
 - Fix CFLAGS.
