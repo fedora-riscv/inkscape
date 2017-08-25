@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.1
-Release:        11.20170713bzr15740%{?dist}
+Release:        12.20170713bzr15740%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -14,6 +14,8 @@ Source0:	inkscape-r15740.tar.bz2
 Source1:        %{name}.appdata.xml
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
+# https://bugs.launchpad.net/inkscape/+bug/1675962
+Patch1:		%{name}-imagemagick-7.patch
 
 BuildRequires:  aspell-devel aspell-en
 BuildRequires:  atk-devel
@@ -106,6 +108,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 %prep
 %setup -qn inkscape-r15740
+%patch1 -p1 -b.imagemagick7
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -226,6 +229,9 @@ fi
 
 
 %changelog
+* Fri Aug 25 2017 Michael Cronenworth <mike@cchtml.com> - 0.92.1-12.20170713bzr15740
+- Rebuilt for ImageMagick
+
 * Tue Aug 08 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-11.20170713bzr15740
 - Require aspell-en
 
