@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.1
-Release:        12.20170713bzr15740%{?dist}
+Release:        13.20170713bzr15740%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -159,7 +159,7 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/*.appda
 # Install Fedora Color Pallette
 install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
-%find_lang %{name}
+%find_lang %{name} --with-man
 
 
 #%check
@@ -209,9 +209,9 @@ fi
 %{_datadir}/applications/*inkscape.desktop
 %{_datadir}/icons/hicolor/*/*/inkscape*
 %{_mandir}/*/*gz
-%{_mandir}/*/*/*gz
 %exclude %{_mandir}/man1/inkview.1*
 %{_datadir}/inkscape/tutorials
+%dir /usr/lib/inkscape
 /usr/lib/inkscape/lib*.so
 
 %files view
@@ -229,6 +229,10 @@ fi
 
 
 %changelog
+* Sun Aug 27 2017 Ville Skyttä <ville.skytta@iki.fi> - 0.92.1-13.20170713bzr15740
+- Own the /usr/lib/inkscape dir
+- %%langify non-English man pages
+
 * Fri Aug 25 2017 Michael Cronenworth <mike@cchtml.com> - 0.92.1-12.20170713bzr15740
 - Rebuilt for ImageMagick
 
