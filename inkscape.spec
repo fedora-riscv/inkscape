@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.1
-Release:        14.20170713bzr15740%{?dist}
+Release:        15.20170713bzr15740%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -14,6 +14,8 @@ Source0:	inkscape-r15740.tar.bz2
 Source1:        %{name}.appdata.xml
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
+# https://gitlab.com/inkscape/inkscape/commit/9418824967eb4c53371ef8588243fed4cab496e0
+Patch0:		0001-adapt-to-poppler-0.58.patch
 
 BuildRequires:  aspell-devel aspell-en
 BuildRequires:  atk-devel
@@ -106,6 +108,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 %prep
 %setup -qn inkscape-r15740
+%patch0 -p1 -b.poppler
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -226,6 +229,9 @@ fi
 
 
 %changelog
+* Fri Sep 08 2017 David Tardon <dtardon@redhat.com> - 0.92.1-15.20170713bzr15740
+- rebuild for poppler 0.59.0
+
 * Tue Sep 05 2017 Adam Williamson <awilliam@redhat.com> - 0.92.1-14.20170713bzr15740
 - Rebuild for ImageMagick 6 reversion, drop ImageMagick 7 patch
 
