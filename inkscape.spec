@@ -1,14 +1,14 @@
 Name:           inkscape
-Version:        0.92.1
-Release:        15.20170713bzr15740%{?dist}
+Version:        0.92.2
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
-#Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 #Source0:	https://inkscape.org/en/gallery/item/10682/inkscape-0.92.1.tar_XlpI7qT.bz2
-Source0:	inkscape-r15740.tar.bz2
+#Source0:	inkscape-r15740.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
@@ -27,7 +27,7 @@ BuildRequires:  freetype-devel
 BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
 BuildRequires:  gsl-devel
-BuildRequires:  gtkmm30-devel
+BuildRequires:  gtkmm24-devel
 BuildRequires:  gtkspell3-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  intltool
@@ -107,7 +107,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-r15740
+%setup -q
 %patch0 -p1 -b.poppler
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
@@ -229,6 +229,9 @@ fi
 
 
 %changelog
+* Mon Sep 25 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.2-1
+- 0.92.2 final.
+
 * Fri Sep 08 2017 David Tardon <dtardon@redhat.com> - 0.92.1-15.20170713bzr15740
 - rebuild for poppler 0.59.0
 
