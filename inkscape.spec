@@ -1,21 +1,23 @@
 Name:           inkscape
-Version:        0.92.1
-Release:        4.20170510bzr15686%{?dist}.1
+Version:        0.92.2
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
 License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
-#Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 #Source0:	https://inkscape.org/en/gallery/item/10682/inkscape-0.92.1.tar_XlpI7qT.bz2
-Source0:	inkscape-r15686.tar.bz2
+#Source0:	inkscape-r15740.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
+# https://gitlab.com/inkscape/inkscape/commit/9418824967eb4c53371ef8588243fed4cab496e0
+Patch0:		0001-adapt-to-poppler-0.58.patch
 
-BuildRequires:  aspell-devel
+BuildRequires:  aspell-devel aspell-en
 BuildRequires:  atk-devel
 BuildRequires:  boost-devel
 BuildRequires:  cairo-devel
@@ -25,8 +27,8 @@ BuildRequires:  freetype-devel
 BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
 BuildRequires:  gsl-devel
-BuildRequires:  gtkmm30-devel
-BuildRequires:  gtkspell-devel
+BuildRequires:  gtkmm24-devel
+BuildRequires:  gtkspell3-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  intltool
 BuildRequires:  lcms2-devel
@@ -105,7 +107,8 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-r15686
+%setup -q
+%patch0 -p1 -b.poppler
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -156,7 +159,7 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/*.appda
 # Install Fedora Color Pallette
 install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
-%find_lang %{name}
+%find_lang %{name} --with-man
 
 
 #%check
@@ -206,9 +209,9 @@ fi
 %{_datadir}/applications/*inkscape.desktop
 %{_datadir}/icons/hicolor/*/*/inkscape*
 %{_mandir}/*/*gz
-%{_mandir}/*/*/*gz
 %exclude %{_mandir}/man1/inkview.1*
 %{_datadir}/inkscape/tutorials
+%dir /usr/lib/inkscape
 /usr/lib/inkscape/lib*.so
 
 %files view
@@ -226,8 +229,42 @@ fi
 
 
 %changelog
-* Thu Aug 24 2017 Adam Williamson <awilliam@redhat.com> - 0.92.1-4.20170510bzr15686.1
-- Rebuild for ImageMagick 6.9.9
+* Mon Sep 25 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.2-1
+- 0.92.2 final.
+
+* Fri Sep 08 2017 David Tardon <dtardon@redhat.com> - 0.92.1-15.20170713bzr15740
+- rebuild for poppler 0.59.0
+
+* Tue Sep 05 2017 Adam Williamson <awilliam@redhat.com> - 0.92.1-14.20170713bzr15740
+- Rebuild for ImageMagick 6 reversion, drop ImageMagick 7 patch
+
+* Sun Aug 27 2017 Ville Skyttä <ville.skytta@iki.fi> - 0.92.1-13.20170713bzr15740
+- Own the /usr/lib/inkscape dir
+- %%langify non-English man pages
+
+* Fri Aug 25 2017 Michael Cronenworth <mike@cchtml.com> - 0.92.1-12.20170713bzr15740
+- Rebuilt for ImageMagick
+
+* Tue Aug 08 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-11.20170713bzr15740
+- Require aspell-en
+
+* Thu Aug 03 2017 David Tardon <dtardon@redhat.com> - 0.92.1-10.20170713bzr15740
+- rebuild for poppler 0.57.0
+
+* Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.92.1-9.20170713bzr15740
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
+
+* Sun Jul 30 2017 Kevin Fenzi <kevin@scrye.com> - 0.92.1-8.20170713bzr15740
+- Rebuilt for ImageMagick
+
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.92.1-7.20170713bzr15740
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Thu Jul 13 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-6.20170713bzr15740
+- Updated snapshot.
+
+* Fri Jun 23 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-5.20170510bzr15686
+- Move from gtkspell to gtkspell3, BZ 1464487.
 
 * Wed May 10 2017 Gwyn Ciesla <limburgher@gmail.com> - 0.92.1-4.20170510bzr15686
 - Update to fix on Wayland.
