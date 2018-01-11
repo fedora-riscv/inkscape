@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -167,20 +167,6 @@ install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 #make -k check || :
 
 
-%post
-/bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null || :
-
-%posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
-/usr/bin/update-desktop-database -q &> /dev/null ||:
-
-%postun
-if [ $1 -eq 0 ] ; then
-/bin/touch --no-create %{_datadir}/icons/hicolor &> /dev/null || :
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &> /dev/null || :
-/usr/bin/update-desktop-database -q &> /dev/null ||:
-fi
-
 
 %files -f %{name}.lang
 %{!?_licensedir:%global license %%doc}
@@ -229,6 +215,9 @@ fi
 
 
 %changelog
+* Thu Jan 11 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.92.2-4
+- Remove obsolete scriptlets
+
 * Wed Nov 08 2017 David Tardon <dtardon@redhat.com> - 0.92.2-3
 - rebuild for poppler 0.61.0
 
