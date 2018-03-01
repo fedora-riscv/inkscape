@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.2
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -38,7 +38,7 @@ BuildRequires:  libxml2-devel >= 2.6.11
 BuildRequires:  libxslt-devel >= 1.0.15
 BuildRequires:  pango-devel
 BuildRequires:  pkgconfig
-BuildRequires:  python-devel
+BuildRequires:  python2-devel
 BuildRequires:  poppler-glib-devel
 BuildRequires:  popt-devel
 BuildRequires:  libappstream-glib
@@ -61,10 +61,10 @@ Requires:       perl(Image::Magick)
 Requires:       transfig
 Requires:       gimp
 %endif
-Requires:       python-lxml
-Requires:       numpy
+Requires:       python2-lxml
+Requires:       python2-numpy
 Requires:       uniconvertor
-Requires:	python-scour
+Requires:	python2-scour
 
 # For ClipArt functionality
 Requires:       gvfs
@@ -215,6 +215,10 @@ install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
 
 %changelog
+* Thu Mar 01 2018 Iryna Shcherbina <ishcherb@redhat.com> - 0.92.2-7
+- Update Python 2 dependency declarations to new packaging standards
+  (See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3)
+
 * Wed Feb 14 2018 David Tardon <dtardon@redhat.com> - 0.92.2-6
 - rebuild for poppler 0.62.0
 
