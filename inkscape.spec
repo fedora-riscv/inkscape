@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.2
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 Group:          Applications/Productivity
@@ -215,6 +215,9 @@ install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
 
 %changelog
+* Fri Mar 23 2018 Marek Kasik <mkasik@redhat.com> - 0.92.2-8
+- Rebuild for poppler-0.63.0
+
 * Thu Mar 01 2018 Iryna Shcherbina <ishcherb@redhat.com> - 0.92.2-7
 - Update Python 2 dependency declarations to new packaging standards
   (See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3)
