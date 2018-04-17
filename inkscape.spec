@@ -1,9 +1,8 @@
 Name:           inkscape
-Version:        0.92.2
-Release:        8%{?dist}
+Version:        0.92.3
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
-Group:          Applications/Productivity
 License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
@@ -15,7 +14,7 @@ Source1:        %{name}.appdata.xml
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
 # https://gitlab.com/inkscape/inkscape/commit/9418824967eb4c53371ef8588243fed4cab496e0
-Patch0:		0001-adapt-to-poppler-0.58.patch
+#Patch0:		0001-adapt-to-poppler-0.58.patch
 
 BuildRequires:  aspell-devel aspell-en
 BuildRequires:  atk-devel
@@ -90,7 +89,6 @@ trace bitmaps and much more.
 
 %package view
 Summary:        Viewing program for SVG files
-Group:          Applications/Productivity
 
 %description view
 Viewer for files in W3C standard Scalable Vector Graphics (SVG) file
@@ -99,7 +97,6 @@ format.
 
 %package docs
 Summary:        Documentation for Inkscape
-Group:          Documentation
 
 %description docs
 Tutorial and examples for Inkscape, a graphics editor for vector
@@ -108,7 +105,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 %prep
 %setup -q
-%patch0 -p1 -b.poppler
+#%%patch0 -p1 -b.poppler
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -215,6 +212,9 @@ install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
 
 %changelog
+* Tue Apr 17 2018 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-1
+- 0.92.3.
+
 * Fri Mar 23 2018 Marek Kasik <mkasik@redhat.com> - 0.92.2-8
 - Rebuild for poppler-0.63.0
 
