@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
@@ -15,6 +15,7 @@ Source1:        %{name}.appdata.xml
 Source2:	Fedora-Color-Palette.gpl
 # https://gitlab.com/inkscape/inkscape/commit/9418824967eb4c53371ef8588243fed4cab496e0
 #Patch0:		0001-adapt-to-poppler-0.58.patch
+Patch0:		inkscape-0.92.3-1575842.patch
 
 BuildRequires:  aspell-devel aspell-en
 BuildRequires:  atk-devel
@@ -105,7 +106,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 %prep
 %setup -q
-#%%patch0 -p1 -b.poppler
+%patch0 -p0
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -212,6 +213,9 @@ install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
 
 %changelog
+* Wed Jun 27 2018 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-2
+- Fix for crash, 1575842.
+
 * Tue Apr 17 2018 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-1
 - 0.92.3.
 
