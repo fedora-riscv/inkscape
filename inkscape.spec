@@ -17,6 +17,7 @@ Source2:	Fedora-Color-Palette.gpl
 #Patch0:		0001-adapt-to-poppler-0.58.patch
 Patch0:		inkscape-0.92.3-1575842.patch
 
+BuildRequires:  gcc-c++
 BuildRequires:  aspell-devel aspell-en
 BuildRequires:  atk-devel
 BuildRequires:  boost-devel
