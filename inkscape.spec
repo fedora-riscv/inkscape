@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
@@ -214,6 +214,9 @@ install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
 
 %changelog
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.92.3-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Wed Jun 27 2018 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-2
 - Fix for crash, 1575842.
 
