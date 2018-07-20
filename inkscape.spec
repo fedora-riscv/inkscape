@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
@@ -17,6 +17,9 @@ Source2:	Fedora-Color-Palette.gpl
 #Patch0:		0001-adapt-to-poppler-0.58.patch
 Patch0:		inkscape-0.92.3-1575842.patch
 
+# https://bugzilla.redhat.com/show_bug.cgi?id=1604371
+Patch1:		inkscape-python2.patch
+
 BuildRequires:  gcc-c++
 BuildRequires:  aspell-devel aspell-en
 BuildRequires:  atk-devel
@@ -29,7 +32,7 @@ BuildRequires:  gc-devel >= 6.4
 BuildRequires:  gettext
 BuildRequires:  gsl-devel
 BuildRequires:  gtkmm24-devel
-BuildRequires:  gtkspell3-devel
+BuildRequires:  gtkspell-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  intltool
 BuildRequires:  lcms2-devel
@@ -49,8 +52,7 @@ BuildRequires:  cmake
 BuildRequires:	libwpd-devel
 BuildRequires:	gnome-vfs2-devel
 BuildRequires:	dbus-glib-devel
-BuildRequires:	gtk3-devel
-BuildRequires:	libgdl-devel
+BuildRequires:	gtk2-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libsigc++20-devel
 
@@ -108,6 +110,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %setup -q
 %patch0 -p0
+%patch1 -p1
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -214,6 +217,10 @@ install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
 
 %changelog
+* Fri Jul 20 2018 Debarshi Ray <rishi@fedoraproject.org> - 0.92.3-4
+- Fix FTBFS due to Python2
+- Remove GTK3-based BuildRequires
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.92.3-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
