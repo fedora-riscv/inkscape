@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.3
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
@@ -19,6 +19,9 @@ Patch0:		inkscape-0.92.3-1575842.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1604371
 Patch1:		inkscape-python2.patch
+
+Patch2:		inkscape-0.92.3-poppler-0.64.patch
+Patch3:		inkscape-0.92.3-poppler-0.65.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  aspell-devel aspell-en
@@ -111,6 +114,8 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %setup -q
 %patch0 -p0
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -217,6 +222,9 @@ install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
 
 %changelog
+* Tue Aug 14 2018 Marek Kasik <mkasik@redhat.com> - 0.92.3-5
+- Rebuild for poppler-0.67.0
+
 * Fri Jul 20 2018 Debarshi Ray <rishi@fedoraproject.org> - 0.92.3-4
 - Fix FTBFS due to Python2
 - Remove GTK3-based BuildRequires
