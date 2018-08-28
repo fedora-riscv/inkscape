@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.3
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
@@ -222,6 +222,9 @@ install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
 
 %changelog
+* Tue Aug 28 2018 Michael Cronenworth <mike@cchtml.com> - 0.92.3-6
+- Rebuild for ImageMagick 6.9.10
+
 * Tue Aug 14 2018 Marek Kasik <mkasik@redhat.com> - 0.92.3-5
 - Rebuild for poppler-0.67.0
 
