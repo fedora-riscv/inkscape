@@ -1,20 +1,16 @@
 Name:           inkscape
 Version:        0.92.3
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
 URL:            http://inkscape.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
-#Source0:	https://inkscape.org/en/gallery/item/10682/inkscape-0.92.1.tar_XlpI7qT.bz2
-#Source0:	inkscape-r15740.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
-# https://gitlab.com/inkscape/inkscape/commit/9418824967eb4c53371ef8588243fed4cab496e0
-#Patch0:		0001-adapt-to-poppler-0.58.patch
 Patch0:		inkscape-0.92.3-1575842.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1604371
@@ -45,7 +41,7 @@ BuildRequires:  libxml2-devel >= 2.6.11
 BuildRequires:  libxslt-devel >= 1.0.15
 BuildRequires:  pango-devel
 BuildRequires:  pkgconfig
-BuildRequires:  python2-devel
+BuildRequires:  python2-devel /usr/bin/pathfix.py
 BuildRequires:  poppler-glib-devel
 BuildRequires:  popt-devel
 BuildRequires:  libappstream-glib
@@ -116,6 +112,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+pathfix.py -pni "%{__python2} %{py2_shbang_opts}" .
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -165,6 +162,8 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/*.appda
 
 # Install Fedora Color Pallette
 install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
+
+pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/inkscape/extensions/*
 
 %find_lang %{name} --with-man
 
@@ -222,6 +221,9 @@ install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
 
 %changelog
+* Tue Sep 11 2018 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-7
+- Fix shebang handling.
+
 * Tue Aug 28 2018 Michael Cronenworth <mike@cchtml.com> - 0.92.3-6
 - Rebuild for ImageMagick 6.9.10
 
