@@ -3,9 +3,13 @@ Version:        0.92.3
 Release:        7%{?dist}
 Summary:        Vector-based drawing program using SVG
 
+# Inkscape tags their releases with underscores
+%global repotag %(echo %{name}_%{version} |
+                  tr "." "_" | tr "[:lower:]" "[:upper:]")
+
 License:        GPLv2+ and CC-BY
 URL:            https://inkscape.org/
-Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
+Source0:        https://gitlab.com/inkscape/-/archive/%{repotag}/%{name}-%{repotag}.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
