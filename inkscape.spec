@@ -4,7 +4,7 @@ Release:        7%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
-URL:            http://inkscape.sourceforge.net/
+URL:            https://inkscape.org/
 Source0:        http://downloads.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
