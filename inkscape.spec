@@ -3,9 +3,8 @@ Version:        0.92.3
 Release:        7%{?dist}
 Summary:        Vector-based drawing program using SVG
 
-# Inkscape tags their releases with underscores
-%global repotag %(echo %{name}_%{version} |
-                  tr "." "_" | tr "[:lower:]" "[:upper:]")
+# Inkscape tags their releases with underscores and in ALLCAPS
+%global repotag %(echo %{name}_%{version} |tr "." "_" |tr "[:lower:]" "[:upper:]")
 
 License:        GPLv2+ and CC-BY
 URL:            https://inkscape.org/
