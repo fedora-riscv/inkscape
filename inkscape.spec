@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.3
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -21,6 +21,9 @@ Patch1:		inkscape-python2.patch
 
 Patch2:		inkscape-0.92.3-poppler-0.64.patch
 Patch3:		inkscape-0.92.3-poppler-0.65.patch
+
+Provides: bundled(libcroco)
+Provides: bundled(libgdl)
 
 BuildRequires:  gcc-c++
 BuildRequires:  aspell-devel aspell-en
@@ -110,7 +113,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -q
+%setup -qn inkscape-INKSCAPE_0_92_3
 %patch0 -p0
 %patch1 -p1
 %patch2 -p1
@@ -224,6 +227,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 
 
 %changelog
+* Tue Dec 04 2018 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-8
+- Add bundled provides.
+
 * Tue Sep 11 2018 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-7
 - Fix shebang handling.
 
