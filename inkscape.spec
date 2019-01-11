@@ -21,6 +21,7 @@ Patch1:		inkscape-python2.patch
 
 Patch2:		inkscape-0.92.3-poppler-0.64.patch
 Patch3:		inkscape-0.92.3-poppler-0.65.patch
+Patch4:         inkscape-0.92.3-out-of-bounds.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(libgdl)
@@ -118,6 +119,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p0
 pathfix.py -pni "%{__python2} %{py2_shbang_opts}" .
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
@@ -227,6 +229,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 
 
 %changelog
+* Fri Jan 11 2019 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-9
+- Patch for out of bounds.
+
 * Tue Dec 04 2018 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-8
 - Add bundled provides.
 
