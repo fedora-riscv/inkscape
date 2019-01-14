@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.3
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -21,7 +21,7 @@ Patch1:		inkscape-python2.patch
 
 Patch2:		inkscape-0.92.3-poppler-0.64.patch
 Patch3:		inkscape-0.92.3-poppler-0.65.patch
-Patch4:         inkscape-0.92.3-out-of-bounds.patch
+Patch4:         inkscape-0.92.3-oob.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(libgdl)
@@ -229,6 +229,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 
 
 %changelog
+* Mon Jan 14 2019 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-10
+- Alternate out of bounds patch.
+
 * Fri Jan 11 2019 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-9
 - Patch for out of bounds.
 

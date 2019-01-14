@@ -1,0 +1,12 @@
+--- src/libnrtype/Layout-TNG-OutIter.cpp.orig	2019-01-11 19:56:12.701209914 +0100
++++ src/libnrtype/Layout-TNG-OutIter.cpp	2019-01-11 19:58:19.624114664 +0100
+@@ -46,7 +46,8 @@
+             best_x_difference = this_x_difference;
+         }
+     }
+-    if (best_char_index == -1) return iterator(this, char_index);
++    if (best_char_index == -1) best_char_index = char_index;
++    if (best_char_index == _characters.size()) return end();
+     return iterator(this, best_char_index);
+ }
+
