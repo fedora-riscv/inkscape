@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.3
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -22,6 +22,7 @@ Patch1:		inkscape-python2.patch
 Patch2:		inkscape-0.92.3-poppler-0.64.patch
 Patch3:		inkscape-0.92.3-poppler-0.65.patch
 Patch4:         inkscape-0.92.3-oob.patch
+Patch5:         inkscape-0.92.3-endofline.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(libgdl)
@@ -120,6 +121,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p0
+%patch5 -p0
 pathfix.py -pni "%{__python2} %{py2_shbang_opts}" .
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
@@ -229,6 +231,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 
 
 %changelog
+* Tue Jan 15 2019 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-11
+- End of line patch.
+
 * Mon Jan 14 2019 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-10
 - Alternate out of bounds patch.
 

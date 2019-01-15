@@ -1,0 +1,14 @@
+--- src/libnrtype/Layout-TNG-OutIter.cpp.orig	2019-01-15 13:18:22.783789165 +0100
++++ src/libnrtype/Layout-TNG-OutIter.cpp	2019-01-15 13:23:02.208986679 +0100
+@@ -783,7 +783,10 @@
+                          - _parent_layout->_chunks[_parent_layout->_spans[_parent_layout->_lineToSpan(line_index)].in_chunk].left_x;
+     }
+     _char_index = _parent_layout->_cursorXOnLineToIterator(line_index + n, _x_coordinate)._char_index;
+-    _glyph_index = _parent_layout->_characters[_char_index].in_glyph;
++    if (_char_index == _parent_layout->_characters.size())
++        _glyph_index = _parent_layout->_glyphs.size();
++    else
++        _glyph_index = _parent_layout->_characters[_char_index].in_glyph;
+     return true;
+ }
+ 
