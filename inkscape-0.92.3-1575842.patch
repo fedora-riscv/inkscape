@@ -1,0 +1,11 @@
+--- src/libnrtype/Layout-TNG-OutIter.cpp~       2018-03-11 16:38:09.000000000 -0400
++++ src/libnrtype/Layout-TNG-OutIter.cpp        2018-06-16 13:17:03.129605681 -0400
+@@ -182,6 +182,8 @@
+     if (_input_stream[source_index]->Type() != TEXT_SOURCE)
+         return iterator(this, char_index);
+
++    if (char_index >= _characters.size())
++        return end();
+     return iterator(this, char_index);
+     /* This code was never used, the text_iterator argument was "NULL" in all calling code
+     InputStreamTextSource const *text_source = static_cast<InputStreamTextSource const *>(_input_stream[source_index]);
