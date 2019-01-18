@@ -1,6 +1,6 @@
 Name:           inkscape
-Version:        0.92.3
-Release:        11%{?dist}
+Version:        0.92.4
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -18,11 +18,8 @@ Patch0:		inkscape-0.92.3-1575842.patch
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1604371
 Patch1:		inkscape-python2.patch
-
-Patch2:		inkscape-0.92.3-poppler-0.64.patch
-Patch3:		inkscape-0.92.3-poppler-0.65.patch
-Patch4:         inkscape-0.92.3-oob.patch
-Patch5:         inkscape-0.92.3-endofline.patch
+Patch2:         inkscape-0.92.3-oob.patch
+Patch3:         inkscape-0.92.3-endofline.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(libgdl)
@@ -115,13 +112,11 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-INKSCAPE_0_92_3
+%setup -qn inkscape-INKSCAPE_0_92_4
 %patch0 -p0
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p0
-%patch5 -p0
+%patch2 -p0
+%patch3 -p0
 pathfix.py -pni "%{__python2} %{py2_shbang_opts}" .
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
@@ -208,6 +203,7 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 %{_datadir}/inkscape/templates
 %{_datadir}/inkscape/ui
 %{_datadir}/appdata/*inkscape.appdata.xml
+%{_datadir}/metainfo/inkscape.appdata.xml
 %{_datadir}/applications/*inkscape.desktop
 %{_datadir}/icons/hicolor/*/*/inkscape*
 %{_mandir}/*/*gz
@@ -231,6 +227,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 
 
 %changelog
+* Thu Jan 17 2019 Gwyn Ciesla <limburgher@gmail.com> - 0.92.4-1
+- 0.92.4
+
 * Tue Jan 15 2019 Gwyn Ciesla <limburgher@gmail.com> - 0.92.3-11
 - End of line patch.
 
