@@ -1,6 +1,6 @@
 Name:           inkscape
 Version:        0.92.4
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -54,7 +54,6 @@ BuildRequires:  libtool
 BuildRequires:  potrace-devel
 BuildRequires:  cmake
 BuildRequires:	libwpd-devel
-BuildRequires:	gnome-vfs2-devel
 BuildRequires:	dbus-glib-devel
 BuildRequires:	gtk2-devel
 BuildRequires:	libjpeg-devel
@@ -72,9 +71,6 @@ Requires:       python2-lxml
 Requires:       python2-numpy
 Requires:       uniconvertor
 Requires:	python2-scour
-
-# For ClipArt functionality
-Requires:       gvfs
 
 # Weak dependencies for the LaTeX plugin
 Suggests:       pstoedit
@@ -227,6 +223,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 
 
 %changelog
+* Fri Feb 08 2019 Gwyn Ciesla <gwync@protonmail.com> - 0.92.4-4
+- Drop gvfs.
+
 * Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.92.4-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
