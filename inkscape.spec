@@ -1,6 +1,8 @@
+%define debug_package %{nil}
+
 Name:           inkscape
 Version:        0.92.4
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -126,7 +128,13 @@ find share/extensions -name '*.py' | xargs chmod -x
 dos2unix -k -q share/extensions/*.py
 
 %build
-%cmake \
+#export CFLAGS="${CFLAGS:--O2 -g -pipe -Wall -Werror=format-security -Wp,-D_GLIBCXX_ASSERTIONS -fexceptions -fstack-protector-strong -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection}"
+#export CXXFLAGS="${CXXFLAGS:--O2 -g -pipe -Wall -Werror=format-security -Wp,-D_GLIBCXX_ASSERTIONS -fexceptions -fstack-protector-strong -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection}"
+#export FFLAGS="${FFLAGS:--O2 -g -pipe -Wall -Werror=format-security -Wp,-D_GLIBCXX_ASSERTIONS -fexceptions -fstack-protector-strong -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -I/usr/lib64/gfortran/modules}"
+#export FCFLAGS="${FCFLAGS:--O2 -g -pipe -Wall -Werror=format-security -Wp,-D_GLIBCXX_ASSERTIONS -fexceptions -fstack-protector-strong -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -I/usr/lib64/gfortran/modules}"
+#export LDFLAGS="${LDFLAGS:--Wl,-z,relro   -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld}"
+sed -i /FORTIFY_SOURCE/d CMakeLists.txt
+cmake \
         -DCMAKE_C_FLAGS_RELEASE:STRING="-DNDEBUG" \
         -DCMAKE_CXX_FLAGS_RELEASE:STRING="-DNDEBUG" \
         -DCMAKE_Fortran_FLAGS_RELEASE:STRING="-DNDEBUG" \
@@ -140,6 +148,7 @@ dos2unix -k -q share/extensions/*.py
         -DLIB_SUFFIX=64 \
 %endif 
         -DBUILD_SHARED_LIBS:BOOL=OFF .
+
 make %{?_smp_mflags}
 
 
@@ -223,6 +232,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 
 
 %changelog
+* Wed Mar 27 2019 Gwyn Ciesla <gwync@protonmail.com> - 0.92.4-5
+- Build without -D_FORTIFY_SOURCE=2 to work around https://bugs.launchpad.net/inkscape/+bug/1778951
+
 * Fri Feb 08 2019 Gwyn Ciesla <gwync@protonmail.com> - 0.92.4-4
 - Drop gvfs.
 
