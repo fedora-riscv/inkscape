@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        0.92.4
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -195,6 +195,10 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 %{_datadir}/inkscape/extensions
 # Pulls in perl, if needed should go into a -perl subpackage
 %exclude %{_datadir}/inkscape/extensions/embed_raster_in_svg.pl
+%if 0%{?flatpak}
+# Pulls in ruby
+%exclude %{_datadir}/inkscape/extensions/simplepath.rb
+%endif
 %{_datadir}/inkscape/filters
 %{_datadir}/inkscape/fonts
 %{_datadir}/inkscape/gradients
@@ -232,6 +236,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 
 
 %changelog
+* Wed Jun 12 2019 Kalev Lember <klember@redhat.com> - 0.92.4-6
+- Avoid ruby dep for flatpak builds
+
 * Wed Mar 27 2019 Gwyn Ciesla <gwync@protonmail.com> - 0.92.4-5
 - Build without -D_FORTIFY_SOURCE=2 to work around https://bugs.launchpad.net/inkscape/+bug/1778951
 
