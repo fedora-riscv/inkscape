@@ -217,7 +217,7 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 %{_datadir}/metainfo/inkscape.appdata.xml
 %{_datadir}/applications/*inkscape.desktop
 %{_datadir}/icons/hicolor/*/*/inkscape*
-%{_mandir}/*/*gz
+%{_mandir}/man1/*.1*
 %exclude %{_mandir}/man1/inkview.1*
 %{_datadir}/inkscape/tutorials
 %dir %{_prefix}/lib/inkscape
