@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        0.92.4
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -141,11 +141,11 @@ cmake \
         -DCMAKE_CXX_FLAGS_RELEASE:STRING="-DNDEBUG" \
         -DCMAKE_Fortran_FLAGS_RELEASE:STRING="-DNDEBUG" \
         -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
-        -DCMAKE_INSTALL_PREFIX:PATH=/usr \
-        -DINCLUDE_INSTALL_DIR:PATH=/usr/include \
-        -DLIB_INSTALL_DIR:PATH=/usr/lib64 \
-        -DSYSCONF_INSTALL_DIR:PATH=/etc \
-        -DSHARE_INSTALL_PREFIX:PATH=/usr/share \
+        -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
+        -DINCLUDE_INSTALL_DIR:PATH=%{_includedir} \
+        -DLIB_INSTALL_DIR:PATH=%{_libdir} \
+        -DSYSCONF_INSTALL_DIR:PATH=%{_sysconfdir} \
+        -DSHARE_INSTALL_PREFIX:PATH=%{_datadir} \
 %if "lib64" == "lib64" 
         -DLIB_SUFFIX=64 \
 %endif 
@@ -220,8 +220,8 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 %{_mandir}/*/*gz
 %exclude %{_mandir}/man1/inkview.1*
 %{_datadir}/inkscape/tutorials
-%dir /usr/lib/inkscape
-/usr/lib/inkscape/lib*.so
+%dir %{_prefix}/lib/inkscape
+%{_prefix}/lib/inkscape/lib*.so
 
 %files view
 %{!?_licensedir:%global license %%doc}
@@ -238,6 +238,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 
 
 %changelog
+* Thu Jun 20 2019 Kalev Lember <klember@redhat.com> - 0.92.4-7
+- Don't hardcode /usr prefix
+
 * Wed Jun 12 2019 Kalev Lember <klember@redhat.com> - 0.92.4-6
 - Avoid ruby dep for flatpak builds
 
