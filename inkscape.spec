@@ -39,7 +39,9 @@ BuildRequires:  gettext
 BuildRequires:  gsl-devel
 BuildRequires:  gtkmm24-devel
 BuildRequires:  gtkspell-devel
+%if ! 0%{?flatpak}
 BuildRequires:  ImageMagick-c++-devel
+%endif
 BuildRequires:  intltool
 BuildRequires:  lcms2-devel
 BuildRequires:  libpng-devel >= 1.2
