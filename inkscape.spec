@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        0.92.4
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -238,6 +238,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 
 
 %changelog
+* Tue Aug 20 2019 Susi Lehtola <jussilehtola@fedoraproject.org> - 0.92.4-9
+- Rebuilt for GSL 2.6.
+
 * Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.92.4-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
