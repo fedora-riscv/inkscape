@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        0.92.4
-Release:        9%{?dist}
+Release:        10.git179c1e14%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -10,18 +10,13 @@ Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
 URL:            https://inkscape.org/
-Source0:        https://gitlab.com/inkscape/-/archive/%{repotag}/%{name}-%{repotag}.tar.bz2
+#Source0:        https://gitlab.com/inkscape/-/archive/%%{repotag}/%%{name}-%%{repotag}.tar.bz2
+Source0:        inkscape-master.tar.gz
 # AppData file. Upstream has merged a patch adding an appdata file
 # after into the 0.92 release branch.
 Source1:        %{name}.appdata.xml
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
-Patch0:		inkscape-0.92.3-1575842.patch
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1604371
-Patch1:		inkscape-python2.patch
-Patch2:         inkscape-0.92.3-oob.patch
-Patch3:         inkscape-0.92.3-endofline.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(libgdl)
@@ -33,12 +28,14 @@ BuildRequires:  boost-devel
 BuildRequires:  cairo-devel
 BuildRequires:  dos2unix
 BuildRequires:  desktop-file-utils
+BuildRequires:  double-conversion-devel
 BuildRequires:  freetype-devel
 BuildRequires:  gc-devel >= 6.4
+BuildRequires:  gdlmm-devel
 BuildRequires:  gettext
 BuildRequires:  gsl-devel
-BuildRequires:  gtkmm24-devel
-BuildRequires:  gtkspell-devel
+BuildRequires:  gtkmm30-devel
+BuildRequires:  gtkspell3-devel
 %if ! 0%{?flatpak}
 BuildRequires:  ImageMagick-c++-devel
 %endif
@@ -50,7 +47,7 @@ BuildRequires:  libxml2-devel >= 2.6.11
 BuildRequires:  libxslt-devel >= 1.0.15
 BuildRequires:  pango-devel
 BuildRequires:  pkgconfig
-BuildRequires:  python2-devel /usr/bin/pathfix.py
+BuildRequires:  python3-devel
 BuildRequires:  poppler-glib-devel
 BuildRequires:  popt-devel
 BuildRequires:  libappstream-glib
@@ -62,6 +59,8 @@ BuildRequires:	dbus-glib-devel
 BuildRequires:	gtk2-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libsigc++20-devel
+BuildRequires:  libsoup-devel
+BuildRequires:  python-unversioned-command
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -71,10 +70,9 @@ Requires:       perl(Image::Magick)
 Requires:       transfig
 Requires:       gimp
 %endif
-Requires:       python2-lxml
-Requires:       python2-numpy
-Requires:       uniconvertor
-Requires:	python2-scour
+Requires:       python3-lxml
+Requires:       python3-numpy
+Requires:	python3-scour
 
 # Weak dependencies for the LaTeX plugin
 Suggests:       pstoedit
@@ -112,19 +110,14 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-INKSCAPE_0_92_4
-%patch0 -p0
-%patch1 -p1
-%patch2 -p0
-%patch3 -p0
-pathfix.py -pni "%{__python2} %{py2_shbang_opts}" .
+%setup -qn inkscape-master
+pathfix.py -pni "%{__python3} %{py3_shbang_opts}" .
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
 # despite not being executable
 find . -name '*.cpp' | xargs chmod -x
 find . -name '*.h' | xargs chmod -x
-find share/extensions -name '*.py' | xargs chmod -x
 
 # Fix end of line encodings
 dos2unix -k -q share/extensions/*.py
@@ -156,12 +149,11 @@ make %{?_smp_mflags}
 
 %install
 make install DESTDIR=$RPM_BUILD_ROOT
-sed -i 's/Drawing Shortcut Group/X-Drawing Shortcut Group/g' $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop
 find $RPM_BUILD_ROOT -type f -name 'lib*.a' | xargs rm -f
 
 desktop-file-install --vendor="%{?desktop_vendor}" --delete-original --remove-key=TargetEnvironment \
         --dir $RPM_BUILD_ROOT%{_datadir}/applications   \
-        $RPM_BUILD_ROOT%{_datadir}/applications/%{name}.desktop
+        $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inkscape.desktop
 
 
 # No skencil anymore
@@ -175,58 +167,49 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/*.appda
 # Install Fedora Color Pallette
 install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
-pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/inkscape/extensions/*
-
 %find_lang %{name} --with-man
 
-
-#%check
-# XXX: Tests fail, ignore it for now
-#make -k check || :
-
+rm -rf $RPM_BUILD_ROOT%{_datadir}/inkscape/doc
+rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %files -f %{name}.lang
 %{!?_licensedir:%global license %%doc}
 %license COPYING
-%doc AUTHORS NEWS README
+%doc AUTHORS NEWS.md README.md
 %{_bindir}/inkscape
 %dir %{_datadir}/inkscape
 %{_datadir}/inkscape/attributes
 %{_datadir}/inkscape/branding
 %{_datadir}/inkscape/extensions
-# Pulls in perl, if needed should go into a -perl subpackage
-%exclude %{_datadir}/inkscape/extensions/embed_raster_in_svg.pl
 %if 0%{?flatpak}
 # Pulls in ruby
 %exclude %{_datadir}/inkscape/extensions/simplepath.rb
 %endif
 %{_datadir}/inkscape/filters
 %{_datadir}/inkscape/fonts
-%{_datadir}/inkscape/gradients
 %{_datadir}/inkscape/icons
 %{_datadir}/inkscape/keys
 %{_datadir}/inkscape/markers
 %{_datadir}/inkscape/palettes
-%{_datadir}/inkscape/patterns
+%{_datadir}/inkscape/paint
+%{_datadir}/inkscape/pixmaps
 %{_datadir}/inkscape/screens
 %{_datadir}/inkscape/symbols
 %{_datadir}/inkscape/templates
 %{_datadir}/inkscape/ui
 %{_datadir}/appdata/*inkscape.appdata.xml
-%{_datadir}/metainfo/inkscape.appdata.xml
-%{_datadir}/applications/*inkscape.desktop
-%{_datadir}/icons/hicolor/*/*/inkscape*
+%{_datadir}/metainfo/org.inkscape.Inkscape.appdata.xml
+%{_datadir}/applications/org.inkscape.Inkscape.desktop
 %{_mandir}/man1/*.1*
 %exclude %{_mandir}/man1/inkview.1*
 %{_datadir}/inkscape/tutorials
-%dir %{_prefix}/lib/inkscape
-%{_prefix}/lib/inkscape/lib*.so
+%{_datadir}/icons/hicolor/*/apps/*.png
 
 %files view
 %{!?_licensedir:%global license %%doc}
 %license COPYING
-%doc AUTHORS NEWS README
+%doc AUTHORS NEWS.md README.md
 %{_bindir}/inkview
 %{_mandir}/man1/inkview.1*
 
@@ -238,6 +221,9 @@ pathfix.py -pni "%{__python2} %{py2_shbang_opts}" $RPM_BUILD_ROOT%{_datadir}/ink
 
 
 %changelog
+* Mon Aug 26 2019 Gwyn Ciesla <gwync@protonmail.com> - 0.92.4-10.git179c1e14
+- git snapshot for Python 3.
+
 * Tue Aug 20 2019 Susi Lehtola <jussilehtola@fedoraproject.org> - 0.92.4-9
 - Rebuilt for GSL 2.6.
 
