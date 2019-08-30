@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        0.92.4
-Release:        10.git179c1e14%{?dist}
+Release:        11.git179c1e14%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -60,7 +60,6 @@ BuildRequires:	gtk2-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libsigc++20-devel
 BuildRequires:  libsoup-devel
-BuildRequires:  python-unversioned-command
 
 # Disable all for now. TODO: Be smarter
 %if 0
@@ -70,9 +69,10 @@ Requires:       perl(Image::Magick)
 Requires:       transfig
 Requires:       gimp
 %endif
+Requires:       python3
 Requires:       python3-lxml
 Requires:       python3-numpy
-Requires:	python3-scour
+Requires:       python3-scour
 
 # Weak dependencies for the LaTeX plugin
 Suggests:       pstoedit
@@ -112,6 +112,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 %prep
 %setup -qn inkscape-master
 pathfix.py -pni "%{__python3} %{py3_shbang_opts}" .
+find . -name CMakeLists.txt | xargs sed -i 's|COMMAND python |COMMAND %{__python3} |g'
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -221,6 +222,10 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Fri Aug 30 2019 Miro Hrončok <mhroncok@redhat.com> - 0.92.4-11.git179c1e14
+- Explicitly depend on Python 3 interpreter
+- Use python3 explicitly when building
+
 * Mon Aug 26 2019 Gwyn Ciesla <gwync@protonmail.com> - 0.92.4-10.git179c1e14
 - git snapshot for Python 3.
 
