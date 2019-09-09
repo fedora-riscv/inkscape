@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        0.92.4
-Release:        11.git179c1e14%{?dist}
+Release:        12.git179c1e14%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -12,9 +12,6 @@ License:        GPLv2+ and CC-BY
 URL:            https://inkscape.org/
 #Source0:        https://gitlab.com/inkscape/-/archive/%%{repotag}/%%{name}-%%{repotag}.tar.bz2
 Source0:        inkscape-master.tar.gz
-# AppData file. Upstream has merged a patch adding an appdata file
-# after into the 0.92 release branch.
-Source1:        %{name}.appdata.xml
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
 
@@ -160,10 +157,8 @@ desktop-file-install --vendor="%{?desktop_vendor}" --delete-original --remove-ke
 # No skencil anymore
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/sk2svg.sh
 
-# Install and validate appdata file
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/appdata
-cp -a %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/appdata
-appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/appdata/*.appdata.xml
+# Validate appdata file
+appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/metainfo/*.appdata.xml
 
 # Install Fedora Color Pallette
 install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
@@ -199,7 +194,6 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 %{_datadir}/inkscape/symbols
 %{_datadir}/inkscape/templates
 %{_datadir}/inkscape/ui
-%{_datadir}/appdata/*inkscape.appdata.xml
 %{_datadir}/metainfo/org.inkscape.Inkscape.appdata.xml
 %{_datadir}/applications/org.inkscape.Inkscape.desktop
 %{_mandir}/man1/*.1*
@@ -222,6 +216,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Mon Sep 09 2019 Kalev Lember <klember@redhat.com> - 0.92.4-12.git179c1e14
+- Use upstream appdata
+
 * Fri Aug 30 2019 Miro Hrončok <mhroncok@redhat.com> - 0.92.4-11.git179c1e14
 - Explicitly depend on Python 3 interpreter
 - Use python3 explicitly when building
