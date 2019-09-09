@@ -15,6 +15,9 @@ Source0:        inkscape-master.tar.gz
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
 
+# Make appdata validation pass
+Patch0:         inkscape-appdata.patch
+
 Provides: bundled(libcroco)
 Provides: bundled(libgdl)
 
@@ -107,7 +110,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%setup -qn inkscape-master
+%autosetup -n inkscape-master -p1
 pathfix.py -pni "%{__python3} %{py3_shbang_opts}" .
 find . -name CMakeLists.txt | xargs sed -i 's|COMMAND python |COMMAND %{__python3} |g'
 

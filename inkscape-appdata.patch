@@ -1,0 +1,19 @@
+--- inkscape-master/org.inkscape.Inkscape.appdata.xml.in.orig	2019-08-26 13:18:13.000000000 +0200
++++ inkscape-master/org.inkscape.Inkscape.appdata.xml.in	2019-09-09 15:59:48.404305790 +0200
+@@ -51,16 +51,6 @@
+         </ul>
+       </description>
+     </release>
+-    <release version="1.0-alpha2" date="2019-06-02">
+-      <description>
+-        <p>This is the second public alpha release of Inkscape 1.0! This package is intended to test against regressions, try new features, and get a taste of the future of Inkscape!</p>
+-      </description>
+-  </release>
+-    <release version="1.0-alpha" date="2019-01-04">
+-      <description>
+-        <p>This is the first public alpha release of Inkscape 1.0! This package is intended to test against regressions, try new features, and get a taste of the future of Inkscape!</p>
+-      </description>
+-  </release>
+     <release version="0.92.3" date="2018-03-23">
+       <description>
+         <ul>
