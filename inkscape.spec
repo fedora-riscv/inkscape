@@ -1,8 +1,8 @@
 %define debug_package %{nil}
 
 Name:           inkscape
-Version:        0.92.4
-Release:        12.git179c1e14%{?dist}
+Version:        1.0
+Release:        0.beta%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -11,12 +11,9 @@ Summary:        Vector-based drawing program using SVG
 License:        GPLv2+ and CC-BY
 URL:            https://inkscape.org/
 #Source0:        https://gitlab.com/inkscape/-/archive/%%{repotag}/%%{name}-%%{repotag}.tar.bz2
-Source0:        inkscape-master.tar.gz
+Source0:        inkscape-INKSCAPE_1_0_BETA.tar.bz2
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
-
-# Make appdata validation pass
-Patch0:         inkscape-appdata.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(libgdl)
@@ -110,7 +107,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%autosetup -n inkscape-master -p1
+%autosetup -n inkscape-INKSCAPE_1_0_BETA -p1
 pathfix.py -pni "%{__python3} %{py3_shbang_opts}" .
 find . -name CMakeLists.txt | xargs sed -i 's|COMMAND python |COMMAND %{__python3} |g'
 
@@ -219,6 +216,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Mon Sep 09 2019 Gwyn Ciesla <gwync@protonmail.com> - 1.0-0.beta
+- 1.0 beta
+
 * Mon Sep 09 2019 Kalev Lember <klember@redhat.com> - 0.92.4-12.git179c1e14
 - Use upstream appdata
 
