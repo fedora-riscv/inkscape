@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0
-Release:        0.beta%{?dist}
+Release:        0.beta%{?dist}.1
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -216,6 +216,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Tue Sep 24 2019 Christoph Junghans <junghans@votca.org> - 1.0-0.beta.1
+- Rebuild for libdouble-conversion
+
 * Mon Sep 09 2019 Gwyn Ciesla <gwync@protonmail.com> - 1.0-0.beta
 - 1.0 beta
 
