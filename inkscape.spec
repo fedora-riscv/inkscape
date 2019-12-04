@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0
-Release:        0.beta%{?dist}.2
+Release:        0.beta%{?dist}.3
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -11,7 +11,7 @@ Summary:        Vector-based drawing program using SVG
 License:        GPLv2+ and CC-BY
 URL:            https://inkscape.org/
 #Source0:        https://gitlab.com/inkscape/-/archive/%%{repotag}/%%{name}-%%{repotag}.tar.bz2
-Source0:        inkscape-1.0beta1.tar.bz2
+Source0:        inkscape-INKSCAPE_1_0_BETA2.tar.bz2
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
 
@@ -107,7 +107,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%autosetup -n inkscape-1.0beta1 -p1
+%autosetup -n inkscape-INKSCAPE_1_0_BETA2 -p1
 pathfix.py -pni "%{__python3} %{py3_shbang_opts}" .
 find . -name CMakeLists.txt | xargs sed -i 's|COMMAND python |COMMAND %{__python3} |g'
 
@@ -207,6 +207,7 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 %doc AUTHORS NEWS.md README.md
 %{_bindir}/inkview
 %{_mandir}/man1/inkview.1*
+%{_mandir}/*/man1/inkview.1*
 
 
 %files docs
@@ -216,6 +217,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Wed Dec 04 2019 Gwyn Ciesla <gwync@protonmail.com> - 1.0-0.beta.3
+- 1.0 beta 2
+
 * Mon Oct 14 2019 Gwyn Ciesla <gwync@protonmail.com> - 1.0-0.beta.2
 - 1.0 beta 1
 
