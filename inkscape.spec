@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0
-Release:        0.beta%{?dist}.3
+Release:        0.beta%{?dist}.4
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -217,6 +217,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Fri Jan 17 2020 Marek Kasik <mkasik@redhat.com> - 1.0-0.beta.4
+- Rebuild for poppler-0.84.0
+
 * Wed Dec 04 2019 Gwyn Ciesla <gwync@protonmail.com> - 1.0-0.beta.3
 - 1.0 beta 2
 
