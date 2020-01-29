@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0
-Release:        0.beta%{?dist}.4
+Release:        0.beta%{?dist}.5
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -217,6 +217,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.0-0.beta.5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Fri Jan 17 2020 Marek Kasik <mkasik@redhat.com> - 1.0-0.beta.4
 - Rebuild for poppler-0.84.0
 
