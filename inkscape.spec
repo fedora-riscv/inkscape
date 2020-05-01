@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0
-Release:        0.rc1%{?dist}.1
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -10,8 +10,7 @@ Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
 URL:            https://inkscape.org/
-#Source0:        https://gitlab.com/inkscape/-/archive/%%{repotag}/%%{name}-%%{repotag}.tar.bz2
-Source0:        https://inkscape.org/gallery/item/18046/inkscape-1.0rc1_2020-04-09_09960d6f05.tar.xz
+Source0:        https://inkscape.org/gallery/item/18460/inkscape-1.0_2020-05-01_4035a4fb49.tar.xz
 
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
@@ -108,9 +107,12 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%autosetup -n inkscape-1.0rc1_2020-04-09_09960d6f05 -p1
+%autosetup -n inkscape-1.0_2020-05-01_4035a4fb49 -p1
 pathfix.py -pni "%{__python3} %{py3_shbang_opts}" .
 find . -name CMakeLists.txt | xargs sed -i 's|COMMAND python |COMMAND %{__python3} |g'
+
+#strip invalid tag
+sed -i /url/d org.inkscape.Inkscape.appdata.xml.in
 
 # https://bugs.launchpad.net/inkscape/+bug/314381
 # A couple of files have executable bits set,
@@ -218,6 +220,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Fri May 01 2020 Gwyn Ciesla <gwync@protonmail.com> - 1.0-1
+- 1.0 final
+
 * Wed Apr 15 2020 Gwyn Ciesla <gwync@protonmail.com> - 1.0-0.rc1.1
 - Download version with extensions.
 
