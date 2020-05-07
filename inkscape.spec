@@ -70,6 +70,8 @@ Requires:       python3
 Requires:       python3-lxml
 Requires:       python3-numpy
 Requires:       python3-scour
+Requires:       libcanberra-gtk3
+Requires:       PackageKit-gtk3-module
 
 # Weak dependencies for the LaTeX plugin
 Suggests:       pstoedit
