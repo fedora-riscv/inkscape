@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -222,6 +222,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Thu May 07 2020 Gwyn Ciesla <gwync@protonmail.com> - 1.0-2
+- Fix runtime dependencies.
+
 * Fri May 01 2020 Gwyn Ciesla <gwync@protonmail.com> - 1.0-1
 - 1.0 final
 
