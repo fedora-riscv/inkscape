@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -45,6 +45,7 @@ BuildRequires:  libxslt-devel >= 1.0.15
 BuildRequires:  pango-devel
 BuildRequires:  pkgconfig
 BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
 BuildRequires:  poppler-glib-devel
 BuildRequires:  popt-devel
 BuildRequires:  libappstream-glib
@@ -222,6 +223,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Tue Jun 23 2020 Gwyn Ciesla <gwync@protonmail.com> - 1.0-3
+- BR python3-setuptools.
+
 * Thu May 07 2020 Gwyn Ciesla <gwync@protonmail.com> - 1.0-2
 - Fix runtime dependencies.
 
