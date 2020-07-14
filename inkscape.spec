@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -148,11 +148,11 @@ cmake \
 %endif 
         -DBUILD_SHARED_LIBS:BOOL=OFF .
 
-make %{?_smp_mflags}
+%make_build
 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 find $RPM_BUILD_ROOT -type f -name 'lib*.a' | xargs rm -f
 
 desktop-file-install --vendor="%{?desktop_vendor}" --delete-original --remove-key=TargetEnvironment \
@@ -223,6 +223,10 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Tue Jul 14 2020 Tom Stellard <tstellar@redhat.com> - 1.0-5
+- Use make macros
+- https://fedoraproject.org/wiki/Changes/UseMakeBuildInstallMacro
+
 * Mon Jul 13 2020 Gwyn Ciesla <gwync@protonmail.com> - 1.0-4
 - Poppler 0.90.0 rebuild.
 
