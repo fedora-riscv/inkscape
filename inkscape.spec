@@ -153,11 +153,6 @@ cmake \
 %make_install
 find $RPM_BUILD_ROOT -type f -name 'lib*.a' | xargs rm -f
 
-desktop-file-install --vendor="%{?desktop_vendor}" --delete-original --remove-key=TargetEnvironment \
-        --dir $RPM_BUILD_ROOT%{_datadir}/applications   \
-        $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inkscape.desktop
-
-
 # No skencil anymore
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/sk2svg.sh
 
@@ -173,6 +168,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 %check
 # Validate appdata file
 appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/metainfo/*.appdata.xml
+
+# Validate desktop file
+desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inkscape.desktop
 
 
 %files -f %{name}.lang
@@ -226,6 +224,7 @@ appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/metainfo/*.appd
 * Mon Aug 17 2020 Kalev Lember <klember@redhat.com> - 1.0-7
 - Drop two unneeded dependencies
 - Validate appdata file in check rather than install section
+- Use desktop-file-validate instead of desktop-file-install
 
 * Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
