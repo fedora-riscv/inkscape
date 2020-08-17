@@ -161,9 +161,6 @@ desktop-file-install --vendor="%{?desktop_vendor}" --delete-original --remove-ke
 # No skencil anymore
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/sk2svg.sh
 
-# Validate appdata file
-appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/metainfo/*.appdata.xml
-
 # Install Fedora Color Pallette
 install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
@@ -171,6 +168,11 @@ install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
 rm -rf $RPM_BUILD_ROOT%{_datadir}/inkscape/doc
 rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
+
+
+%check
+# Validate appdata file
+appstream-util validate-relax --nonet $RPM_BUILD_ROOT%{_datadir}/metainfo/*.appdata.xml
 
 
 %files -f %{name}.lang
@@ -223,6 +225,7 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 %changelog
 * Mon Aug 17 2020 Kalev Lember <klember@redhat.com> - 1.0-7
 - Drop two unneeded dependencies
+- Validate appdata file in check rather than install section
 
 * Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
