@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -71,8 +71,6 @@ Requires:       python3
 Requires:       python3-lxml
 Requires:       python3-numpy
 Requires:       python3-scour
-Requires:       libcanberra-gtk3
-Requires:       PackageKit-gtk3-module
 
 # Weak dependencies for the LaTeX plugin
 Suggests:       pstoedit
@@ -223,6 +221,9 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/doc/inkscape/copyright
 
 
 %changelog
+* Mon Aug 17 2020 Kalev Lember <klember@redhat.com> - 1.0-7
+- Drop two unneeded dependencies
+
 * Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 
