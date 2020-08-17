@@ -54,7 +54,6 @@ BuildRequires:  potrace-devel
 BuildRequires:  cmake
 BuildRequires:	libwpd-devel
 BuildRequires:	dbus-glib-devel
-BuildRequires:	gtk2-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libsigc++20-devel
 BuildRequires:  libsoup-devel
@@ -225,6 +224,7 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 - Drop two unneeded dependencies
 - Validate appdata file in check rather than install section
 - Use desktop-file-validate instead of desktop-file-install
+- Drop unused gtk2 buildrequires
 
 * Tue Jul 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.0-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
