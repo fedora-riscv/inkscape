@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -14,6 +14,8 @@ Source0:        https://inkscape.org/gallery/item/18460/inkscape-1.0_2020-05-01_
 
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
+
+Patch1:         inkscape-gcc11.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(libgdl)
@@ -220,6 +222,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Thu Sep 03 2020 Jeff Law <law@redhat.com> - 1.0-8
+- Refine dynamic casts to avoid -Wnonnull warning with gcc-11
+
 * Mon Aug 17 2020 Kalev Lember <klember@redhat.com> - 1.0-7
 - Drop two unneeded dependencies
 - Validate appdata file in check rather than install section

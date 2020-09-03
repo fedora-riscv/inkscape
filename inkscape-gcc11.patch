@@ -1,0 +1,22 @@
+diff --git a/src/extension/system.cpp b/src/extension/system.cpp
+index 08de0b4..9ba73a1 100644
+--- a/src/extension/system.cpp
++++ b/src/extension/system.cpp
+@@ -174,7 +174,7 @@ open_internal(Extension *in_plug, gpointer in_data)
+         // skip all the rest if we already found a function to open it
+         // since they're ordered by preference now.
+         if (!*pimod) {
+-            gchar const *ext = dynamic_cast<Input *>(in_plug)->get_extension();
++            gchar const *ext = dynamic_cast<Input &>(*in_plug).get_extension();
+ 
+             gchar *filenamelower = g_utf8_strdown(filename, -1);
+             gchar *extensionlower = g_utf8_strdown(ext, -1);
+@@ -384,7 +384,7 @@ save_internal(Extension *in_plug, gpointer in_data)
+         // skip all the rest if we already found someone to save it
+         // since they're ordered by preference now.
+         if (!*pomod) {
+-            gchar const *ext = dynamic_cast<Output *>(in_plug)->get_extension();
++            gchar const *ext = dynamic_cast<Output &>(*in_plug).get_extension();
+ 
+             gchar *filenamelower = g_utf8_strdown(filename, -1);
+             gchar *extensionlower = g_utf8_strdown(ext, -1);
