@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -16,6 +16,7 @@ Source0:        https://inkscape.org/gallery/item/21571/inkscape-1.0.1.tar.xz
 Source2:	Fedora-Color-Palette.gpl
 
 Patch1:         inkscape-gcc11.patch
+# Backported from upstream
 Patch2:         inkscape-appdata.patch
 
 Provides: bundled(libcroco)
@@ -224,6 +225,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Fri Sep 11 2020 Kalev Lember <klember@redhat.com> - 1.0.1-2
+- Fix appdata 1.0.1 release info
+
 * Tue Sep 08 2020 Gwyn Ciesla <gwync@protonmail.com> - 1.0.1-1
 - 1.0.1
 
