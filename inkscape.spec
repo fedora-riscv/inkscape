@@ -61,6 +61,7 @@ BuildRequires:	dbus-glib-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libsigc++20-devel
 BuildRequires:  libsoup-devel
+BuildRequires: make
 
 # Disable all for now. TODO: Be smarter
 %if 0
