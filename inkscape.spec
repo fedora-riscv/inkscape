@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -37,7 +37,7 @@ BuildRequires:  gettext
 BuildRequires:  gsl-devel
 BuildRequires:  gtkmm30-devel
 BuildRequires:  gtkspell3-devel
-%if ! 0%{?flatpak}
+%if ! 0%{?flatpak} && ! 0%{?rhel} >= 8
 BuildRequires:  ImageMagick-c++-devel
 %endif
 BuildRequires:  intltool
@@ -226,6 +226,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Mon Jan 04 2021 Tomas Popela <tpopela@redhat.com> - 1.0.1-3
+- Don't build with ImageMagick support in ELN/RHEL
+
 * Fri Sep 11 2020 Kalev Lember <klember@redhat.com> - 1.0.1-2
 - Fix appdata 1.0.1 release info
 
