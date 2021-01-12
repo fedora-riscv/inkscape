@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -226,6 +226,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Tue Jan 12 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.0.1-4
+- Poppler rebuild.
+
 * Mon Jan 04 2021 Tomas Popela <tpopela@redhat.com> - 1.0.1-3
 - Don't build with ImageMagick support in ELN/RHEL
 
