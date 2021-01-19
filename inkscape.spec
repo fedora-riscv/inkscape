@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0.1
-Release:        4.1%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
