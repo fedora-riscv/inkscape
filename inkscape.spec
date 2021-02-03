@@ -16,9 +16,6 @@ Source0:        https://inkscape.org/gallery/item/23820/inkscape-1.0.2.tar.xz
 Source2:	Fedora-Color-Palette.gpl
 
 Patch1:         inkscape-gcc11.patch
-# Backported from upstream
-#Patch2:         inkscape-appdata.patch
-#Patch3:         atomic.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(libgdl)
