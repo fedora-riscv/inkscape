@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.0.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -18,7 +18,10 @@ Source2:	Fedora-Color-Palette.gpl
 Patch1:         inkscape-gcc11.patch
 
 Provides: bundled(libcroco)
-Provides: bundled(libgdl)
+Provides: bundled(autotrace)
+Provides: bundled(libdepixelize)
+Provides: bundled(libuemf)
+Provides: bundled(adaptagrams)
 
 BuildRequires:  gcc-c++
 BuildRequires:  aspell-devel aspell-en
@@ -30,7 +33,7 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  double-conversion-devel
 BuildRequires:  freetype-devel
 BuildRequires:  gc-devel >= 6.4
-BuildRequires:  gdlmm-devel
+BuildRequires:  libgdl-devel
 BuildRequires:  gettext
 BuildRequires:  gsl-devel
 BuildRequires:  gtkmm30-devel
@@ -224,6 +227,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Thu Feb 11 2021 Jan Horak <jhorak@redhat.com> - 1.0.2-2
+- Added missing bundled source, removed libgdlmm depencency
+
 * Mon Feb 01 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.0.2-1
 - 1.0.2
 
