@@ -16,6 +16,10 @@ Source0:        https://inkscape.org/gallery/item/23820/inkscape-1.0.2.tar.xz
 Source2:	Fedora-Color-Palette.gpl
 
 Patch1:         inkscape-gcc11.patch
+# Fixes build failures with type_traits:2900:3: error: template with C linkage
+Patch3:         inkscape-glib-extern.patch
+# Fixes: error: field 'rel_error' has incomplete type 'std::atomic<double>'
+Patch4:         inkscape-missing-atomic.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(autotrace)
