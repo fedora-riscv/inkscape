@@ -1,8 +1,8 @@
 %define debug_package %{nil}
 
 Name:           inkscape
-Version:        1.0.2
-Release:        2%{?dist}
+Version:        1.1
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -10,22 +10,17 @@ Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
 URL:            https://inkscape.org/
-Source0:        https://inkscape.org/gallery/item/23820/inkscape-1.0.2.tar.xz
+Source0:        https://inkscape.org/gallery/item/26932/inkscape-1.1.tar.xz
 
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
-
-Patch1:         inkscape-gcc11.patch
-# Fixes build failures with type_traits:2900:3: error: template with C linkage
-Patch3:         inkscape-glib-extern.patch
-# Fixes: error: field 'rel_error' has incomplete type 'std::atomic<double>'
-Patch4:         inkscape-missing-atomic.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(autotrace)
 Provides: bundled(libdepixelize)
 Provides: bundled(libuemf)
 Provides: bundled(adaptagrams)
+Provides: bundled(lib2geom)
 
 BuildRequires:  gcc-c++
 BuildRequires:  aspell-devel aspell-en
@@ -117,7 +112,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%autosetup -n inkscape-1.0.2_2021-01-15_e86c870879 -p1
+%autosetup -n inkscape-1.1_2021-05-24_c4e8f9ed74 -p1
 pathfix.py -pni "%{__python3} %{py3_shbang_opts}" .
 find . -name CMakeLists.txt | xargs sed -i 's|COMMAND python |COMMAND %{__python3} |g'
 
@@ -212,8 +207,14 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 %{_mandir}/man1/*.1*
 %exclude %{_mandir}/man1/inkview.1*
 %{_datadir}/inkscape/tutorials
+%{_datadir}/inkscape/themes
 %{_datadir}/icons/hicolor/*/apps/*.png
+%{_datadir}/icons/hicolor/*/apps/*.svg
 %{_datadir}/bash-completion/completions/inkscape
+# split out when releases stabilize.
+%{_includedir}/2geom-1.1.0
+/usr/lib/pkgconfig/2geom.pc
+%{_libdir}/cmake/2Geom
 
 %files view
 %{!?_licensedir:%global license %%doc}
@@ -231,6 +232,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Mon May 24 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1-1
+- 1.1
+
 * Thu Feb 11 2021 Jan Horak <jhorak@redhat.com> - 1.0.2-2
 - Added missing bundled source, removed libgdlmm depencency
 
