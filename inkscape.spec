@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -160,6 +160,11 @@ find $RPM_BUILD_ROOT -type f -name 'lib*.a' | xargs rm -f
 # No skencil anymore
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/extensions/sk2svg.sh
 
+# Don't install development files for bundled libraries
+rm -r $RPM_BUILD_ROOT%{_includedir}/2geom-1.1.0/
+rm -r $RPM_BUILD_ROOT%{_libdir}/cmake/2Geom
+rm $RPM_BUILD_ROOT%{_prefix}/lib/pkgconfig/2geom.pc
+
 # Install Fedora Color Pallette
 install -pm 644 %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/inkscape/palettes/
 
@@ -211,10 +216,6 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 %{_datadir}/icons/hicolor/*/apps/*.png
 %{_datadir}/icons/hicolor/*/apps/*.svg
 %{_datadir}/bash-completion/completions/inkscape
-# split out when releases stabilize.
-%{_includedir}/2geom-1.1.0
-/usr/lib/pkgconfig/2geom.pc
-%{_libdir}/cmake/2Geom
 
 %files view
 %{!?_licensedir:%global license %%doc}
@@ -232,6 +233,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Tue May 25 2021 Kalev Lember <klember@redhat.com> - 1.1-2
+- Don't install development files for bundled 2geom
+
 * Mon May 24 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1-1
 - 1.1
 
