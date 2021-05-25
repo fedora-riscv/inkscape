@@ -191,10 +191,6 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 %{_datadir}/inkscape/attributes
 %{_datadir}/inkscape/branding
 %{_datadir}/inkscape/extensions
-%if 0%{?flatpak}
-# Pulls in ruby
-%exclude %{_datadir}/inkscape/extensions/simplepath.rb
-%endif
 %{_datadir}/inkscape/filters
 %{_datadir}/inkscape/fonts
 %{_datadir}/inkscape/icons
