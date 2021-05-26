@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -75,6 +75,7 @@ Requires:       python3
 Requires:       python3-lxml
 Requires:       python3-numpy
 Requires:       python3-scour
+Requires:       python3-appdirs
 
 # Weak dependencies for the LaTeX plugin
 Suggests:       pstoedit
@@ -229,6 +230,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Wed May 26 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1-3
+- Require python3-appdirs
+
 * Tue May 25 2021 Kalev Lember <klember@redhat.com> - 1.1-2
 - Don't install development files for bundled 2geom
 
