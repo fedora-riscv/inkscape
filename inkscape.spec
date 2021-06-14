@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -61,6 +61,7 @@ BuildRequires:	dbus-glib-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libsigc++20-devel
 BuildRequires:  libsoup-devel
+BuildRequires:  gspell-devel
 BuildRequires: make
 
 # Disable all for now. TODO: Be smarter
@@ -230,6 +231,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Mon Jun 14 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1-4
+- Enable gspell.
+
 * Wed May 26 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1-3
 - Require python3-appdirs
 
