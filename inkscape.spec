@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.1
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -231,6 +231,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Mon Aug 02 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1-7
+- poppler rebuild.
+
 * Tue Jul 27 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1-6
 - poppler rebuild.
 
