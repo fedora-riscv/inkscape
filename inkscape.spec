@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.1
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -131,32 +131,14 @@ find . -name '*.h' | xargs chmod -x
 dos2unix -k -q share/extensions/*.py
 
 %build
-#export CFLAGS="${CFLAGS:--O2 -g -pipe -Wall -Werror=format-security -Wp,-D_GLIBCXX_ASSERTIONS -fexceptions -fstack-protector-strong -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection}"
-#export CXXFLAGS="${CXXFLAGS:--O2 -g -pipe -Wall -Werror=format-security -Wp,-D_GLIBCXX_ASSERTIONS -fexceptions -fstack-protector-strong -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection}"
-#export FFLAGS="${FFLAGS:--O2 -g -pipe -Wall -Werror=format-security -Wp,-D_GLIBCXX_ASSERTIONS -fexceptions -fstack-protector-strong -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -I/usr/lib64/gfortran/modules}"
-#export FCFLAGS="${FCFLAGS:--O2 -g -pipe -Wall -Werror=format-security -Wp,-D_GLIBCXX_ASSERTIONS -fexceptions -fstack-protector-strong -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -I/usr/lib64/gfortran/modules}"
-#export LDFLAGS="${LDFLAGS:--Wl,-z,relro   -Wl,-z,now -specs=/usr/lib/rpm/redhat/redhat-hardened-ld}"
-sed -i /FORTIFY_SOURCE/d CMakeLists.txt
-cmake \
-        -DCMAKE_C_FLAGS_RELEASE:STRING="-DNDEBUG" \
-        -DCMAKE_CXX_FLAGS_RELEASE:STRING="-DNDEBUG" \
-        -DCMAKE_Fortran_FLAGS_RELEASE:STRING="-DNDEBUG" \
+%cmake3 \
         -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
-        -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
-        -DINCLUDE_INSTALL_DIR:PATH=%{_includedir} \
-        -DLIB_INSTALL_DIR:PATH=%{_libdir} \
-        -DSYSCONF_INSTALL_DIR:PATH=%{_sysconfdir} \
-        -DSHARE_INSTALL_PREFIX:PATH=%{_datadir} \
-%if "lib64" == "lib64" 
-        -DLIB_SUFFIX=64 \
-%endif 
         -DBUILD_SHARED_LIBS:BOOL=OFF .
-
-%make_build
+%cmake_build
 
 
 %install
-%make_install
+%cmake_install
 find $RPM_BUILD_ROOT -type f -name 'lib*.a' | xargs rm -f
 
 # No skencil anymore
@@ -231,6 +213,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Wed Aug 18 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1-10
+- Cmake cleanup, BZ 1995130
+
 * Thu Aug 12 2021 Björn Esser <besser82@fedoraproject.org> - 1.1-9
 - poppler rebuild, again
 
