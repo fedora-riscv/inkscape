@@ -36,7 +36,6 @@ BuildRequires:  libgdl-devel
 BuildRequires:  gettext
 BuildRequires:  gsl-devel
 BuildRequires:  gtkmm30-devel
-BuildRequires:  gtkspell3-devel
 %if ! 0%{?flatpak} && ! 0%{?rhel} >= 8
 BuildRequires:  ImageMagick-c++-devel
 %endif
