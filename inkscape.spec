@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -14,6 +14,8 @@ Source0:        https://inkscape.org/gallery/item/29255/inkscape-1.1.1.tar.xz
 
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
+
+Patch0: b3dabef2245d4e4e977ee9d6776be9a134493515.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(autotrace)
@@ -212,6 +214,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Wed Nov 10 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1.1-2
+- Patch for Pango multiline issue.
+
 * Thu Nov 04 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1.1-1
 - 1.1.1
 
