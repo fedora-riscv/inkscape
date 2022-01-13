@@ -214,6 +214,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Thu Jan 13 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.1.1-3
+- Poppler rebuild.
+
 * Wed Nov 10 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1.1-2
 - Patch for Pango multiline issue.
 
