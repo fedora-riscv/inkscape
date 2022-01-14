@@ -16,6 +16,7 @@ Source0:        https://inkscape.org/gallery/item/29255/inkscape-1.1.1.tar.xz
 Source2:	Fedora-Color-Palette.gpl
 
 Patch0: b3dabef2245d4e4e977ee9d6776be9a134493515.patch
+Patch1: 5724c21b9cb7b6176a7b36ca24068b148c817e82.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(autotrace)
@@ -215,7 +216,7 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 %changelog
 * Thu Jan 13 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.1.1-3
-- Poppler rebuild.
+- Poppler rebuild, with upstream patch.
 
 * Wed Nov 10 2021 Gwyn Ciesla <gwync@protonmail.com> - 1.1.1-2
 - Patch for Pango multiline issue.
