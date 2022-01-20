@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.1.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -216,6 +216,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
 * Thu Jan 13 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.1.1-3
 - Poppler rebuild, with upstream patches.
 
