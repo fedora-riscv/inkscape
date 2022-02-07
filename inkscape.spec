@@ -1,8 +1,8 @@
 %define debug_package %{nil}
 
 Name:           inkscape
-Version:        1.1.1
-Release:        4%{?dist}
+Version:        1.1.2
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -10,14 +10,14 @@ Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
 URL:            https://inkscape.org/
-Source0:        https://inkscape.org/gallery/item/29255/inkscape-1.1.1.tar.xz
+Source0:        https://inkscape.org/gallery/item/31668/inkscape-1.1.2.tar.xz
 
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
 
-Patch0: b3dabef2245d4e4e977ee9d6776be9a134493515.patch
-Patch1: 5724c21b9cb7b6176a7b36ca24068b148c817e82.patch
-Patch2: 3825abc637ac2d3bc6ff997503b0631ac14e16b5.patch
+#Patch0: b3dabef2245d4e4e977ee9d6776be9a134493515.patch
+#Patch1: 5724c21b9cb7b6176a7b36ca24068b148c817e82.patch
+#Patch2: 3825abc637ac2d3bc6ff997503b0631ac14e16b5.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(autotrace)
@@ -117,7 +117,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%autosetup -n inkscape-1.1.1_2021-09-20_3bf5ae0d25 -p1
+%autosetup -n inkscape-1.1.2_2022-02-04_0a00cf5339 -p1
 pathfix.py -pni "%{__python3} %{py3_shbang_opts}" .
 find . -name CMakeLists.txt | xargs sed -i 's|COMMAND python |COMMAND %{__python3} |g'
 
@@ -216,6 +216,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Sun Feb 06 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.1.2-1
+- 1.1.2
+
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
