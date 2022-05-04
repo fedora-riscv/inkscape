@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.1.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -216,6 +216,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Wed May 04 2022 Thomas Rodgers <trodgers@redhat.com> - 1.1.2-2
+- Rebuilt for Boost 1.78
+
 * Sun Feb 06 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.1.2-1
 - 1.1.2
 
