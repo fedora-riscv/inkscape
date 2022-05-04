@@ -136,7 +136,7 @@ dos2unix -k -q share/extensions/*.py
 %build
 %cmake3 \
         -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
-        -DBUILD_SHARED_LIBS:BOOL=OFF .
+        -DBUILD_SHARED_LIBS:BOOL=OFF
 %cmake_build
 
 
