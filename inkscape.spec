@@ -40,7 +40,7 @@ BuildRequires:  libgdl-devel
 BuildRequires:  gettext
 BuildRequires:  gsl-devel
 BuildRequires:  gtkmm30-devel
-%if ! 0%{?flatpak} && ! 0%{?rhel} >= 8
+%if ! 0%{?flatpak}
 BuildRequires:  ImageMagick-c++-devel
 %endif
 BuildRequires:  intltool
