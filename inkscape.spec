@@ -2,7 +2,7 @@
 
 Name:           inkscape
 Version:        1.1.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -14,10 +14,6 @@ Source0:        https://inkscape.org/gallery/item/31668/inkscape-1.1.2.tar.xz
 
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
-
-#Patch0: b3dabef2245d4e4e977ee9d6776be9a134493515.patch
-#Patch1: 5724c21b9cb7b6176a7b36ca24068b148c817e82.patch
-#Patch2: 3825abc637ac2d3bc6ff997503b0631ac14e16b5.patch
 
 Provides: bundled(libcroco)
 Provides: bundled(autotrace)
@@ -216,6 +212,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Wed May 11 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.1.2-3
+- ImageMagick build.
+
 * Wed May 04 2022 Thomas Rodgers <trodgers@redhat.com> - 1.1.2-2
 - Rebuilt for Boost 1.78
 
