@@ -212,7 +212,7 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
-* Mon May 16 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.2-1
+* Tue May 17 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.2-1
 - 1.2
 
 * Tue May 17 2022 Sérgio Basto <sergio@serjux.com> - 1.1.2-4
