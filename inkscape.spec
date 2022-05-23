@@ -76,7 +76,7 @@ Requires:       python3-lxml
 Requires:       python3-numpy
 Requires:       python3-scour
 Requires:       python3-appdirs
-
+Requires:       python3-cssselect
 # Weak dependencies for the LaTeX plugin
 Suggests:       pstoedit
 Suggests:       tex(latex)
@@ -212,6 +212,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Mon May 23 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.2-2
+- Add missing Requires on python3-cssselect
+
 * Tue May 17 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.2-1
 - 1.2
 
