@@ -1,8 +1,8 @@
 %define debug_package %{nil}
 
 Name:           inkscape
-Version:        1.2
-Release:        2%{?dist}
+Version:        1.2.1
+Release:        1%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -10,7 +10,7 @@ Summary:        Vector-based drawing program using SVG
 
 License:        GPLv2+ and CC-BY
 URL:            https://inkscape.org/
-Source0:        https://inkscape.org/gallery/item/33449/inkscape-1.2_2022-05-15_dc2aedaf03.tar.xz
+Source0:        https://inkscape.org/gallery/item/34673/inkscape-1.2.1.tar.xz
 
 # Fedora Color Palette, GIMP format, CC-BY 3.0
 Source2:	Fedora-Color-Palette.gpl
@@ -113,7 +113,7 @@ graphics in W3C standard Scalable Vector Graphics (SVG) file format.
 
 
 %prep
-%autosetup -n inkscape-1.2_2022-05-15_dc2aedaf03 -p1
+%autosetup -n inkscape-1.2.1_2022-07-14_9c6d41e410 -p1
 pathfix.py -pni "%{__python3} %{py3_shbang_opts}" .
 find . -name CMakeLists.txt | xargs sed -i 's|COMMAND python |COMMAND %{__python3} |g'
 
@@ -212,6 +212,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Thu Jul 14 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.2.1-1
+- 1.2.1
+
 * Mon May 23 2022 Gwyn Ciesla <gwync@protonmail.com> - 1.2-2
 - Add missing Requires on python3-cssselect
 
