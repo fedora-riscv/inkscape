@@ -10,7 +10,7 @@
 
 Name:           inkscape
 Version:        1.2.2
-Release:        3%{?dist}
+Release:        3.0%{?dist}
 Summary:        Vector-based drawing program using SVG
 
 # Inkscape tags their releases with underscores and in ALLCAPS
@@ -226,6 +226,9 @@ desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/org.inkscape.Inksc
 
 
 %changelog
+* Tue Feb 28 2023 Liu Yang <Yang.Liu.sn@gmail.com> - 1.2.2-3.0
+- Rebuild for riscv64 due to poppler upgrade
+
 * Mon Jan 09 2023 Gwyn Ciesla <gwync@protonmail.com> - 1.2.2-3
 - Require python3-pillow
 
